@@ -1,0 +1,8 @@
+bin
+Bin
+obj
+Obj
+*.user
+*.suo
+*.vs10x
+_ReSharper.*
