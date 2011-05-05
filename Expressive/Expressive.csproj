@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,10 +30,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cecil.Decompiler">
-      <HintPath>..\$libraries\Cecil.Decompiler.dll</HintPath>
+    <Reference Include="AshMind.Extensions">
+      <HintPath>..\$packages\AshMind.Extensions.1.0.4\lib\3.5\AshMind.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="ClrTest.Reflection.ILReader">
+      <HintPath>..\$libraries\ClrTest.Reflection.ILReader.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,8 +47,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decompiler.cs" />
+    <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
+    <Compile Include="External\ExpressionVisitor.cs" />
+    <Compile Include="Elements\Expressions\LocalExpression.cs" />
+    <Compile Include="Elements\InstructionElement.cs" />
+    <Compile Include="Elements\ElementVisitor.cs" />
+    <Compile Include="Elements\ExpressionElement.cs" />
+    <Compile Include="Elements\IElement.cs" />
+    <Compile Include="Elements\ReturnElement.cs" />
+    <Compile Include="Elements\VariableAssignmentElement.cs" />
+    <Compile Include="ExpressiveEngine.cs" />
+    <Compile Include="Pipeline\Steps\CallToExpressionStep.cs" />
+    <Compile Include="Pipeline\Steps\ReturnSimplificationStep.cs" />
+    <Compile Include="Pipeline\Steps\RetToReturnStep.cs" />
+    <Compile Include="Pipeline\Steps\LdlocToVariableStep.cs" />
+    <Compile Include="Pipeline\Steps\StlocToAssignmentStep.cs" />
+    <Compile Include="Pipeline\Steps\UselessJumpsRemovalStep.cs" />
+    <Compile Include="Pipeline\Steps\LdstrToConstantStep.cs" />
+    <Compile Include="Pipeline\ElementExtensions.cs" />
+    <Compile Include="Pipeline\IInterpretationStep.cs" />
+    <Compile Include="Pipeline\InterpretationWorkspace.cs" />
+    <Compile Include="Pipeline\Steps\LdargToParameterStep.cs" />
+    <Compile Include="Pipeline\Steps\NopRemovalStep.cs" />
+    <Compile Include="Pipeline\Steps\VariableInliningStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

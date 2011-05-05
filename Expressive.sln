@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Expressive", "Expressive\Expressive.csproj", "{25C28BD4-127C-4F95-9FDC-25D1A10E5012}"
 EndProject
+Project("{00000000-0000-0000-0000-000000000000}") = "Expressive.Tests", "Expressive.Tests\Expressive.Tests.csproj", "{5DC88E59-9153-4986-BCD7-0A5E449BA191}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{25C28BD4-127C-4F95-9FDC-25D1A10E5012}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25C28BD4-127C-4F95-9FDC-25D1A10E5012}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25C28BD4-127C-4F95-9FDC-25D1A10E5012}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DC88E59-9153-4986-BCD7-0A5E449BA191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DC88E59-9153-4986-BCD7-0A5E449BA191}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DC88E59-9153-4986-BCD7-0A5E449BA191}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DC88E59-9153-4986-BCD7-0A5E449BA191}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
