@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Linq.Expressions;
 using MbUnit.Framework;
 
 using Expressive.Tests.Helpers;
@@ -13,15 +13,34 @@ namespace Expressive.Tests {
         [Test]
         public void TestSimplePropertyWithReferenceToThis() {
             var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get<ClassWithNames>(c => c.JustFirstName).GetGetMethod()
+            );
+
+            AssertMatches(new[] { typeof(ClassWithNames) }, @"{0} => {0}.FirstName", decompiled);
+        }
+
+        [Test]
+        public void TestPropertyWithReferenceToThisAndSimpleConcat() {
+            var decompiled = ExpressiveEngine.ToExpression(
                 Property.Get<ClassWithNames>(c => c.FullNameSimple).GetGetMethod()
             );
 
-            Assert.AreElementsSame(
-                new[] { typeof(ClassWithNames) },
-                decompiled.Parameters.Select(p => p.Type)
+            AssertMatches(new[] { typeof (ClassWithNames) }, @"{0} => Concat({0}.FirstName, "" "", {0}.LastName)", decompiled);
+        }
+
+        [Test]
+        public void TestStaticProperty() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get(() => ClassWithNames.StaticName).GetGetMethod()
             );
-            var expected = string.Format(@"{0} => Concat({0}.FirstName, "" "", {0}.LastName)", decompiled.Parameters[0].Name);
-            Assert.AreEqual(expected, decompiled.ToString());
+
+            AssertMatches(new Type[0], @"() => ""Test""", decompiled);
+        }
+
+        private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
+            Assert.AreElementsSame(parameterTypes, expression.Parameters.Select(p => p.Type));
+            var expected = string.Format(pattern, expression.Parameters.Select(p => p.Name).ToArray());
+            Assert.AreEqual(expected, expression.ToString());
         }
     }
 }
