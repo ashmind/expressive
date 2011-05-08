@@ -37,6 +37,19 @@ namespace Expressive.Tests {
             AssertMatches(new Type[0], @"() => ""Test""", decompiled);
         }
 
+        [Test]
+        public void TestInlineConditional() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get<ClassWithNames>(c => c.FullNameWithInlineConditional).GetGetMethod()
+            );
+
+            AssertMatches(
+                new[] { typeof(ClassWithNames) },
+                @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))",
+                decompiled
+            );
+        }
+
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
             Assert.AreElementsSame(parameterTypes, expression.Parameters.Select(p => p.Type));
             var expected = string.Format(pattern, expression.Parameters.Select(p => p.Name).ToArray());

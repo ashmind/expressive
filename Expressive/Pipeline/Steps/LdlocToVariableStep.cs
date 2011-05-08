@@ -11,7 +11,7 @@ using Expressive.Elements;
 using Expressive.Elements.Expressions;
 
 namespace Expressive.Pipeline.Steps {
-    public class LdlocToVariableStep : IInterpretationStep {
+    public class LdlocToVariableStep : BranchingAwareStepBase {
         private static readonly IDictionary<OpCode, Func<ILInstruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
             { OpCodes.Ldloc_0, _ => 0 },
             { OpCodes.Ldloc_1, _ => 1 },
@@ -21,9 +21,10 @@ namespace Expressive.Pipeline.Steps {
             { OpCodes.Ldloc,   x => ((InlineVarInstruction)x).Ordinal }
         };
 
-        public void Apply(InterpretationWorkspace workspace) {
-            for (var i = 0; i < workspace.Elements.Count; i++) {
-                var instruction = workspace.Elements[i] as InstructionElement;
+        protected override void ApplyToSpecificBranch(IList<IElement> elements, InterpretationContext context) {
+            var body = context.Method.GetMethodBody();
+            for (var i = 0; i < elements.Count; i++) {
+                var instruction = elements[i] as InstructionElement;
                 if (instruction == null)
                     continue;
 
@@ -32,8 +33,8 @@ namespace Expressive.Pipeline.Steps {
                     continue;
 
                 var variableIndex = indexGetter(instruction.Instruction);
-                var local = workspace.Method.GetMethodBody().LocalVariables[variableIndex];
-                workspace.Elements[i] = new ExpressionElement(
+                var local = body.LocalVariables[variableIndex];
+                elements[i] = new ExpressionElement(
                     new LocalExpression(variableIndex, local.LocalType)
                 );
             }

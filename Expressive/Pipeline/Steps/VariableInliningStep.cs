@@ -7,7 +7,7 @@ using Expressive.Elements;
 using Expressive.Elements.Expressions;
 
 namespace Expressive.Pipeline.Steps {
-    public class VariableInliningStep : IInterpretationStep {
+    public class VariableInliningStep : BranchingAwareStepBase {
         #region InliningVisitor Class
 
         private class InliningVisitor : ElementVisitor {
@@ -45,24 +45,24 @@ namespace Expressive.Pipeline.Steps {
 
         #endregion
 
-        public void Apply(InterpretationWorkspace workspace) {
+        protected override void ApplyToSpecificBranch(IList<IElement> elements, InterpretationContext context) {
             var variablesTried = new HashSet<int>();
 
-            for (var i = 0; i < workspace.Elements.Count; i++) {
-                var assignment = workspace.Elements[i] as VariableAssignmentElement;
+            for (var i = 0; i < elements.Count; i++) {
+                var assignment = elements[i] as VariableAssignmentElement;
                 if (assignment == null || variablesTried.Contains(assignment.VariableIndex))
                     continue;
 
-                this.Inline(assignment, workspace);
+                this.Inline(assignment, elements);
                 i -= 1; // inlining removes assignment
 
                 variablesTried.Add(assignment.VariableIndex);
             }
         }
 
-        private void Inline(VariableAssignmentElement assignment, InterpretationWorkspace workspace) {
-            new InliningVisitor(assignment).Inline(workspace.Elements);
-            workspace.Elements.Remove(assignment);
+        private void Inline(VariableAssignmentElement assignment, IList<IElement> elements) {
+            new InliningVisitor(assignment).Inline(elements);
+            elements.Remove(assignment);
         }
     }
 }

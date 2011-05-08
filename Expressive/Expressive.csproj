@@ -47,8 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\PartialList.cs" />
     <Compile Include="Decompiler.cs" />
+    <Compile Include="Elements\ConditionalJumpElement.cs" />
+    <Compile Include="Elements\CutBranchElement.cs" />
+    <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
+    <Compile Include="Elements\IBranchingElement.cs" />
+    <Compile Include="Elements\Presentation\Indent.cs" />
     <Compile Include="External\ExpressionVisitor.cs" />
     <Compile Include="Elements\Expressions\LocalExpression.cs" />
     <Compile Include="Elements\InstructionElement.cs" />
@@ -58,16 +64,21 @@
     <Compile Include="Elements\ReturnElement.cs" />
     <Compile Include="Elements\VariableAssignmentElement.cs" />
     <Compile Include="ExpressiveEngine.cs" />
+    <Compile Include="Pipeline\ListExtensions.cs" />
+    <Compile Include="Pipeline\Steps\BranchingAwareStepBase.cs" />
+    <Compile Include="Pipeline\Steps\BrCuttingStep.cs" />
+    <Compile Include="Pipeline\Steps\BrToJumpStep.cs" />
     <Compile Include="Pipeline\Steps\CallToExpressionStep.cs" />
-    <Compile Include="Pipeline\Steps\ReturnSimplificationStep.cs" />
+    <Compile Include="Pipeline\Steps\BrProcessing.cs" />
+    <Compile Include="Pipeline\Steps\CutBranchesRemovalStep.cs" />
+    <Compile Include="Pipeline\Steps\JumpToExpressionStep.cs" />
     <Compile Include="Pipeline\Steps\RetToReturnStep.cs" />
     <Compile Include="Pipeline\Steps\LdlocToVariableStep.cs" />
     <Compile Include="Pipeline\Steps\StlocToAssignmentStep.cs" />
-    <Compile Include="Pipeline\Steps\UselessJumpsRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\LdstrToConstantStep.cs" />
     <Compile Include="Pipeline\ElementExtensions.cs" />
     <Compile Include="Pipeline\IInterpretationStep.cs" />
-    <Compile Include="Pipeline\InterpretationWorkspace.cs" />
+    <Compile Include="Pipeline\InterpretationContext.cs" />
     <Compile Include="Pipeline\Steps\LdargToParameterStep.cs" />
     <Compile Include="Pipeline\Steps\NopRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\VariableInliningStep.cs" />

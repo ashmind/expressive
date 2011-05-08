@@ -19,6 +19,12 @@ namespace Expressive.Tests.TestClasses {
             get { return this.FirstName + " " + this.LastName; }
         }
 
-
+        public string FullNameWithInlineConditional {
+            get {
+                return string.IsNullOrEmpty(this.FirstName)
+                     ? this.LastName
+                     : this.FirstName + " " + this.LastName;
+            }
+        }
     }
 }

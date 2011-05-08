@@ -10,7 +10,8 @@ namespace Expressive.Elements {
             var visited = this.TryVisit<ExpressionElement>(this.TransparentlyVisitExpressionElement, ref element)
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
                        || this.TryVisit<VariableAssignmentElement>(this.VisitAssignment, ref element)
-                       || this.TryVisit<ReturnElement>(this.VisitReturn, ref element);
+                       || this.TryVisit<ReturnElement>(this.VisitReturn, ref element)
+                       || this.TryVisit<ConditionalJumpElement>(this.VisitConditionalJump, ref element);
 
             if (!visited)
                 throw new NotSupportedException("Element type " + element.GetType() + " is not supported.");
@@ -52,6 +53,18 @@ namespace Expressive.Elements {
             return result == @return.Result
                  ? @return
                  : new ReturnElement(result);
+        }
+
+        protected virtual IElement VisitConditionalJump(ConditionalJumpElement jump) {
+            for (var i = 0; i < jump.FollowingBranch.Count; i++) {
+                jump.FollowingBranch[i] = this.Visit(jump.FollowingBranch[i]);
+            }
+
+            for (var i = 0; i < jump.TargetBranch.Count; i++) {
+                jump.TargetBranch[i] = this.Visit(jump.TargetBranch[i]);
+            }
+
+            return jump;
         }
     }
 }

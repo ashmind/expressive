@@ -11,7 +11,7 @@ using ClrTest.Reflection;
 using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
-    public class LdargToParameterStep : IInterpretationStep {
+    public class LdargToParameterStep : BranchingAwareStepBase {
         private static readonly IDictionary<OpCode, Func<ILInstruction, int>> parameterIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
             { OpCodes.Ldarg_0, _ => 0 },
             { OpCodes.Ldarg_1, _ => 1 },
@@ -20,14 +20,18 @@ namespace Expressive.Pipeline.Steps {
             { OpCodes.Ldarg_S, x => ((ShortInlineVarInstruction)x).Ordinal },
             { OpCodes.Ldarg,   x => ((InlineVarInstruction)x).Ordinal }
         };
-        
-        public void Apply(InterpretationWorkspace workspace) {
-            var parameters = workspace.Method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
-            if (!workspace.Method.IsStatic)
-                parameters.Insert(0, Expression.Parameter(workspace.Method.DeclaringType, "<this>"));
 
-            for (var i = 0; i < workspace.Elements.Count; i++) {
-                var instruction = workspace.Elements[i] as InstructionElement;
+        protected override void ApplyToSpecificBranch(IList<IElement> elements, InterpretationContext context) {
+            var alreadyExtracted = context.ExtractedParameters.ToDictionary(p => p.Name);
+            var parameters = context.Method.GetParameters()
+                                           .Select(p => alreadyExtracted.GetValueOrDefault(p.Name) ?? Expression.Parameter(p.ParameterType, p.Name))
+                                           .ToList();
+
+            if (!context.Method.IsStatic)
+                parameters.Insert(0, alreadyExtracted.GetValueOrDefault("<this>") ?? Expression.Parameter(context.Method.DeclaringType, "<this>"));
+
+            for (var i = 0; i < elements.Count; i++) {
+                var instruction = elements[i] as InstructionElement;
                 if (instruction == null)
                     continue;
 
@@ -36,8 +40,8 @@ namespace Expressive.Pipeline.Steps {
                     continue;
 
                 var parameter = parameters[indexGetter(instruction.Instruction)];
-                workspace.Elements[i] = new ExpressionElement(parameter);
-                workspace.ExtractedParameters.Add(parameter);
+                elements[i] = new ExpressionElement(parameter);
+                context.ExtractedParameters.Add(parameter);
             }
         }
     }

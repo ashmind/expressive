@@ -5,18 +5,15 @@ using System.Linq;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class ReturnElement : IElement {
-        public IElement Result { get; private set; }
-
-        public ReturnElement() : this(null) {
+    public class CutBranchElement : IElement {
+        public CutBranchElement(IList<IElement> elements) {
+            this.Elements = elements;
         }
 
-        public ReturnElement(IElement result) {
-            this.Result = result;
-        }
+        public IList<IElement> Elements { get; private set; }
 
         public override string ToString() {
-            return "return" + (this.Result != null ? " " + this.Result : "");
+            return "cut branch";
         }
 
         public string ToString(Indent indent) {

@@ -10,7 +10,7 @@ using ClrTest.Reflection;
 using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
-    public class StlocToAssignmentStep : IInterpretationStep {
+    public class StlocToAssignmentStep : BranchingAwareStepBase {
         private static readonly IDictionary<OpCode, Func<ILInstruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
             { OpCodes.Stloc_0, _ => 0 },
             { OpCodes.Stloc_1, _ => 1 },
@@ -20,9 +20,9 @@ namespace Expressive.Pipeline.Steps {
             { OpCodes.Stloc,   x => ((InlineVarInstruction)x).Ordinal }
         };
 
-        public void Apply(InterpretationWorkspace workspace) {
-            for (var i = 0; i < workspace.Elements.Count; i++) {
-                var instruction = workspace.Elements[i] as InstructionElement;
+        protected override void ApplyToSpecificBranch(IList<IElement> elements, InterpretationContext context) {
+            for (var i = 0; i < elements.Count; i++) {
+                var instruction = elements[i] as InstructionElement;
                 if (instruction == null)
                     continue;
 
@@ -30,11 +30,11 @@ namespace Expressive.Pipeline.Steps {
                 if (indexGetter == null)
                     continue;
 
-                var previous = workspace.Elements[i - 1];
-                workspace.Elements.RemoveAt(i - 1);
+                var previous = elements[i - 1];
+                elements.RemoveAt(i - 1);
                 i -= 1;
 
-                workspace.Elements[i] = new VariableAssignmentElement(indexGetter(instruction.Instruction), previous);
+                elements[i] = new VariableAssignmentElement(indexGetter(instruction.Instruction), previous);
             }
         }
     }
