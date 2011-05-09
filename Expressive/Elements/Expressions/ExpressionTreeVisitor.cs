@@ -21,7 +21,7 @@ namespace Expressive.Elements.Expressions {
             return local;
         }
 
-        private Expression VisitBooleanAdapter(BooleanAdapterExpression adapter) {
+        protected virtual Expression VisitBooleanAdapter(BooleanAdapterExpression adapter) {
             var expression = this.Visit(adapter.Expression);
             if (expression != adapter.Expression)
                 return new BooleanAdapterExpression(expression);

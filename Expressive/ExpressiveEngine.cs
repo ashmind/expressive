@@ -27,7 +27,10 @@ namespace Expressive {
                     new LdcToConstant(),
                     new BranchToCondition()
                 ),
-                new IfOptimizationStep(),
+                new VisitorSequenceStep(
+                    new BooleanFixingVisitor(),
+                    new IfToConditionVisitor()
+                ),
                 new VariableInliningStep(),
                 new RetToReturnStep()
             );

@@ -6,7 +6,7 @@ using Expressive.Elements.Expressions;
 
 namespace Expressive.Elements {
     public abstract class ElementVisitor : ExpressionTreeVisitor {
-        protected virtual void VisitAll(IList<IElement> elements) {
+        public virtual void VisitAll(IList<IElement> elements) {
             for (var i = 0; i < elements.Count; i++) {
                 var result = this.Visit(elements[i]);
                 if (result != null) {
@@ -19,7 +19,7 @@ namespace Expressive.Elements {
             }
         }
 
-        protected virtual IElement Visit(IElement element) {
+        public virtual IElement Visit(IElement element) {
             var visited = this.TryVisit<ExpressionElement>(this.TransparentlyVisitExpressionElement, ref element)
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
                        || this.TryVisit<VariableAssignmentElement>(this.VisitAssignment, ref element)

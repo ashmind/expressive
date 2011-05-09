@@ -68,11 +68,11 @@
     <Compile Include="ExpressiveEngine.cs" />
     <Compile Include="Pipeline\InterpretationException.cs" />
     <Compile Include="Pipeline\ListExtensions.cs" />
+    <Compile Include="Pipeline\Steps\BooleanFixingVisitor.cs" />
     <Compile Include="Pipeline\Steps\BranchingAwareStepBase.cs" />
     <Compile Include="Pipeline\Steps\BrCuttingStep.cs" />
     <Compile Include="Pipeline\Steps\BrResolutionStep.cs" />
     <Compile Include="Pipeline\Steps\BrProcessing.cs" />
-    <Compile Include="Pipeline\Steps\Optimizations\IfOptimizationStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CallToExpression.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CeqToCondition.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdlocToVariable.cs" />
@@ -86,12 +86,14 @@
     <Compile Include="Pipeline\Steps\IndividualElements\Support\IElementInterpretation.cs" />
     <Compile Include="Pipeline\Steps\CutBranchesRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdargToParameter.cs" />
+    <Compile Include="Pipeline\Steps\Optimizations\IfToConditionVisitor.cs" />
     <Compile Include="Pipeline\Steps\RetToReturnStep.cs" />
     <Compile Include="Pipeline\ElementExtensions.cs" />
     <Compile Include="Pipeline\IInterpretationStep.cs" />
     <Compile Include="Pipeline\InterpretationContext.cs" />
     <Compile Include="Pipeline\Steps\NopRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\Optimizations\VariableInliningStep.cs" />
+    <Compile Include="Pipeline\Steps\VisitorSequenceStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
