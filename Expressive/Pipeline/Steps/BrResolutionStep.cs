@@ -58,7 +58,7 @@ namespace Expressive.Pipeline.Steps {
             this.Apply(followingRange, context);
 
             ReplaceWithJumpUpTo(
-                targetIndex,
+                targetIndex - 1,
                 elements,
                 followingRange,
                 new IElement[0],
