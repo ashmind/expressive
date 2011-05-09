@@ -20,7 +20,15 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
             if (ifTrueAsExpression != null && ifFalseAsExpression != null)
                 return new ExpressionElement(Expression.Condition(condition, ifTrueAsExpression, ifFalseAsExpression));
 
-            return new IfThenElement(condition, branch.IfTrue, branch.IfFalse);
+            var ifTrue = branch.IfTrue;
+            var ifFalse = branch.IfFalse;
+            if (ifTrue.Count == 0) {
+                condition = Expression.Not(condition);
+                ifFalse = branch.IfTrue;
+                ifTrue = branch.IfFalse;
+            }
+
+            return new IfThenElement(condition, ifTrue, ifFalse);
         }
 
         private Expression AsSingleExpression(IList<IElement> elements) {
