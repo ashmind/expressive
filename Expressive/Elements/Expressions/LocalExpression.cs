@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Expressive.Elements.Expressions {
     public class LocalExpression : Expression {
-        public static readonly new ExpressionType NodeType = (ExpressionType)2000;
+        public new const ExpressionType NodeType = (ExpressionType)2000;
         
         public int Index { get; set; }
         

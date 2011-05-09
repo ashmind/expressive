@@ -51,7 +51,6 @@ namespace Expressive.Tests {
         }
 
         [Test]
-        [Ignore("Work in progress")]
         public void TestStatementConditional() {
             var decompiled = ExpressiveEngine.ToExpression(
                 Property.Get<ClassWithNames>(c => c.FullNameWithExplicitConditional).GetGetMethod()

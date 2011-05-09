@@ -7,7 +7,7 @@ using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
     public class ExpressionElement : IElement {
-        public Expression Expression { get; private set; }
+        public Expression Expression { get; set; }
 
         public ExpressionElement(Expression expression) {
             this.Expression = expression;

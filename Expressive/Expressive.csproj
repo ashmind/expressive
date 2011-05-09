@@ -49,8 +49,10 @@
   <ItemGroup>
     <Compile Include="Common\PartialList.cs" />
     <Compile Include="Decompiler.cs" />
-    <Compile Include="Elements\ConditionalJumpElement.cs" />
+    <Compile Include="Elements\ConditionalBranchElement.cs" />
     <Compile Include="Elements\CutBranchElement.cs" />
+    <Compile Include="Elements\Expressions\BooleanAdapterExpression.cs" />
+    <Compile Include="Elements\IfThenElement.cs" />
     <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
     <Compile Include="Elements\IBranchingElement.cs" />
@@ -64,29 +66,32 @@
     <Compile Include="Elements\ReturnElement.cs" />
     <Compile Include="Elements\VariableAssignmentElement.cs" />
     <Compile Include="ExpressiveEngine.cs" />
+    <Compile Include="Pipeline\InterpretationException.cs" />
     <Compile Include="Pipeline\ListExtensions.cs" />
     <Compile Include="Pipeline\Steps\BranchingAwareStepBase.cs" />
     <Compile Include="Pipeline\Steps\BrCuttingStep.cs" />
-    <Compile Include="Pipeline\Steps\BrToJumpStep.cs" />
+    <Compile Include="Pipeline\Steps\BrResolutionStep.cs" />
     <Compile Include="Pipeline\Steps\BrProcessing.cs" />
+    <Compile Include="Pipeline\Steps\Optimizations\IfOptimizationStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CallToExpression.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CeqToCondition.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\LdlocToVariable.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\BranchToCondition.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\LdcToConstant.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdstrToConstant.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\StlocToAssignment.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\ElementInterpretation.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\IndividualInterpretationContext.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\ElementInterpretationStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\IElementInterpretation.cs" />
     <Compile Include="Pipeline\Steps\CutBranchesRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdargToParameter.cs" />
-    <Compile Include="Pipeline\Steps\JumpToExpressionStep.cs" />
     <Compile Include="Pipeline\Steps\RetToReturnStep.cs" />
-    <Compile Include="Pipeline\Steps\LdlocToVariableStep.cs" />
-    <Compile Include="Pipeline\Steps\StlocToAssignmentStep.cs" />
     <Compile Include="Pipeline\ElementExtensions.cs" />
     <Compile Include="Pipeline\IInterpretationStep.cs" />
     <Compile Include="Pipeline\InterpretationContext.cs" />
     <Compile Include="Pipeline\Steps\NopRemovalStep.cs" />
-    <Compile Include="Pipeline\Steps\VariableInliningStep.cs" />
+    <Compile Include="Pipeline\Steps\Optimizations\VariableInliningStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

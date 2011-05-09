@@ -10,7 +10,7 @@ using Expressive.Elements;
 namespace Expressive.Pipeline.Steps {
     public class BrCuttingStep : IInterpretationStep {
         public void Apply(IList<IElement> elements, InterpretationContext context) {
-            for (var i = 0; i < elements.Count; i++) {
+            for (var i = elements.Count - 1; i >= 0; i--) {
                 if (!BrProcessing.In(elements[i], OpCodes.Br, OpCodes.Br_S))
                     continue;
 
@@ -21,14 +21,12 @@ namespace Expressive.Pipeline.Steps {
                 var skipCount = targetIndex - skipStart;
 
                 elements.RemoveAt(i);
-                i -= 1;
                 skipStart -= 1;
                 if (skipCount == 0)
                     continue;
 
-                var branch = elements.EnumerateRange(skipStart, skipCount).ToArray();
+                var branch = elements.EnumerateRange(skipStart, skipCount).ToList();
                 elements.RemoveRange(skipStart, skipCount);
-
                 elements.Insert(skipStart, new CutBranchElement(branch));
             }
         }

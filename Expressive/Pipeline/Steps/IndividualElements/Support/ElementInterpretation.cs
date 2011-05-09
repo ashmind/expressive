@@ -24,7 +24,10 @@ namespace Expressive.Pipeline.Steps.IndividualElements.Support {
             return this.Interpret((TInputElement)element, context);
         }
 
-        public abstract bool CanInterpret(TInputElement element);
+        public virtual bool CanInterpret(TInputElement element) {
+            return true;
+        }
+
         public abstract TResultElement Interpret(TInputElement element, IndividualInterpretationContext context);
     }
 }

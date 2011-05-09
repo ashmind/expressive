@@ -6,12 +6,26 @@ using Expressive.Elements.Expressions;
 
 namespace Expressive.Elements {
     public abstract class ElementVisitor : ExpressionTreeVisitor {
+        protected virtual void VisitAll(IList<IElement> elements) {
+            for (var i = 0; i < elements.Count; i++) {
+                var result = this.Visit(elements[i]);
+                if (result != null) {
+                    elements[i] = result;
+                }
+                else {
+                    elements.RemoveAt(i);
+                    i -= 1;
+                }
+            }
+        }
+
         protected virtual IElement Visit(IElement element) {
             var visited = this.TryVisit<ExpressionElement>(this.TransparentlyVisitExpressionElement, ref element)
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
                        || this.TryVisit<VariableAssignmentElement>(this.VisitAssignment, ref element)
                        || this.TryVisit<ReturnElement>(this.VisitReturn, ref element)
-                       || this.TryVisit<ConditionalJumpElement>(this.VisitConditionalJump, ref element);
+                       || this.TryVisit<ConditionalBranchElement>(this.VisitConditionalBranch, ref element)
+                       || this.TryVisit<IfThenElement>(this.VisitIfThen, ref element);
 
             if (!visited)
                 throw new NotSupportedException("Element type " + element.GetType() + " is not supported.");
@@ -31,10 +45,8 @@ namespace Expressive.Elements {
         }
 
         private IElement TransparentlyVisitExpressionElement(ExpressionElement expression) {
-            var visited = this.Visit(expression.Expression);
-            return visited == expression.Expression
-                 ? expression
-                 : new ExpressionElement(visited);
+            expression.Expression = this.Visit(expression.Expression);
+            return expression;
         }
 
         protected virtual IElement VisitInstruction(InstructionElement instruction) {
@@ -55,16 +67,19 @@ namespace Expressive.Elements {
                  : new ReturnElement(result);
         }
 
-        protected virtual IElement VisitConditionalJump(ConditionalJumpElement jump) {
-            for (var i = 0; i < jump.FollowingBranch.Count; i++) {
-                jump.FollowingBranch[i] = this.Visit(jump.FollowingBranch[i]);
-            }
+        protected virtual IElement VisitConditionalBranch(ConditionalBranchElement branch) {
+            this.VisitAll(branch.IfTrue);
+            this.VisitAll(branch.IfFalse);
 
-            for (var i = 0; i < jump.TargetBranch.Count; i++) {
-                jump.TargetBranch[i] = this.Visit(jump.TargetBranch[i]);
-            }
+            return branch;
+        }
 
-            return jump;
+        protected virtual IElement VisitIfThen(IfThenElement ifThen) {
+            ifThen.Condition = this.Visit(ifThen.Condition);
+            this.VisitAll(ifThen.Then);
+            this.VisitAll(ifThen.Else);
+
+            return ifThen;
         }
     }
 }

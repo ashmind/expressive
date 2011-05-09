@@ -24,8 +24,19 @@ namespace Expressive {
                                     .ToList();
 
             var context = new InterpretationContext(method, this.pipeline);
-            foreach (var step in this.pipeline) {
-                step.Apply(elements, context);
+            try {
+                foreach (var step in this.pipeline) {
+                    step.Apply(elements, context);
+                }
+            }
+            catch (Exception ex) {
+                throw new InterpretationException(
+                    "Exception while interpreting "
+                        + Environment.NewLine
+                        + ElementHelper.ToString(elements, Indent.FourSpaces)
+                        + Environment.NewLine
+                        + ex.Message, ex
+                );
             }
 
             if (elements.Count > 1)

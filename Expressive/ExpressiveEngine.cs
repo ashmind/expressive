@@ -7,6 +7,7 @@ using System.Reflection;
 using Expressive.Pipeline.Steps;
 using Expressive.Pipeline.Steps.IndividualElements;
 using Expressive.Pipeline.Steps.IndividualElements.Support;
+using Expressive.Pipeline.Steps.Optimizations;
 
 namespace Expressive {
     public static class ExpressiveEngine {
@@ -14,17 +15,19 @@ namespace Expressive {
             var decompiler = new Decompiler(
                 new NopRemovalStep(),
                 new BrCuttingStep(),
-                new BrToJumpStep(),
+                new BrResolutionStep(),
                 new CutBranchesRemovalStep(),
                 new ElementInterpretationStep(
                     new LdstrToConstant(),
                     new CeqToCondition(),
                     new CallToExpression(),
-                    new LdargToParameter()
+                    new LdlocToVariable(),
+                    new StlocToAssignment(),
+                    new LdargToParameter(),
+                    new LdcToConstant(),
+                    new BranchToCondition()
                 ),
-                new JumpToExpressionStep(),
-                new LdlocToVariableStep(),
-                new StlocToAssignmentStep(),
+                new IfOptimizationStep(),
                 new VariableInliningStep(),
                 new RetToReturnStep()
             );

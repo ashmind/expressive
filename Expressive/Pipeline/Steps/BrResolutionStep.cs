@@ -8,7 +8,7 @@ using AshMind.Extensions;
 using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
-    public class BrToJumpStep : IInterpretationStep {
+    public class BrResolutionStep : IInterpretationStep {
         private static readonly IDictionary<OpCode, bool> conditionalJumps = new Dictionary<OpCode, bool> {
             { OpCodes.Brfalse,   false },
             { OpCodes.Brfalse_S, false },
@@ -60,7 +60,8 @@ namespace Expressive.Pipeline.Steps {
             ReplaceWithJumpUpTo(
                 targetIndex,
                 elements,
-                jumpIfTrue => new ConditionalJumpElement(followingRange, jumpIfTrue),
+                followingRange,
+                new IElement[0],
                 ref currentIndex
             );
         }
@@ -74,13 +75,24 @@ namespace Expressive.Pipeline.Steps {
             ReplaceWithJumpUpTo(
                 branchIndex,
                 elements,
-                jumpIfTrue => new ConditionalJumpElement(followingRange, targetRange, jumpIfTrue),
+                followingRange,
+                targetRange,
                 ref currentIndex
             );
         }
 
-        private static void ReplaceWithJumpUpTo(int replaceUpTo, IList<IElement> elements, Func<bool, ConditionalJumpElement> makeJump, ref int currentIndex) {
-            var jump = makeJump(conditionalJumps[elements[currentIndex].GetOpCodeIfInstruction().Value]);
+        private static void ReplaceWithJumpUpTo(
+            int replaceUpTo,
+            IList<IElement> elements,
+            IList<IElement> following,
+            IList<IElement> target,
+            ref int currentIndex
+        ) {
+            var jumpIfTrue = conditionalJumps[elements[currentIndex].GetOpCodeIfInstruction().Value];
+            var jump = new ConditionalBranchElement(
+                jumpIfTrue ? target : following,
+                jumpIfTrue ? following : target
+            );
 
             elements.RemoveRange(currentIndex, (replaceUpTo + 1) - currentIndex);
             elements.Insert(currentIndex, jump);

@@ -13,11 +13,11 @@ namespace Expressive.Elements {
         public IList<IElement> Elements { get; private set; }
 
         public override string ToString() {
-            return "cut branch";
+            return this.ToString(Indent.FourSpaces);
         }
 
         public string ToString(Indent indent) {
-            return indent.Value + this;
+            return "cut branch:" + Environment.NewLine + ElementHelper.ToString(this.Elements, indent.Increment());
         }
     }
 }

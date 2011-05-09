@@ -20,7 +20,7 @@ namespace Expressive.Elements.Presentation {
             this.Value = value;
         }
 
-        public Indent Increase() {
+        public Indent Increment() {
             return new Indent(this.increase(this.Value), this.increase);
         }
     }
