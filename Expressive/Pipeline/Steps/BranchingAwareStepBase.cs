@@ -5,7 +5,7 @@ using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
     public abstract class BranchingAwareStepBase : IInterpretationStep {
-        public void Apply(IList<IElement> elements, InterpretationContext context) {
+        public virtual void Apply(IList<IElement> elements, InterpretationContext context) {
             foreach (var tree in elements.OfType<IBranchingElement>()) {
                 foreach (var branch in tree.GetBranches()) {
                     this.Apply(branch, context);

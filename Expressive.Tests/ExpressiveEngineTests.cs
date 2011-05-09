@@ -50,6 +50,20 @@ namespace Expressive.Tests {
             );
         }
 
+        [Test]
+        [Ignore("Work in progress")]
+        public void TestStatementConditional() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get<ClassWithNames>(c => c.FullNameWithExplicitConditional).GetGetMethod()
+            );
+
+            AssertMatches(
+                new[] { typeof(ClassWithNames) },
+                @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))",
+                decompiled
+            );
+        }
+
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
             Assert.AreElementsSame(parameterTypes, expression.Parameters.Select(p => p.Type));
             var expected = string.Format(pattern, expression.Parameters.Select(p => p.Name).ToArray());

@@ -26,5 +26,14 @@ namespace Expressive.Tests.TestClasses {
                      : this.FirstName + " " + this.LastName;
             }
         }
+
+        public string FullNameWithExplicitConditional {
+            get {
+                if (string.IsNullOrEmpty(this.FirstName))
+                    return this.LastName;
+
+                return this.FirstName + " " + this.LastName;
+            }
+        }
     }
 }

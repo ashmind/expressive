@@ -5,6 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using Expressive.Pipeline.Steps;
+using Expressive.Pipeline.Steps.IndividualElements;
+using Expressive.Pipeline.Steps.IndividualElements.Support;
 
 namespace Expressive {
     public static class ExpressiveEngine {
@@ -14,11 +16,14 @@ namespace Expressive {
                 new BrCuttingStep(),
                 new BrToJumpStep(),
                 new CutBranchesRemovalStep(),
+                new ElementInterpretationStep(
+                    new LdstrToConstant(),
+                    new CeqToCondition(),
+                    new CallToExpression(),
+                    new LdargToParameter()
+                ),
                 new JumpToExpressionStep(),
-                new LdargToParameterStep(),
-                new LdstrToConstantStep(),
                 new LdlocToVariableStep(),
-                new CallToExpressionStep(),
                 new StlocToAssignmentStep(),
                 new VariableInliningStep(),
                 new RetToReturnStep()
