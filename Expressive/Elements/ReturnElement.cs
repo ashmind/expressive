@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
     public class ReturnElement : IElement {
-        public IElement Result { get; private set; }
+        public Expression Result { get; private set; }
 
         public ReturnElement() : this(null) {
         }
 
-        public ReturnElement(IElement result) {
+        public ReturnElement(Expression result) {
             this.Result = result;
         }
 

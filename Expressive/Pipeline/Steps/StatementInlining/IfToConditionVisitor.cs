@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using Expressive.Elements;
 
-namespace Expressive.Pipeline.Steps.Optimizations {
+namespace Expressive.Pipeline.Steps.StatementInlining {
     public class IfToConditionVisitor : ElementVisitor {
         protected override IElement VisitIfThen(IfThenElement ifThen) {
             ifThen = (IfThenElement)base.VisitIfThen(ifThen);

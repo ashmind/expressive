@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using MbUnit.Framework;
 
 using Expressive.Tests.Helpers;
@@ -38,35 +39,35 @@ namespace Expressive.Tests {
         }
 
         [Test]
-        public void TestInlineConditional() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ClassWithNames>(c => c.FullNameWithInlineConditional).GetGetMethod()
-            );
+        [Factory("GetConditionals")]
+        public void TestConditional(PropertyInfo property) {
+            var decompiled = ExpressiveEngine.ToExpression(property.GetGetMethod());
 
             AssertMatches(
                 new[] { typeof(ClassWithNames) },
-                @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))",
+                new[] {
+                    @"{0} => IIF(Not(IsNullOrEmpty({0}.FirstName)), Concat({0}.FirstName, "" "", {0}.LastName), {0}.LastName)",
+                    @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))",
+                },
                 decompiled
             );
         }
 
-        [Test]
-        public void TestStatementConditional() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ClassWithNames>(c => c.FullNameWithExplicitConditional).GetGetMethod()
-            );
-
-            AssertMatches(
-                new[] { typeof(ClassWithNames) },
-                @"{0} => IIF(Not(IsNullOrEmpty({0}.FirstName)), Concat({0}.FirstName, "" "", {0}.LastName), {0}.LastName)",
-                decompiled
-            );
+        private IEnumerable<PropertyInfo> GetConditionals() {
+            yield return Property.Get<ClassWithNames>(c => c.FullNameWithInlineConditional);
+            yield return Property.Get<ClassWithNames>(c => c.FullNameWithExplicitConditional);
         }
 
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
+            AssertMatches(parameterTypes, new[] { pattern }, expression);
+        }
+
+        private void AssertMatches(IEnumerable<Type> parameterTypes, string[] patterns, LambdaExpression expression) {
             Assert.AreElementsSame(parameterTypes, expression.Parameters.Select(p => p.Type));
-            var expected = string.Format(pattern, expression.Parameters.Select(p => p.Name).ToArray());
-            Assert.AreEqual(expected, expression.ToString());
+
+            var parameterNames = expression.Parameters.Select(p => p.Name).ToArray();
+            var expected = patterns.Select(p => string.Format(p, parameterNames));
+            Assert.Contains(expected, expression.ToString());
         }
     }
 }

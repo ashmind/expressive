@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
 using AshMind.Extensions;
-
 using Expressive.Elements;
 using Expressive.Elements.Expressions;
 
-namespace Expressive.Pipeline.Steps.Optimizations {
+namespace Expressive.Pipeline.Steps.StatementInlining {
     public class VariableInliningStep : IInterpretationStep {
         #region EsimatingVisitor Class
 
@@ -20,7 +18,7 @@ namespace Expressive.Pipeline.Steps.Optimizations {
 
             public static HashSet<int> Estimate(IList<IElement> elements) {
                 var visitor = new EstimatingVisitor();
-                visitor.VisitAll(elements);
+                visitor.VisitList(elements);
                 return visitor.assignmentCount.Where(p => p.Value == 1)
                                               .Select(p => p.Key)
                                               .ToSet();
@@ -47,7 +45,7 @@ namespace Expressive.Pipeline.Steps.Optimizations {
 
             public static void Inline(IList<IElement> elements, HashSet<int> inlineable) {
                 var visitor = new InliningVisitor(inlineable);
-                visitor.VisitAll(elements);
+                visitor.VisitList(elements);
             }
 
             protected override Expression VisitLocal(LocalExpression local) {

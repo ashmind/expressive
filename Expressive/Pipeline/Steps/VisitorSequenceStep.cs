@@ -15,7 +15,7 @@ namespace Expressive.Pipeline.Steps {
         }
 
         public void Apply(IList<IElement> elements, InterpretationContext context) {
-            this.visitors.ForEach(v => v.VisitAll(elements));
+            this.visitors.ForEach(v => v.VisitList(elements));
         }
     }
 }

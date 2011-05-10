@@ -7,7 +7,7 @@ using System.Reflection;
 using Expressive.Pipeline.Steps;
 using Expressive.Pipeline.Steps.IndividualElements;
 using Expressive.Pipeline.Steps.IndividualElements.Support;
-using Expressive.Pipeline.Steps.Optimizations;
+using Expressive.Pipeline.Steps.StatementInlining;
 
 namespace Expressive {
     public static class ExpressiveEngine {
@@ -25,14 +25,15 @@ namespace Expressive {
                     new StlocToAssignment(),
                     new LdargToParameter(),
                     new LdcToConstant(),
-                    new BranchToCondition()
+                    new BranchToCondition(),
+                    new RetToReturn()
                 ),
                 new VisitorSequenceStep(
                     new BooleanFixingVisitor(),
-                    new IfToConditionVisitor()
+                    new IfToConditionVisitor(),
+                    new IfReturnInliningVisitor()
                 ),
-                new VariableInliningStep(),
-                new RetToReturnStep()
+                new VariableInliningStep()
             );
             
             return decompiler.Decompile(method);

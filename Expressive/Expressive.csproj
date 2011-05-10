@@ -79,6 +79,7 @@
     <Compile Include="Pipeline\Steps\IndividualElements\BranchToCondition.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdcToConstant.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdstrToConstant.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\RetToReturn.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\StlocToAssignment.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\ElementInterpretation.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\Support\IndividualInterpretationContext.cs" />
@@ -86,13 +87,13 @@
     <Compile Include="Pipeline\Steps\IndividualElements\Support\IElementInterpretation.cs" />
     <Compile Include="Pipeline\Steps\CutBranchesRemovalStep.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdargToParameter.cs" />
-    <Compile Include="Pipeline\Steps\Optimizations\IfToConditionVisitor.cs" />
-    <Compile Include="Pipeline\Steps\RetToReturnStep.cs" />
+    <Compile Include="Pipeline\Steps\StatementInlining\IfReturnInliningVisitor.cs" />
+    <Compile Include="Pipeline\Steps\StatementInlining\IfToConditionVisitor.cs" />
     <Compile Include="Pipeline\ElementExtensions.cs" />
     <Compile Include="Pipeline\IInterpretationStep.cs" />
     <Compile Include="Pipeline\InterpretationContext.cs" />
     <Compile Include="Pipeline\Steps\NopRemovalStep.cs" />
-    <Compile Include="Pipeline\Steps\Optimizations\VariableInliningStep.cs" />
+    <Compile Include="Pipeline\Steps\StatementInlining\VariableInliningStep.cs" />
     <Compile Include="Pipeline\Steps\VisitorSequenceStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

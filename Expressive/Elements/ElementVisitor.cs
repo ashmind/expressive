@@ -6,7 +6,7 @@ using Expressive.Elements.Expressions;
 
 namespace Expressive.Elements {
     public abstract class ElementVisitor : ExpressionTreeVisitor {
-        public virtual void VisitAll(IList<IElement> elements) {
+        public virtual void VisitList(IList<IElement> elements) {
             for (var i = 0; i < elements.Count; i++) {
                 var result = this.Visit(elements[i]);
                 if (result != null) {
@@ -68,16 +68,16 @@ namespace Expressive.Elements {
         }
 
         protected virtual IElement VisitConditionalBranch(ConditionalBranchElement branch) {
-            this.VisitAll(branch.IfTrue);
-            this.VisitAll(branch.IfFalse);
+            this.VisitList(branch.IfTrue);
+            this.VisitList(branch.IfFalse);
 
             return branch;
         }
 
         protected virtual IElement VisitIfThen(IfThenElement ifThen) {
             ifThen.Condition = this.Visit(ifThen.Condition);
-            this.VisitAll(ifThen.Then);
-            this.VisitAll(ifThen.Else);
+            this.VisitList(ifThen.Then);
+            this.VisitList(ifThen.Else);
 
             return ifThen;
         }

@@ -43,11 +43,12 @@ namespace Expressive {
                 throw new InvalidOperationException("Expected 1 element after interpretation, got: " + Environment.NewLine + ElementHelper.ToString(elements, Indent.FourSpaces));
 
             var returnElement = elements[0] as ReturnElement;
-            var expressionElement = returnElement != null ? (returnElement.Result as ExpressionElement) : elements[0] as ExpressionElement;
-            if (expressionElement == null)
+            var expressionElement = elements[0] as ExpressionElement;
+            if (returnElement == null && expressionElement == null)
                 throw new InvalidOperationException("Expected ReturnElement or ExpressionElement after interpretation, got " + elements[0].ToString(Indent.FourSpaces) + ".");
 
-            return Expression.Lambda(expressionElement.Expression, context.ExtractedParameters.ToArray());
+            var expression = returnElement != null ? returnElement.Result : expressionElement.Expression;
+            return Expression.Lambda(expression, context.ExtractedParameters.ToArray());
         }
     }
 }
