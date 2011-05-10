@@ -39,7 +39,7 @@ namespace Expressive.Tests {
         }
 
         [Test]
-        public void TestPropertyWithComparisonAndStaticFieldAndBooleanOperations() {
+        public void TestPropertyWithComparisonAndStaticFieldAndBooleanOperator() {
             var decompiled = ExpressiveEngine.ToExpression(
                 Property.Get<ClassWithMagic>(m => m.CanDoMagic).GetGetMethod()
              );
@@ -47,7 +47,7 @@ namespace Expressive.Tests {
             AssertMatches(
                 new[] { typeof(ClassWithMagic) },
                 new[] {
-                    "{0} => (Not(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic)) AndAlso {0}.IsAllowedToDoMagic)"
+                    "{0} => (({0}.Mana > ClassWithMagic.ManaRequiredForMagic) AndAlso {0}.IsAllowedToDoMagic)"
                 },
                 decompiled
             );

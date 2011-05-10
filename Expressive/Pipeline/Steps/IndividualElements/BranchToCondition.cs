@@ -38,19 +38,12 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
             var ifTrue = branch.Target;
             var ifFalse = branch.Fallback;
             if (ifTrue.Count == 0) {
-                condition = Invert(condition);
+                condition = Expression.Not(condition);
                 ifFalse = branch.Target;
                 ifTrue = branch.Fallback;
             }
 
             return new IfThenElement(condition, ifTrue, ifFalse);
-        }
-
-        private Expression Invert(Expression condition) {
-            if (condition.NodeType == ExpressionType.Not)
-                return ((UnaryExpression) condition).Operand;
-
-            return Expression.Not(condition);
         }
 
         private Expression CaptureCondition(ConditionalBranchElement branch, IndividualInterpretationContext context) {

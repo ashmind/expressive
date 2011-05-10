@@ -34,7 +34,8 @@ namespace Expressive {
                     new BooleanFixingVisitor(),
                     new IfToConditionVisitor(),
                     new IfReturnInliningVisitor(),
-                    new ConditionToOperatorVisitor()
+                    new ConditionToOperatorVisitor(),
+                    new NotImprovementVisitor()
                 ),
                 new VariableInliningStep()
             );
