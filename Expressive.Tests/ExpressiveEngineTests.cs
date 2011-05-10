@@ -47,8 +47,7 @@ namespace Expressive.Tests {
             AssertMatches(
                 new[] { typeof(ClassWithMagic) },
                 new[] {
-                    "{0} => IIF(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic), False, {0}.IsAllowedToDoMagic)",
-                    "{0} => IIF(Not(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic)), {0}.IsAllowedToDoMagic, False)"
+                    "{0} => (Not(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic)) AndAlso {0}.IsAllowedToDoMagic)"
                 },
                 decompiled
             );

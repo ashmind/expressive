@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using Expressive.Pipeline.Steps;
+using Expressive.Pipeline.Steps.Clarity;
 using Expressive.Pipeline.Steps.IndividualElements;
 using Expressive.Pipeline.Steps.IndividualElements.Support;
 using Expressive.Pipeline.Steps.StatementInlining;
@@ -32,7 +33,8 @@ namespace Expressive {
                 new VisitorSequenceStep(
                     new BooleanFixingVisitor(),
                     new IfToConditionVisitor(),
-                    new IfReturnInliningVisitor()
+                    new IfReturnInliningVisitor(),
+                    new ConditionToOperatorVisitor()
                 ),
                 new VariableInliningStep()
             );
