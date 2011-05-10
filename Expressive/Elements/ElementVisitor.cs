@@ -68,8 +68,8 @@ namespace Expressive.Elements {
         }
 
         protected virtual IElement VisitConditionalBranch(ConditionalBranchElement branch) {
-            this.VisitList(branch.IfTrue);
-            this.VisitList(branch.IfFalse);
+            this.VisitList(branch.Target);
+            this.VisitList(branch.Fallback);
 
             return branch;
         }

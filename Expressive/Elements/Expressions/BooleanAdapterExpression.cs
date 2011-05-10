@@ -15,5 +15,19 @@ namespace Expressive.Elements.Expressions {
         public override string ToString() {
             return "booleanize(" + this.Expression + ")";
         }
+
+        public static void AdaptIfRequired(ref Expression left, ref Expression right) {
+            left = AdaptIfRequired(left, right.Type);
+            right = AdaptIfRequired(right, left.Type);
+        }
+
+        public static Expression AdaptIfRequired(Expression expression, Type requiredType) {
+            if (requiredType != typeof(bool))
+                return expression;
+
+            return expression.Type == typeof(bool)
+                 ? expression
+                 : new BooleanAdapterExpression(expression);
+        }
     }
 }

@@ -39,6 +39,22 @@ namespace Expressive.Tests {
         }
 
         [Test]
+        public void TestPropertyWithComparisonAndStaticFieldAndBooleanOperations() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get<ClassWithMagic>(m => m.CanDoMagic).GetGetMethod()
+             );
+
+            AssertMatches(
+                new[] { typeof(ClassWithMagic) },
+                new[] {
+                    "{0} => IIF(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic), False, {0}.IsAllowedToDoMagic)",
+                    "{0} => IIF(Not(({0}.Mana <= ClassWithMagic.ManaRequiredForMagic)), {0}.IsAllowedToDoMagic, False)"
+                },
+                decompiled
+            );
+        }
+
+        [Test]
         [Factory("GetConditionals")]
         public void TestConditional(PropertyInfo property) {
             var decompiled = ExpressiveEngine.ToExpression(property.GetGetMethod());

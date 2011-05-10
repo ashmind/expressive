@@ -32,7 +32,7 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
         }
 
         public override VariableAssignmentElement Interpret(InstructionElement instruction, IndividualInterpretationContext context) {
-            var value = context.CapturePreceding<ExpressionElement>(-1).Expression;
+            var value = context.CapturePreceding<ExpressionElement>().Expression;
             var index = variableIndexGetters[instruction.OpCode](instruction.Instruction);
             var type = this.methodBody.LocalVariables[index].LocalType;
 

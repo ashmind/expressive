@@ -9,12 +9,12 @@ using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
     public static class BrProcessing {
-        public static bool In(IElement element, params OpCode[] opCodes) {
+        public static bool Matches(IElement element, Func<OpCode, bool> predicate) {
             var opCode = element.GetOpCodeIfInstruction();
             if (opCode == null)
                 return false;
 
-            return opCodes.Contains(opCode.Value);
+            return predicate(opCode.Value);
         }
 
         public static int GetTargetOffset(IElement br) {

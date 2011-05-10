@@ -75,6 +75,7 @@
     <Compile Include="Pipeline\Steps\BrProcessing.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CallToExpression.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\CeqToCondition.cs" />
+    <Compile Include="Pipeline\Steps\IndividualElements\LdfldToField.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdlocToVariable.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\BranchToCondition.cs" />
     <Compile Include="Pipeline\Steps\IndividualElements\LdcToConstant.cs" />

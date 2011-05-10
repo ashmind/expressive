@@ -42,7 +42,7 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
 
             var arguments = new List<Expression>();
             while (arguments.Count < parameters.Length) {
-                arguments.Add(context.CapturePreceding<ExpressionElement>(-1).Expression);
+                arguments.Add(context.CapturePreceding<ExpressionElement>().Expression);
             }
             arguments.Reverse();
 

@@ -33,7 +33,7 @@ namespace Expressive.Pipeline.Steps.StatementInlining {
                     returnInIf.Result,
                     returnAfterIf.Result
                 ));
-                elements.RemoveAt(i + 1); 
+                elements.RemoveAt(i + 1);
             }
         }
     }

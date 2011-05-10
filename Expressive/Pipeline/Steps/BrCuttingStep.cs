@@ -11,7 +11,7 @@ namespace Expressive.Pipeline.Steps {
     public class BrCuttingStep : IInterpretationStep {
         public void Apply(IList<IElement> elements, InterpretationContext context) {
             for (var i = elements.Count - 1; i >= 0; i--) {
-                if (!BrProcessing.In(elements[i], OpCodes.Br, OpCodes.Br_S))
+                if (!BrProcessing.Matches(elements[i], code => code == OpCodes.Br || code == OpCodes.Br_S))
                     continue;
 
                 var targetIndex = BrProcessing.FindTargetIndexOrThrow(elements[i], elements);

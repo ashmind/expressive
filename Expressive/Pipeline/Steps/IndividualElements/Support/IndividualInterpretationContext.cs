@@ -16,6 +16,12 @@ namespace Expressive.Pipeline.Steps.IndividualElements.Support {
             this.interpret = interpret;
         }
 
+        public TElement CapturePreceding<TElement>()
+            where TElement : class, IElement
+        {
+            return this.CapturePreceding<TElement>(-1);
+        }
+
         public TElement CapturePreceding<TElement>(int negativeOffset) 
             where TElement : class, IElement
         {

@@ -9,17 +9,21 @@ using Expressive.Elements;
 
 namespace Expressive.Pipeline.Steps {
     public class BrResolutionStep : IInterpretationStep {
-        private static readonly IDictionary<OpCode, bool> conditionalJumps = new Dictionary<OpCode, bool> {
-            { OpCodes.Brfalse,   false },
-            { OpCodes.Brfalse_S, false },
-            { OpCodes.Brtrue,    true },
-            { OpCodes.Brtrue_S,  true }
+        private static readonly HashSet<OpCode> conditionalOpCodes = new HashSet<OpCode> {
+            OpCodes.Brfalse, OpCodes.Brfalse_S,
+            OpCodes.Brtrue,  OpCodes.Brtrue_S,
+            OpCodes.Beq,     OpCodes.Beq_S,
+            OpCodes.Bge,     OpCodes.Bge_S,     OpCodes.Bge_Un,  OpCodes.Bge_Un_S,
+            OpCodes.Bgt,     OpCodes.Bgt_S,     OpCodes.Bgt_Un,  OpCodes.Bgt_Un_S,
+            OpCodes.Ble,     OpCodes.Ble_S,     OpCodes.Ble_Un,  OpCodes.Ble_Un_S,
+            OpCodes.Blt,     OpCodes.Blt_S,     OpCodes.Blt_Un,  OpCodes.Blt_Un_S,
+                                                OpCodes.Bne_Un,  OpCodes.Bne_Un_S
         };
 
         public void Apply(IList<IElement> elements, InterpretationContext context) {
             for (var i = 0; i < elements.Count; i++) {
                 var element = elements[i];
-                if (!BrProcessing.In(element, conditionalJumps.Keys.ToArray()))
+                if (!BrProcessing.Matches(element, conditionalOpCodes.Contains))
                     continue;
 
                 var targetIndex = BrProcessing.FindTargetIndexOrNull(element, elements);
@@ -88,10 +92,9 @@ namespace Expressive.Pipeline.Steps {
             IList<IElement> target,
             ref int currentIndex
         ) {
-            var jumpIfTrue = conditionalJumps[elements[currentIndex].GetOpCodeIfInstruction().Value];
             var jump = new ConditionalBranchElement(
-                jumpIfTrue ? target : following,
-                jumpIfTrue ? following : target
+                ((InstructionElement)elements[currentIndex]).OpCode,
+                target, following
             );
 
             elements.RemoveRange(currentIndex, (replaceUpTo + 1) - currentIndex);

@@ -18,6 +18,7 @@ namespace Expressive {
                 new BrResolutionStep(),
                 new CutBranchesRemovalStep(),
                 new ElementInterpretationStep(
+                    new LdfldToField(),
                     new LdstrToConstant(),
                     new CeqToCondition(),
                     new CallToExpression(),
