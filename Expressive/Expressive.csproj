@@ -77,7 +77,7 @@
     <Compile Include="Decompilation\Steps\Clarity\ConditionImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NotImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\CallToExpression.cs" />
-    <Compile Include="Decompilation\Steps\IndividualElements\CeqToCondition.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\CxxToCondition.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdfldToField.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdlocToVariable.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\BranchToCondition.cs" />

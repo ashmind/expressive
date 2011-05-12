@@ -19,7 +19,7 @@ namespace Expressive.Decompilation.Pipelines {
             new IndividualDecompilationStep(
                 new LdfldToField(),
                 new LdstrToConstant(),
-                new CeqToCondition(),
+                new CxxToCondition(),
                 new CallToExpression(),
                 new LdlocToVariable(),
                 new StlocToAssignment(),

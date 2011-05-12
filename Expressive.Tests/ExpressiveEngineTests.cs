@@ -84,6 +84,19 @@ namespace Expressive.Tests {
             yield return Property.Get<ClassWithNames>(c => c.FullNameWithExplicitConditional);
         }
 
+        [Test]
+        public void TestRange() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Method.Get<Range>(r => r.Contains(0))
+            );
+
+            AssertMatches(
+                new[] { typeof(Range), typeof(int) },
+                @"({0}, value) => ((value >= {0}.Min) AndAlso (IIF((value > {0}.Max), 1, 0) == 0))",
+                decompiled
+            );
+        }
+
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
             AssertMatches(parameterTypes, new[] { pattern }, expression);
         }
