@@ -92,7 +92,7 @@ namespace Expressive.Tests {
 
             AssertMatches(
                 new[] { typeof(Range), typeof(int) },
-                @"({0}, value) => ((value >= {0}.Min) AndAlso (IIF((value > {0}.Max), 1, 0) == 0))",
+                @"({0}, value) => ((value >= {0}.Min) AndAlso (value <= {0}.Max))",
                 decompiled
             );
         }

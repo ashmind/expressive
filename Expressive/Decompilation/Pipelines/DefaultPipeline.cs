@@ -32,8 +32,8 @@ namespace Expressive.Decompilation.Pipelines {
                 new IfAssignmentInliningVisitor(),
                 new IfReturnInliningVisitor(),
                 new ConditionImprovementVisitor(),
-                new NotImprovementVisitor(),
-                new BooleanEqualityImprovementVisitor()
+                new BooleanEqualityImprovementVisitor(),
+                new NotImprovementVisitor()
             ),
             new VariableInliningStep()
         ) {

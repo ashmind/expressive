@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 using Expressive.Elements;
 
-namespace Expressive.Decompilation.Steps.Clarity {
+namespace Expressive.Decompilation.Steps {
     public class BooleanEqualityImprovementVisitor : ElementVisitor {
         protected override Expression VisitBinary(BinaryExpression b) {
             b = (BinaryExpression) base.VisitBinary(b);

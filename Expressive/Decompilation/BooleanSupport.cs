@@ -2,38 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Expressive.Elements.Expressions;
 
 namespace Expressive.Decompilation {
     public static class BooleanSupport {
-        private class BooleanConvertingVisitor {
-            public Expression Visit(Expression exp) {
-                var constant = exp as ConstantExpression;
-                if (constant != null)
-                    return this.VisitConstant(constant);
-
-                var conditional = exp as ConditionalExpression;
-                if (conditional != null)
-                    return this.VisitConditional(conditional);
-
+        private class BooleanConvertingVisitor : ExpressionTreeVisitor {
+            protected override Expression Visit(Expression exp) {
                 return exp;
             }
 
-            private Expression VisitConstant(ConstantExpression constant) {
+            public Expression AttemptToConvert(Expression exp) {
+                return base.Visit(exp);
+            }
+            
+            protected override Expression VisitConstant(ConstantExpression constant) {
                 return Expression.Constant(
                     constant.Value != null
                     && !Equals(constant.Value, 0)
                 );
             }
 
-            private Expression VisitConditional(ConditionalExpression conditional) {
-                var test = this.Visit(conditional.Test);
-                var ifTrue = this.Visit(conditional.IfTrue);
-                var ifFalse = this.Visit(conditional.IfFalse);
+            protected override Expression VisitConditional(ConditionalExpression conditional) {
+                var test = this.AttemptToConvert(conditional.Test);
+                var ifTrue = this.AttemptToConvert(conditional.IfTrue);
+                var ifFalse = this.AttemptToConvert(conditional.IfFalse);
 
                 if (test == conditional.Test && ifTrue == conditional.IfTrue && ifFalse == conditional.IfFalse)
                     return conditional;
 
                 return Expression.Condition(test, ifTrue, ifFalse);
+            }
+
+            protected override Expression VisitBinary(BinaryExpression b) {
+                if (b.NodeType != ExpressionType.Equal && b.NodeType != ExpressionType.NotEqual)
+                    return base.VisitBinary(b);
+
+                if (b.Left.Type != typeof(int) || b.Right.Type != typeof(int))
+                    return base.VisitBinary(b);
+
+                var left = this.AttemptToConvert(b.Left);
+                var right = this.AttemptToConvert(b.Right);
+
+                if (left == b.Left && right == b.Right)
+                    return b;
+
+                if (left.Type != typeof(bool) || right.Type != typeof(bool))
+                    return b;
+
+                return Expression.MakeBinary(b.NodeType, left, right);
             }
         }
 
@@ -52,7 +68,7 @@ namespace Expressive.Decompilation {
         }
 
         private static Expression ConvertToBoolean(Expression expression) {
-            var converted = new BooleanConvertingVisitor().Visit(expression);
+            var converted = new BooleanConvertingVisitor().AttemptToConvert(expression);
             if (converted.Type != typeof(bool))
                 throw new InvalidOperationException("Could not convert type of " + expression + " to System.Boolean.");
 

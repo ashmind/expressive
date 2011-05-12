@@ -22,14 +22,18 @@ namespace Expressive.Decompilation.Steps.Clarity {
             if (u.NodeType != ExpressionType.Not)
                 return u;
 
-            if (u.Operand.NodeType == ExpressionType.Not)
-                return ((UnaryExpression)u.Operand).Operand;
+            return Invert(u.Operand, u);
+        }
 
-            var invert = binaryInversions.GetValueOrDefault(u.Operand.NodeType);
+        private static Expression Invert(Expression expression, Expression fallback) {
+            if (expression.NodeType == ExpressionType.Not)
+                return ((UnaryExpression)expression).Operand;
+
+            var invert = binaryInversions.GetValueOrDefault(expression.NodeType);
             if (invert == null)
-                return u;
+                return fallback;
 
-            return invert((BinaryExpression)u.Operand);
+            return invert((BinaryExpression)expression);
         }
     }
 }

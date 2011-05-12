@@ -73,7 +73,7 @@
     <Compile Include="Decompilation\Steps\BrCuttingStep.cs" />
     <Compile Include="Decompilation\Steps\BrResolutionStep.cs" />
     <Compile Include="Decompilation\Steps\BrProcessing.cs" />
-    <Compile Include="Decompilation\Steps\Clarity\BooleanEqualityImprovementVisitor.cs" />
+    <Compile Include="Decompilation\Steps\BooleanEqualityImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\ConditionImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NotImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\CallToExpression.cs" />
