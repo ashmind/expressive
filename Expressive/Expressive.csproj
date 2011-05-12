@@ -66,6 +66,9 @@
     <Compile Include="Elements\VariableAssignmentElement.cs" />
     <Compile Include="ExpressiveEngine.cs" />
     <Compile Include="Pipelines\BooleanSupport.cs" />
+    <Compile Include="Pipelines\DecompilationPipeline.cs" />
+    <Compile Include="Pipelines\DefaultPipeline.cs" />
+    <Compile Include="Pipelines\IDecompilationPipeline.cs" />
     <Compile Include="Pipelines\InterpretationException.cs" />
     <Compile Include="Pipelines\Steps\BranchingAwareStepBase.cs" />
     <Compile Include="Pipelines\Steps\BrCuttingStep.cs" />

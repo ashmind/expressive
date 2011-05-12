@@ -12,9 +12,9 @@ using Expressive.Pipelines;
 
 namespace Expressive {
     public class Decompiler {
-        private readonly IInterpretationStep[] pipeline;
+        private readonly IDecompilationPipeline pipeline;
 
-        public Decompiler(params IInterpretationStep[] pipeline) {
+        public Decompiler(IDecompilationPipeline pipeline) {
             this.pipeline = pipeline;
         }
 
@@ -23,9 +23,9 @@ namespace Expressive {
                                     .Select(instruction => (IElement)new InstructionElement(instruction))
                                     .ToList();
 
-            var context = new InterpretationContext(method, this.pipeline);
+            var context = new InterpretationContext(method);
             try {
-                foreach (var step in this.pipeline) {
+                foreach (var step in this.pipeline.GetSteps()) {
                     step.Apply(elements, context);
                 }
             }
