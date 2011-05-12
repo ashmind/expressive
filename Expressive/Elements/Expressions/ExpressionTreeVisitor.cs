@@ -10,23 +10,11 @@ namespace Expressive.Elements.Expressions {
             if (local != null)
                 return this.VisitLocal(local);
 
-            var adapter = exp as BooleanAdapterExpression;
-            if (adapter != null)
-                return this.VisitBooleanAdapter(adapter);
-
             return base.Visit(exp);
         }
 
         protected virtual Expression VisitLocal(LocalExpression local) {
             return local;
-        }
-
-        protected virtual Expression VisitBooleanAdapter(BooleanAdapterExpression adapter) {
-            var expression = this.Visit(adapter.Expression);
-            if (expression != adapter.Expression)
-                return new BooleanAdapterExpression(expression);
-
-            return adapter;
         }
     }
 }

@@ -19,7 +19,11 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
 
         private static readonly IDictionary<string, Func<Expression, Expression, Expression>> binary = new Dictionary<string, Func<Expression, Expression, Expression>> {
             { OpCodes.Beq.Name, Expression.Equal },
+            { OpCodes.Bge.Name, Expression.GreaterThanOrEqual },
+            { OpCodes.Bgt.Name, Expression.GreaterThan },
             { OpCodes.Ble.Name, Expression.LessThanOrEqual },
+            { OpCodes.Blt.Name, Expression.LessThan },
+            { OpCodes.Bne_Un.Name.SubstringBefore("."), Expression.NotEqual }
         };
 
         public override IElement Interpret(ConditionalBranchElement branch, IndividualInterpretationContext context) {
@@ -27,11 +31,10 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
             var targetAsExpression = AsSingleExpression(branch.Target);
             var fallbackAsExpression = AsSingleExpression(branch.Fallback);
 
-            if (condition.Type != typeof(bool))
-                condition = new BooleanAdapterExpression(condition);
+            condition = BooleanSupport.ConvertIfRequired(condition, typeof(bool));
 
             if (targetAsExpression != null && fallbackAsExpression != null) {
-                BooleanAdapterExpression.AdaptIfRequired(ref targetAsExpression, ref fallbackAsExpression);
+                BooleanSupport.ConvertIfRequired(ref targetAsExpression, ref fallbackAsExpression);
                 return new ExpressionElement(Expression.Condition(condition, targetAsExpression, fallbackAsExpression));
             }
 

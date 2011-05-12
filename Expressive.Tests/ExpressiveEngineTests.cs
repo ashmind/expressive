@@ -41,14 +41,25 @@ namespace Expressive.Tests {
         [Test]
         public void TestPropertyWithComparisonAndStaticFieldAndBooleanOperator() {
             var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ClassWithMagic>(m => m.CanDoMagic).GetGetMethod()
+                Property.Get<ComplexClass>(m => m.ComplexProperty1).GetGetMethod()
              );
 
             AssertMatches(
-                new[] { typeof(ClassWithMagic) },
-                new[] {
-                    "{0} => (({0}.Mana > ClassWithMagic.ManaRequiredForMagic) AndAlso {0}.IsAllowedToDoMagic)"
-                },
+                new[] { typeof(ComplexClass) },
+                "{0} => (({0}.Int32Property > ComplexClass.Int32Field) AndAlso {0}.BooleanProperty)",
+                decompiled
+            );
+        }
+
+        [Test]
+        public void TestPropertyWithComparisonAndConstantAndAnotherBooleanOperator() {
+            var decompiled = ExpressiveEngine.ToExpression(
+                Property.Get<ComplexClass>(m => m.ComplexProperty2).GetGetMethod()
+             );
+
+            AssertMatches(
+                new[] { typeof(ComplexClass) },
+                "{0} => (({0}.Int32Property > 0) OrElse Not({0}.BooleanProperty))",
                 decompiled
             );
         }

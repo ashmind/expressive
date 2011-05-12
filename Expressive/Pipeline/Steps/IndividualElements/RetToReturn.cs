@@ -29,7 +29,7 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
                        ? context.CapturePreceding<ExpressionElement>().Expression
                        : null;
 
-            result = BooleanAdapterExpression.AdaptIfRequired(result, this.returnType);
+            result = BooleanSupport.ConvertIfRequired(result, this.returnType);
             return new ReturnElement(result);
         }
     }

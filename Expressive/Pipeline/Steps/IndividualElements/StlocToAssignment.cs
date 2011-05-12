@@ -36,8 +36,7 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
             var index = variableIndexGetters[instruction.OpCode](instruction.Instruction);
             var type = this.methodBody.LocalVariables[index].LocalType;
 
-            if (type == typeof(bool) && value.Type != typeof(bool))
-                value = new BooleanAdapterExpression(value);
+            value = BooleanSupport.ConvertIfRequired(value, type);
 
             return new VariableAssignmentElement(index, value);
         }

@@ -31,11 +31,11 @@ namespace Expressive {
                     new RetToReturn()
                 ),
                 new VisitorSequenceStep(
-                    new BooleanFixingVisitor(),
                     new IfToConditionVisitor(),
                     new IfReturnInliningVisitor(),
-                    new ConditionToOperatorVisitor(),
-                    new NotImprovementVisitor()
+                    new ConditionImprovementVisitor(),
+                    new NotImprovementVisitor(),
+                    new BooleanEqualityImprovementVisitor()
                 ),
                 new VariableInliningStep()
             );

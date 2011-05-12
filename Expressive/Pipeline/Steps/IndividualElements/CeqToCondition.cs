@@ -18,7 +18,7 @@ namespace Expressive.Pipeline.Steps.IndividualElements {
             var right = context.CapturePreceding<ExpressionElement>().Expression;
             var left = context.CapturePreceding<ExpressionElement>().Expression;
 
-            BooleanAdapterExpression.AdaptIfRequired(ref left, ref right);
+            BooleanSupport.ConvertIfRequired(ref left, ref right);
 
             return new ExpressionElement(Expression.Condition(
                 Expression.Equal(left, right),
