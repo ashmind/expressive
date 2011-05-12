@@ -5,10 +5,10 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using ClrTest.Reflection;
-
+using Expressive.Decompilation.Pipelines;
 using Expressive.Elements;
 using Expressive.Elements.Presentation;
-using Expressive.Pipelines;
+using Expressive.Decompilation;
 
 namespace Expressive {
     public class Decompiler {
@@ -23,14 +23,14 @@ namespace Expressive {
                                     .Select(instruction => (IElement)new InstructionElement(instruction))
                                     .ToList();
 
-            var context = new InterpretationContext(method);
+            var context = new DecompilationContext(method);
             try {
                 foreach (var step in this.pipeline.GetSteps()) {
                     step.Apply(elements, context);
                 }
             }
             catch (Exception ex) {
-                throw new InterpretationException(
+                throw new DecompilationException(
                     "Exception while interpreting "
                         + Environment.NewLine
                         + ElementHelper.ToString(elements, Indent.FourSpaces)
