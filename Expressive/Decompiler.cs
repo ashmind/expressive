@@ -8,7 +8,7 @@ using ClrTest.Reflection;
 
 using Expressive.Elements;
 using Expressive.Elements.Presentation;
-using Expressive.Pipeline;
+using Expressive.Pipelines;
 
 namespace Expressive {
     public class Decompiler {

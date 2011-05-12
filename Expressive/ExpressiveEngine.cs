@@ -4,11 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Expressive.Pipeline.Steps;
-using Expressive.Pipeline.Steps.Clarity;
-using Expressive.Pipeline.Steps.IndividualElements;
-using Expressive.Pipeline.Steps.IndividualElements.Support;
-using Expressive.Pipeline.Steps.StatementInlining;
+using Expressive.Pipelines.Steps;
+using Expressive.Pipelines.Steps.Clarity;
+using Expressive.Pipelines.Steps.IndividualElements;
+using Expressive.Pipelines.Steps.IndividualElements.Support;
+using Expressive.Pipelines.Steps.StatementInlining;
 
 namespace Expressive {
     public static class ExpressiveEngine {
