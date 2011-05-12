@@ -10,11 +10,11 @@ using Expressive.Elements;
 namespace Expressive.Pipelines.Steps {
     public static class BrProcessing {
         public static bool Matches(IElement element, Func<OpCode, bool> predicate) {
-            var opCode = element.GetOpCodeIfInstruction();
-            if (opCode == null)
+            var instruction = element as InstructionElement;
+            if (instruction == null)
                 return false;
 
-            return predicate(opCode.Value);
+            return predicate(instruction.OpCode);
         }
 
         public static int GetTargetOffset(IElement br) {
@@ -37,7 +37,12 @@ namespace Expressive.Pipelines.Steps {
 
         public static int? FindTargetIndexOrNull(IElement br, IList<IElement> elements) {
             var targetOffset = GetTargetOffset(br);
-            return elements.IndexOf(e => e.GetOffsetIfInstruction() == targetOffset);
+            for (var i = 0; i < elements.Count; i++) {
+                var instruction = elements[i] as InstructionElement;
+                if (instruction != null && instruction.Offset == targetOffset)
+                    return i;
+            }
+            return null;
         }
 
         public static void ThrowTargetNotFound(IElement br) {

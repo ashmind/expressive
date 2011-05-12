@@ -67,7 +67,6 @@
     <Compile Include="ExpressiveEngine.cs" />
     <Compile Include="Pipelines\BooleanSupport.cs" />
     <Compile Include="Pipelines\InterpretationException.cs" />
-    <Compile Include="Pipelines\ListExtensions.cs" />
     <Compile Include="Pipelines\Steps\BranchingAwareStepBase.cs" />
     <Compile Include="Pipelines\Steps\BrCuttingStep.cs" />
     <Compile Include="Pipelines\Steps\BrResolutionStep.cs" />
@@ -92,7 +91,6 @@
     <Compile Include="Pipelines\Steps\IndividualElements\LdargToParameter.cs" />
     <Compile Include="Pipelines\Steps\StatementInlining\IfReturnInliningVisitor.cs" />
     <Compile Include="Pipelines\Steps\StatementInlining\IfToConditionVisitor.cs" />
-    <Compile Include="Pipelines\ElementExtensions.cs" />
     <Compile Include="Pipelines\IInterpretationStep.cs" />
     <Compile Include="Pipelines\InterpretationContext.cs" />
     <Compile Include="Pipelines\Steps\NopRemovalStep.cs" />
