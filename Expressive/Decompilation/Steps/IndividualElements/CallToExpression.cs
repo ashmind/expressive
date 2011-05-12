@@ -10,7 +10,8 @@ using Expressive.Elements;
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class CallToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
         public override bool CanInterpret(InstructionElement instruction) {
-            return instruction.OpCode == OpCodes.Call;
+            return instruction.OpCode == OpCodes.Call
+                || instruction.OpCode == OpCodes.Callvirt;
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {

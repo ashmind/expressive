@@ -12,18 +12,18 @@ using Expressive.Decompilation;
 
 namespace Expressive {
     public class Decompiler {
+        private readonly Disassembler disassembler;
         private readonly IDecompilationPipeline pipeline;
 
-        public Decompiler(IDecompilationPipeline pipeline) {
+        public Decompiler(Disassembler disassembler, IDecompilationPipeline pipeline) {
+            this.disassembler = disassembler;
             this.pipeline = pipeline;
         }
 
         public LambdaExpression Decompile(MethodBase method) {
-            var elements = new ILReader(method)
-                                    .Select(instruction => (IElement)new InstructionElement(instruction))
-                                    .ToList();
-
+            var elements = this.disassembler.Disassemble(method).ToList();
             var context = new DecompilationContext(method);
+
             try {
                 foreach (var step in this.pipeline.GetSteps()) {
                     step.Apply(elements, context);

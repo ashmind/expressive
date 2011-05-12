@@ -74,6 +74,8 @@
     <Compile Include="ExpressiveEngineTests.cs" />
     <Compile Include="Helpers\Method.cs" />
     <Compile Include="Helpers\Property.cs" />
+    <Compile Include="Massive\InstructionCollectionVisitor.cs" />
+    <Compile Include="Massive\InstructionSupportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClasses\ClassWithNames.cs" />
     <Compile Include="TestClasses\ComplexClass.cs" />

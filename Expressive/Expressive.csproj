@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decompilation\Steps\IndividualElements\LdnullToConstant.cs" />
     <Compile Include="Decompiler.cs" />
+    <Compile Include="Disassembler.cs" />
     <Compile Include="Elements\ConditionalBranchElement.cs" />
     <Compile Include="Elements\CutBranchElement.cs" />
     <Compile Include="Elements\IfThenElement.cs" />

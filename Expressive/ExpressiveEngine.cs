@@ -9,7 +9,7 @@ using Expressive.Decompilation.Pipelines;
 namespace Expressive {
     public static class ExpressiveEngine {
         public static LambdaExpression ToExpression(MethodBase method) {
-            return new Decompiler(new DefaultPipeline()).Decompile(method);
+            return new Decompiler(new Disassembler(), new DefaultPipeline()).Decompile(method);
         }
     }
 }
