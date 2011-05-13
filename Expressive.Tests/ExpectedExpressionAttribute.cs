@@ -6,7 +6,7 @@ using System.Linq;
 using AshMind.Extensions;
 
 namespace Expressive.Tests {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Constructor, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Field, AllowMultiple = false)]
     public class ExpectedExpressionAttribute : Attribute {
         public ExpectedExpressionAttribute(params string[] patterns) {
             this.Patterns = patterns.AsReadOnly();

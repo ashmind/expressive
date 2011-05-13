@@ -74,11 +74,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressiveEngineTests.cs" />
+    <Compile Include="Methods\AssembledMethod.cs" />
+    <Compile Include="GeneralTests.cs" />
+    <Compile Include="Helpers\Assembler.cs" />
     <Compile Include="Helpers\Method.cs" />
     <Compile Include="Helpers\Property.cs" />
     <Compile Include="Massive\InstructionCollectionVisitor.cs" />
     <Compile Include="Massive\InstructionSupportTest.cs" />
+    <Compile Include="Methods\ExtendedDisassembler.cs" />
+    <Compile Include="Methods\PseudoParameter.cs" />
+    <Compile Include="Methods\StaticPseudoMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpectedExpressionAttribute.cs" />
     <Compile Include="TestClasses\Numerics.cs" />

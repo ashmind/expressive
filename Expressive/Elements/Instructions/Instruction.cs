@@ -12,7 +12,11 @@ namespace Expressive.Elements.Instructions {
         }
 
         public override string ToString() {
-            return this.OpCode.ToString();
+            return string.Format(
+                "0x{0} {1}",
+                this.Offset.ToString("X2"),
+                this.OpCode.ToString()
+            );
         }
     }
 }

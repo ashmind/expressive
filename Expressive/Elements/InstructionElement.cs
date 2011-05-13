@@ -25,7 +25,7 @@ namespace Expressive.Elements {
         }
         
         public override string ToString() {
-            return this.OpCode.ToString();
+            return this.Instruction.ToString();
         }
 
         public string ToString(Indent indent) {

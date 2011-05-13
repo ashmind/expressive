@@ -7,15 +7,17 @@ using MbUnit.Framework;
 
 using AshMind.Extensions;
 
+using Expressive.Decompilation.Pipelines;
+using Expressive.Tests.Methods;
 using Expressive.Tests.TestClasses;
 
 namespace Expressive.Tests {
     [TestFixture]
-    public class ExpressiveEngineTests {
+    public class GeneralTests {
         [Test]
-        [Factory("GetTestMethodsAndProperties")]
+        [Factory("GetTestMethods")]
         public void TestDecompilesTo(MethodBase method, IEnumerable<string> patterns) {
-            var decompiled = ExpressiveEngine.ToExpression(method);
+            var decompiled = new Decompiler(new ExtendedDisassembler(), new DefaultPipeline()).Decompile(method);
             var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
             if (!method.IsStatic)
                 parameterTypes.Insert(0, method.DeclaringType);
@@ -28,15 +30,14 @@ namespace Expressive.Tests {
             Assert.Contains(expected, decompiled.ToString());
         }
 
-        public IEnumerable<object[]> GetTestMethodsAndProperties() {
+        public IEnumerable<object[]> GetTestMethods() {
             var someTestClass = typeof(ClassWithNames);
             var attributed = from type in someTestClass.Assembly.GetTypes()
                              where type.Namespace == someTestClass.Namespace
                              from member in type.GetMembers()
                              let attribute = member.GetCustomAttributes<ExpectedExpressionAttribute>().SingleOrDefault()
                              where attribute != null
-                             from method in GetMethods(member)
-                             select new { method, attribute };
+                             select new { method = GetMethod(member), attribute };
 
             return attributed.Select(a => new object[] {
                 a.method,
@@ -44,12 +45,16 @@ namespace Expressive.Tests {
             });
         }
 
-        private IEnumerable<MethodBase> GetMethods(MemberInfo member) {
+        private MethodBase GetMethod(MemberInfo member) {
             var property = member as PropertyInfo;
             if (property != null)
-                return property.GetAccessors();
+                return property.GetGetMethod();
 
-            return new[] { (MethodBase)member };
+            var field = member as FieldInfo;
+            if (field != null)
+                return (MethodBase)field.GetValue(null);
+
+            return (MethodBase)member;
         }
     }
 }
