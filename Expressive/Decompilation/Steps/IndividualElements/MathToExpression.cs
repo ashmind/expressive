@@ -17,6 +17,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Mul, Expression.Multiply },
             { OpCodes.Or,  Expression.Or },
             { OpCodes.Rem, Expression.Modulo },
+            { OpCodes.Shl, Expression.LeftShift },
+            { OpCodes.Shr, Expression.RightShift },
             { OpCodes.Sub, Expression.Subtract },
             { OpCodes.Xor, Expression.ExclusiveOr }
         };
@@ -30,7 +32,16 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             var left = context.CapturePreceding<ExpressionElement>().Expression;
             var binary = operators[instruction.OpCode];
 
+            Adapt(left, ref right);
+
             return new ExpressionElement(binary(left, right));
+        }
+
+        private void Adapt(Expression left, ref Expression right) {
+            if (left.Type == right.Type)
+                return;
+
+            right = Expression.Convert(right, left.Type);
         }
     }
 }

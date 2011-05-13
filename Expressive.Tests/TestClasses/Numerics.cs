@@ -43,5 +43,15 @@ namespace Expressive.Tests.TestClasses {
         public static int Xor(int a, int b) {
             return a ^ b;
         }
+
+        [ExpectedExpression("(a, b) => (a >> (b & Convert(31)))")]
+        public static int Shr(int a, int b) {
+            return a >> b;
+        }
+
+        [ExpectedExpression("(a, b) => (a << (b & Convert(31)))")]
+        public static int Shl(int a, int b) {
+            return a << b;
+        }
     }
 }

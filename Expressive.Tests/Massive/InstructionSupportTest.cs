@@ -12,8 +12,10 @@ namespace Expressive.Tests.Massive {
     [TestFixture]
     public class InstructionSupportTest {
         private static readonly HashSet<OpCode> UnsupportedOpCodes = new HashSet<OpCode> {
+            OpCodes.Leave_S,
             OpCodes.Stfld,
-            OpCodes.Throw
+            OpCodes.Throw,
+            OpCodes.Endfinally
         };
 
         [Test]
