@@ -81,10 +81,9 @@
     <Compile Include="Massive\InstructionSupportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestClasses\ExpectedExpressionAttribute.cs" />
-    <Compile Include="TestClasses\FrameworkCases.cs" />
     <Compile Include="TestClasses\Numerics.cs" />
     <Compile Include="TestClasses\ClassWithNames.cs" />
-    <Compile Include="TestClasses\ComplexClass.cs" />
+    <Compile Include="TestClasses\BooleanOperations.cs" />
     <Compile Include="TestClasses\Range.cs" />
   </ItemGroup>
   <ItemGroup>

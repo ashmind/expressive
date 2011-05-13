@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection.Emit;
 
 using AshMind.Extensions;
+
 using Expressive.Elements;
-using Expressive.Elements.Expressions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class BranchToCondition : ElementInterpretation<ConditionalBranchElement, IElement> {
@@ -52,6 +52,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             var isUnary = unary.ContainsKey(rootOpCodeName);
             if (isUnary) {
                 var operand = context.CapturePreceding<ExpressionElement>().Expression;
+                operand = BooleanSupport.ConvertIfRequired(operand, typeof(bool));
                 return unary[rootOpCodeName].Invoke(operand);
             }
 

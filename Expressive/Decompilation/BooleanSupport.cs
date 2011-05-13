@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+
+using AshMind.Extensions;
+
 using Expressive.Elements.Expressions;
 
 namespace Expressive.Decompilation {
@@ -12,7 +15,17 @@ namespace Expressive.Decompilation {
             }
 
             public Expression AttemptToConvert(Expression exp) {
-                return base.Visit(exp);
+                var converted = base.Visit(exp);
+                if (converted.Type == typeof(bool))
+                    return converted;
+
+                if (exp.Type == typeof(int))
+                    return exp.NotEqual(Expression.Constant(0));
+
+                if (!exp.Type.IsValueType)
+                    return exp.NotEqual(Expression.Constant(null));
+
+                return exp;
             }
             
             protected override Expression VisitConstant(ConstantExpression constant) {

@@ -21,7 +21,7 @@ namespace Expressive.Decompilation.Steps {
         };
 
         public void Apply(IList<IElement> elements, DecompilationContext context) {
-            for (var i = 0; i < elements.Count; i++) {
+            for (var i = elements.Count - 1; i >= 0; i--) {
                 var element = elements[i];
                 if (!BrProcessing.Matches(element, conditionalOpCodes.Contains))
                     continue;
@@ -59,7 +59,6 @@ namespace Expressive.Decompilation.Steps {
         private void ProcessJumpToExistingCode(int targetIndex, IList<IElement> elements, DecompilationContext context, ref int currentIndex) {
             BrProcessing.EnsureNotBackward(currentIndex, targetIndex);
             var followingRange = elements.EnumerateRange(currentIndex + 1, targetIndex - (currentIndex + 1)).ToList();
-            this.Apply(followingRange, context);
 
             ReplaceWithJumpUpTo(
                 targetIndex - 1,
@@ -73,11 +72,10 @@ namespace Expressive.Decompilation.Steps {
         private void ProcessJumpToCutBranch(int branchIndex, int targetIndex, IList<IElement> branch, IList<IElement> elements, DecompilationContext context, ref int currentIndex) {
             var followingRange = elements.EnumerateRange(currentIndex + 1, branchIndex - (currentIndex + 1)).ToList();
             var targetRange = branch.EnumerateRange(targetIndex, branch.Count - targetIndex).ToList();
-            this.Apply(followingRange, context);
             this.Apply(targetRange, context);
 
             ReplaceWithJumpUpTo(
-                branchIndex,
+                branchIndex - 1,
                 elements,
                 followingRange,
                 targetRange,
