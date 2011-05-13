@@ -18,5 +18,10 @@ namespace Expressive.Tests.TestClasses {
         public static int And(int a, int b) {
             return a & b;
         }
+
+        [ExpectedExpression("(a, b) => (a | b)", typeof(int), typeof(int))]
+        public static int Or(int a, int b) {
+            return a | b;
+        }
     }
 }

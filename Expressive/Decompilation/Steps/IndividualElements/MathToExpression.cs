@@ -13,6 +13,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
             { OpCodes.Add, Expression.Add },
             { OpCodes.And, Expression.And },
+            { OpCodes.Or,  Expression.Or },
             { OpCodes.Sub, Expression.Subtract }
         };
 
