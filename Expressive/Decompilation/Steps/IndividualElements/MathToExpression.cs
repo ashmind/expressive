@@ -13,8 +13,12 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
             { OpCodes.Add, Expression.Add },
             { OpCodes.And, Expression.And },
+            { OpCodes.Div, Expression.Divide },
+            { OpCodes.Mul, Expression.Multiply },
             { OpCodes.Or,  Expression.Or },
-            { OpCodes.Sub, Expression.Subtract }
+            { OpCodes.Rem, Expression.Modulo },
+            { OpCodes.Sub, Expression.Subtract },
+            { OpCodes.Xor, Expression.ExclusiveOr }
         };
 
         public override bool CanInterpret(InstructionElement instruction) {
