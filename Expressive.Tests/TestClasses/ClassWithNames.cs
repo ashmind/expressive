@@ -22,6 +22,10 @@ namespace Expressive.Tests.TestClasses {
             get { return this.FirstName + " " + this.LastName; }
         }
 
+        private const string FullNameExpression1 = @"{0} => IIF(Not(IsNullOrEmpty({0}.FirstName)), Concat({0}.FirstName, "" "", {0}.LastName), {0}.LastName)";
+        private const string FullNameExpression2 = @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))";
+
+        [ExpectedExpression(FullNameExpression1, FullNameExpression2)]
         public string FullNameWithInlineConditional {
             get {
                 return string.IsNullOrEmpty(this.FirstName)
@@ -30,6 +34,7 @@ namespace Expressive.Tests.TestClasses {
             }
         }
 
+        [ExpectedExpression(FullNameExpression1, FullNameExpression2)]
         public string FullNameWithExplicitConditional {
             get {
                 if (string.IsNullOrEmpty(this.FirstName))
