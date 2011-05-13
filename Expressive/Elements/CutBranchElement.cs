@@ -5,8 +5,11 @@ using System.Linq;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class CutBranchElement : IElement {
-        public CutBranchElement(IList<IElement> elements) {
+    public class CutBranchElement : IElement, IPreservingOffset {
+        public int Offset { get; private set; }
+
+        public CutBranchElement(IList<IElement> elements, int offset) {
+            this.Offset = offset;
             this.Elements = elements;
         }
 

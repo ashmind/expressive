@@ -14,6 +14,7 @@ namespace Expressive.Tests.Massive {
         private static readonly HashSet<OpCode> UnsupportedOpCodes = new HashSet<OpCode> {
             OpCodes.Leave_S,
             OpCodes.Stfld,
+            OpCodes.Switch,
             OpCodes.Throw,
             OpCodes.Endfinally
         };

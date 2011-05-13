@@ -8,7 +8,7 @@ using ClrTest.Reflection;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class InstructionElement : IElement { 
+    public class InstructionElement : IElement, IPreservingOffset { 
         public ILInstruction Instruction { get; private set; }
 
         public OpCode OpCode {

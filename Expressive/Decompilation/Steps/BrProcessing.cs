@@ -38,8 +38,8 @@ namespace Expressive.Decompilation.Steps {
         public static int? FindTargetIndexOrNull(IElement br, IList<IElement> elements) {
             var targetOffset = GetTargetOffset(br);
             for (var i = 0; i < elements.Count; i++) {
-                var instruction = elements[i] as InstructionElement;
-                if (instruction != null && instruction.Offset == targetOffset)
+                var withOffset = elements[i] as IPreservingOffset;
+                if (withOffset != null && withOffset.Offset == targetOffset)
                     return i;
             }
             return null;

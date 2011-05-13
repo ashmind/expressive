@@ -54,6 +54,7 @@
     <Compile Include="Elements\ConditionalBranchElement.cs" />
     <Compile Include="Elements\CutBranchElement.cs" />
     <Compile Include="Elements\IfThenElement.cs" />
+    <Compile Include="Elements\IPreservingOffset.cs" />
     <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
     <Compile Include="Elements\IBranchingElement.cs" />

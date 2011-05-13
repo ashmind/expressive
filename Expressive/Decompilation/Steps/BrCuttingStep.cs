@@ -13,12 +13,14 @@ namespace Expressive.Decompilation.Steps {
             for (var i = elements.Count - 1; i >= 0; i--) {
                 if (!BrProcessing.Matches(elements[i], code => code == OpCodes.Br || code == OpCodes.Br_S))
                     continue;
-
+                
                 var targetIndex = BrProcessing.FindTargetIndexOrThrow(elements[i], elements);
                 BrProcessing.EnsureNotBackward(i, targetIndex);
 
                 var skipStart = i + 1;
                 var skipCount = targetIndex - skipStart;
+
+                var elementOffset = ((InstructionElement)elements[i]).Offset;
 
                 elements.RemoveAt(i);
                 skipStart -= 1;
@@ -27,7 +29,7 @@ namespace Expressive.Decompilation.Steps {
 
                 var branch = elements.EnumerateRange(skipStart, skipCount).ToList();
                 elements.RemoveRange(skipStart, skipCount);
-                elements.Insert(skipStart, new CutBranchElement(branch));
+                elements.Insert(skipStart, new CutBranchElement(branch, elementOffset));
             }
         }
     }
