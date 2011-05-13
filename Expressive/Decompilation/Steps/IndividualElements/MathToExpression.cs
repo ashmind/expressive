@@ -12,7 +12,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
     public class MathToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
         private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
             { OpCodes.Add, Expression.Add },
-            { OpCodes.And, Expression.And }
+            { OpCodes.And, Expression.And },
+            { OpCodes.Sub, Expression.Subtract }
         };
 
         public override bool CanInterpret(InstructionElement instruction) {
