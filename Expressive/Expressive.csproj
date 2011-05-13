@@ -102,6 +102,8 @@
     <Compile Include="Decompilation\Steps\NopRemovalStep.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\VariableInliningStep.cs" />
     <Compile Include="Decompilation\Steps\VisitorSequenceStep.cs" />
+    <Compile Include="IDecompiler.cs" />
+    <Compile Include="IDisassembler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

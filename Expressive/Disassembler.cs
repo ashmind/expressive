@@ -8,8 +8,8 @@ using ClrTest.Reflection;
 using Expressive.Elements;
 
 namespace Expressive {
-    public class Disassembler {
-        public IEnumerable<IElement> Disassemble(MethodBase method) {
+    public class Disassembler : IDisassembler {
+        public virtual IEnumerable<IElement> Disassemble(MethodBase method) {
             return new ILReader(method).Select(instruction => (IElement)new InstructionElement(instruction));
         }
     }
