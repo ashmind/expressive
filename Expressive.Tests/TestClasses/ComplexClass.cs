@@ -8,6 +8,7 @@ namespace Expressive.Tests.TestClasses {
         public int Int32Property { get; set; }
         public bool BooleanProperty { get; set; }
 
+        [ExpectedExpression("{0} => (({0}.Int32Property > ComplexClass.Int32Field) AndAlso {0}.BooleanProperty)")]
         public bool ComplexProperty1 {
             get {
                 return this.Int32Property > Int32Field
@@ -15,6 +16,7 @@ namespace Expressive.Tests.TestClasses {
             }
         }
 
+        [ExpectedExpression("{0} => (({0}.Int32Property > 0) OrElse Not({0}.BooleanProperty))")]
         public bool ComplexProperty2 {
             get {
                 return this.Int32Property > 0

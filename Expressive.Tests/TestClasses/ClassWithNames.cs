@@ -7,14 +7,17 @@ namespace Expressive.Tests.TestClasses {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        [ExpectedExpression(@"() => ""Test""")]
         public static string StaticName {
             get { return "Test"; }
         }
 
+        [ExpectedExpression("{0} => {0}.FirstName")]
         public string JustFirstName {
             get { return this.FirstName; }
         }
 
+        [ExpectedExpression(@"{0} => Concat({0}.FirstName, "" "", {0}.LastName)")]
         public string FullNameSimple {
             get { return this.FirstName + " " + this.LastName; }
         }

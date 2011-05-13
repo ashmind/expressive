@@ -15,59 +15,6 @@ namespace Expressive.Tests {
     [TestFixture]
     public class ExpressiveEngineTests {
         [Test]
-        public void TestSimplePropertyWithReferenceToThis() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ClassWithNames>(c => c.JustFirstName).GetGetMethod()
-            );
-
-            AssertMatches(new[] { typeof(ClassWithNames) }, @"{0} => {0}.FirstName", decompiled);
-        }
-
-        [Test]
-        public void TestPropertyWithReferenceToThisAndSimpleConcat() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ClassWithNames>(c => c.FullNameSimple).GetGetMethod()
-            );
-
-            AssertMatches(new[] { typeof (ClassWithNames) }, @"{0} => Concat({0}.FirstName, "" "", {0}.LastName)", decompiled);
-        }
-
-        [Test]
-        public void TestStaticProperty() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get(() => ClassWithNames.StaticName).GetGetMethod()
-            );
-
-            AssertMatches(new Type[0], @"() => ""Test""", decompiled);
-        }
-
-        [Test]
-        public void TestPropertyWithComparisonAndStaticFieldAndBooleanOperator() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ComplexClass>(m => m.ComplexProperty1).GetGetMethod()
-             );
-
-            AssertMatches(
-                new[] { typeof(ComplexClass) },
-                "{0} => (({0}.Int32Property > ComplexClass.Int32Field) AndAlso {0}.BooleanProperty)",
-                decompiled
-            );
-        }
-
-        [Test]
-        public void TestPropertyWithComparisonAndConstantAndAnotherBooleanOperator() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Property.Get<ComplexClass>(m => m.ComplexProperty2).GetGetMethod()
-             );
-
-            AssertMatches(
-                new[] { typeof(ComplexClass) },
-                "{0} => (({0}.Int32Property > 0) OrElse Not({0}.BooleanProperty))",
-                decompiled
-            );
-        }
-
-        [Test]
         [Factory("GetConditionals")]
         public void TestConditional(PropertyInfo property) {
             var decompiled = ExpressiveEngine.ToExpression(property.GetGetMethod());
