@@ -4,19 +4,19 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
 using Expressive.Elements;
 using Expressive.Elements.Expressions;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdlocToVariable : ElementInterpretation<InstructionElement, ExpressionElement> {
-        private static readonly IDictionary<OpCode, Func<ILInstruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
+        private static readonly IDictionary<OpCode, Func<Instruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<Instruction, int>> {
             { OpCodes.Ldloc_0, _ => 0 },
             { OpCodes.Ldloc_1, _ => 1 },
             { OpCodes.Ldloc_2, _ => 2 },
             { OpCodes.Ldloc_3, _ => 3 },
-            { OpCodes.Ldloc_S, x => ((ShortInlineVarInstruction)x).Ordinal },
-            { OpCodes.Ldloc,   x => ((InlineVarInstruction)x).Ordinal }
+            { OpCodes.Ldloc_S, x => ((VariableReferenceInstruction)x).Ordinal },
+            { OpCodes.Ldloc,   x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
         private MethodBody methodBody;

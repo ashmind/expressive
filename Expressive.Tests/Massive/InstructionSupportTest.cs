@@ -27,7 +27,7 @@ namespace Expressive.Tests.Massive {
             var visitor = new InstructionCollectingVisitor();
 
             foreach (var method in GetAllMethods()) {
-                var elements = disassembler.Disassemble(method).ToList();
+                var elements = disassembler.Disassemble(method).Select(i => (IElement)new InstructionElement(i)).ToList();
                 try { ApplyPipeline(pipeline, elements, method); } catch { continue; }
                 visitor.VisitList(elements);
             }

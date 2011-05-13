@@ -4,8 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using ClrTest.Reflection;
+
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class CallToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
@@ -15,7 +16,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var method = ((InlineMethodInstruction)instruction.Instruction).Method;
+            var method = ((MethodReferenceInstruction)instruction.Instruction).Method;
             return new ExpressionElement(IdentifyAndCollectCall(method, context));
         }
 

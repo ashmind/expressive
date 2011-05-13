@@ -4,19 +4,18 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
 using Expressive.Elements;
-using Expressive.Elements.Expressions;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class StlocToAssignment : ElementInterpretation<InstructionElement, VariableAssignmentElement> {
-        private static readonly IDictionary<OpCode, Func<ILInstruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
+        private static readonly IDictionary<OpCode, Func<Instruction, int>> variableIndexGetters = new Dictionary<OpCode, Func<Instruction, int>> {
             { OpCodes.Stloc_0, _ => 0 },
             { OpCodes.Stloc_1, _ => 1 },
             { OpCodes.Stloc_2, _ => 2 },
             { OpCodes.Stloc_3, _ => 3 },
-            { OpCodes.Stloc_S, x => ((ShortInlineVarInstruction)x).Ordinal },
-            { OpCodes.Stloc,   x => ((InlineVarInstruction)x).Ordinal }
+            { OpCodes.Stloc_S, x => ((VariableReferenceInstruction)x).Ordinal },
+            { OpCodes.Stloc,   x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
         private MethodBody methodBody;

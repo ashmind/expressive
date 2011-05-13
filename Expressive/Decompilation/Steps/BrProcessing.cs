@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
-
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps {
     public static class BrProcessing {
@@ -19,12 +18,7 @@ namespace Expressive.Decompilation.Steps {
 
         public static int GetTargetOffset(IElement br) {
             var instruction = ((InstructionElement)br).Instruction;
-
-            var @short = instruction as ShortInlineBrTargetInstruction;
-            if (@short != null)
-                return @short.TargetOffset;
-
-            return ((InlineBrTargetInstruction)instruction).TargetOffset;
+            return ((BranchInstruction)instruction).TargetOffset;
         }
 
         public static int FindTargetIndexOrThrow(IElement br, IList<IElement> elements) {

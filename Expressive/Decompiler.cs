@@ -21,7 +21,9 @@ namespace Expressive {
         }
 
         public virtual LambdaExpression Decompile(MethodBase method) {
-            var elements = this.disassembler.Disassemble(method).ToList();
+            var elements = this.disassembler.Disassemble(method)
+                                            .Select(i => (IElement)new InstructionElement(i))
+                                            .ToList();
             var context = new DecompilationContext(method);
 
             try {

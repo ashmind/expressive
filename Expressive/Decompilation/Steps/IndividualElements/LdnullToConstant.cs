@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdstrToConstant : ElementInterpretation<InstructionElement, ExpressionElement> {
@@ -15,7 +15,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             return new ExpressionElement(Expression.Constant(
-                ((InlineStringInstruction)instruction.Instruction).String
+                ((ValueInstruction<string>)instruction.Instruction).Value
             ));
         }
     }

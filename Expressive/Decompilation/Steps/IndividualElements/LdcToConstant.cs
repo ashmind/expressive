@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
+
 using AshMind.Extensions;
-using ClrTest.Reflection;
+
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdcToConstant : ElementInterpretation<InstructionElement, ExpressionElement> {
@@ -21,15 +23,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             ));
         }
 
-        private object GetValue(ILInstruction instruction) {
-            var value = this.GetValueOrNull<ShortInlineIInstruction>(instruction, i => i.Byte)
-                     ?? this.GetValueOrNull<InlineIInstruction>(instruction, i => i.Int32)
-                     ?? this.GetValueOrNull<InlineI8Instruction>(instruction, i => i.Int64)
-                     ?? this.GetValueOrNull<ShortInlineRInstruction>(instruction, i => i.Single)
-                     ?? this.GetValueOrNull<InlineRInstruction>(instruction, i => i.Double);
-
-            if (value != null)
-                return value;
+        private object GetValue(Instruction instruction) {
+            var valueInstruction = instruction as IValueInstruction;
+            if (valueInstruction != null)
+                return valueInstruction.Value;
                 
             var parts = instruction.OpCode.Name.Split('.');
             if (parts.Length < 3)
@@ -43,16 +40,6 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
                 return -1;
 
             return int.Parse(valueString);
-        }
-
-        private object GetValueOrNull<TInstruction>(ILInstruction instruction, Func<TInstruction, object> getValue) 
-            where TInstruction : ILInstruction
-        {
-            var typed = instruction as TInstruction;
-            if (typed == null)
-                return null;
-
-            return getValue(typed);
         }
     }
 }

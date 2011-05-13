@@ -5,11 +5,12 @@ using System.Reflection.Emit;
 
 using ClrTest.Reflection;
 
+using Expressive.Elements.Instructions;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
     public class InstructionElement : IElement, IPreservingOffset { 
-        public ILInstruction Instruction { get; private set; }
+        public Instruction Instruction { get; private set; }
 
         public OpCode OpCode {
             get { return this.Instruction.OpCode; }
@@ -19,7 +20,7 @@ namespace Expressive.Elements {
             get { return this.Instruction.Offset; }
         }
 
-        public InstructionElement(ILInstruction instruction) {
+        public InstructionElement(Instruction instruction) {
             this.Instruction = instruction;
         }
         

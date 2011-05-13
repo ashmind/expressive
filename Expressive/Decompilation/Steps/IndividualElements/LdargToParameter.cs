@@ -6,18 +6,18 @@ using System.Reflection.Emit;
 
 using AshMind.Extensions;
 
-using ClrTest.Reflection;
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdargToParameter : ElementInterpretation<InstructionElement, ExpressionElement> {
-        private static readonly IDictionary<OpCode, Func<ILInstruction, int>> parameterIndexGetters = new Dictionary<OpCode, Func<ILInstruction, int>> {
+        private static readonly IDictionary<OpCode, Func<Instruction, int>> parameterIndexGetters = new Dictionary<OpCode, Func<Instruction, int>> {
             { OpCodes.Ldarg_0, _ => 0 },
             { OpCodes.Ldarg_1, _ => 1 },
             { OpCodes.Ldarg_2, _ => 2 },
             { OpCodes.Ldarg_3, _ => 3 },
-            { OpCodes.Ldarg_S, x => ((ShortInlineVarInstruction)x).Ordinal },
-            { OpCodes.Ldarg,   x => ((InlineVarInstruction)x).Ordinal }
+            { OpCodes.Ldarg_S, x => ((VariableReferenceInstruction)x).Ordinal },
+            { OpCodes.Ldarg,   x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
         private DecompilationContext primaryContext;

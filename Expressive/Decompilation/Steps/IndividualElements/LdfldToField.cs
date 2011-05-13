@@ -4,8 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdfldToField : ElementInterpretation<InstructionElement, ExpressionElement> {
@@ -15,7 +15,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var field = ((InlineFieldInstruction)instruction.Instruction).Field;
+            var field = ((FieldReferenceInstruction)instruction.Instruction).Field;
             var instance = !field.IsStatic
                          ? context.CapturePreceding<ExpressionElement>().Expression
                          : null;
