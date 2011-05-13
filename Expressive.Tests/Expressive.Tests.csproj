@@ -83,7 +83,7 @@
     <Compile Include="TestClasses\ExpectedExpressionAttribute.cs" />
     <Compile Include="TestClasses\Numerics.cs" />
     <Compile Include="TestClasses\ClassWithNames.cs" />
-    <Compile Include="TestClasses\BooleanOperations.cs" />
+    <Compile Include="TestClasses\Booleans.cs" />
     <Compile Include="TestClasses\Range.cs" />
   </ItemGroup>
   <ItemGroup>
