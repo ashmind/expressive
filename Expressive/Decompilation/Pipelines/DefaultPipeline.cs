@@ -21,6 +21,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new LdstrToConstant(),
                 new LdnullToConstant(),
                 new CxxToCondition(),
+                new AddToExpression(),
                 new CallToExpression(),
                 new LdlocToVariable(),
                 new StlocToAssignment(),

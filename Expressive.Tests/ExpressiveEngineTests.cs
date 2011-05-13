@@ -97,6 +97,20 @@ namespace Expressive.Tests {
             );
         }
 
+        [Test]
+        public void TestNumericsAdd() {
+            this.TestDecompilesTo(
+                Method.Get(() => Numerics.Add(0, 0)),
+                new[] { typeof(int), typeof(int) },
+                "(a, b) => (a + b)"
+            );
+        }
+
+        private void TestDecompilesTo(MethodInfo method, IEnumerable<Type> parameterTypes, string pattern) {
+            var decompiled = ExpressiveEngine.ToExpression(method);
+            AssertMatches(parameterTypes, pattern, decompiled);
+        }
+
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {
             AssertMatches(parameterTypes, new[] { pattern }, expression);
         }
