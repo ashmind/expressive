@@ -11,52 +11,57 @@ using MbUnit.Framework;
 namespace Expressive.Tests.Massive {
     [TestFixture]
     public class InstructionSupportTest {
+        private static readonly HashSet<OpCode> UnsupportedOpCodes = new HashSet<OpCode> {
+            OpCodes.Stfld,
+            OpCodes.Throw
+        };
+
         [Test]
         [Ignore("Not passing yet")]
-        public void TestAllInstructionsAreSupported() {
+        public void TestAllInstructionsExceptSpecificOnesAreSupported() {
             var pipeline = new DefaultPipeline();
-            var allMethods = GetAllMethods();
+            var disassembler = new Disassembler();
             var visitor = new InstructionCollectingVisitor();
 
-            foreach (var method in allMethods) {
-                var elements = ApplyPipeline(method, pipeline, suppressExceptions: true);
+            foreach (var method in GetAllMethods()) {
+                var elements = disassembler.Disassemble(method).ToList();
+                try { ApplyPipeline(pipeline, elements, method); } catch { }
                 visitor.VisitList(elements);
             }
 
-            Assert.AreElementsEqual(new OpCode[0], visitor.OpCodes.OrderBy(code => code.Name));
+            Assert.AreElementsEqual(
+                new OpCode[0],
+                visitor.OpCodes.Except(UnsupportedOpCodes).OrderBy(code => code.Name)
+            );
         }
         
         [Test]
         [Ignore("Manual only for now")]
-        [Factory("GetAllMethods")]
-        public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method) {
+        [Factory("GetAllMethodsWithSupportedInstructions")]
+        public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method, IList<IElement> elements) {
             var pipeline = new DefaultPipeline();
             Assert.DoesNotThrow(
-                () => ApplyPipeline(method, pipeline, suppressExceptions: false)
+                () => ApplyPipeline(pipeline, elements, method)
             );
+        }
+
+        private IEnumerable<object[]> GetAllMethodsWithSupportedInstructions() {
+            var disassembler = new Disassembler();
+            return GetAllMethods()
+                        .Select(method => new { method, instructions = disassembler.Disassemble(method).ToList() })
+                        .Where(x => !x.instructions.OfType<InstructionElement>().Any(i => UnsupportedOpCodes.Contains(i.OpCode)))
+                        .Select(x => new object[] { x.method, x.instructions });
         }
 
         private IEnumerable<MethodInfo> GetAllMethods() {
             return typeof(string).Assembly.GetTypes().SelectMany(t => t.GetMethods());
         }
 
-        private IList<IElement> ApplyPipeline(MethodBase method, IDecompilationPipeline pipeline, bool suppressExceptions) {
-            var elements = new Disassembler().Disassemble(method).ToList();
+        private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, MethodBase method) {
             var context = new DecompilationContext(method);
-
-            try {
-                foreach (var step in pipeline.GetSteps()) {
-                    step.Apply(elements, context);
-                }
+            foreach (var step in pipeline.GetSteps()) {
+                step.Apply(elements, context);
             }
-            catch {
-                if (suppressExceptions)
-                    return new IElement[0];
-
-                throw;
-            }
-
-            return elements;
         }
     }
 }
