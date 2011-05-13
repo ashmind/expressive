@@ -88,22 +88,13 @@ namespace Expressive.Tests {
         }
 
         [Test]
-        public void TestRange() {
-            var decompiled = ExpressiveEngine.ToExpression(
-                Method.Get<Range>(r => r.Contains(0))
-            );
-
-            AssertMatches(
-                new[] { typeof(Range), typeof(int) },
-                @"({0}, value) => ((value >= {0}.Min) AndAlso (value <= {0}.Max))",
-                decompiled
-            );
-        }
-
-        [Test]
         [Factory("GetTestMethodsAndProperties")]
-        public void TestDecompilesTo(MethodBase method, IEnumerable<Type> parameterTypes, string pattern) {
+        public void TestDecompilesTo(MethodBase method, string pattern) {
             var decompiled = ExpressiveEngine.ToExpression(method);
+            var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
+            if (!method.IsStatic)
+                parameterTypes.Insert(0, method.DeclaringType);
+
             AssertMatches(parameterTypes, pattern, decompiled);
         }
 
@@ -119,7 +110,6 @@ namespace Expressive.Tests {
 
             return attributed.Select(a => new object[] {
                 a.method,
-                a.attribute.ParameterTypes,
                 a.attribute.Pattern
             });
         }
