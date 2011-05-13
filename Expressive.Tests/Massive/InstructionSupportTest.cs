@@ -25,7 +25,7 @@ namespace Expressive.Tests.Massive {
 
             foreach (var method in GetAllMethods()) {
                 var elements = disassembler.Disassemble(method).ToList();
-                try { ApplyPipeline(pipeline, elements, method); } catch { }
+                try { ApplyPipeline(pipeline, elements, method); } catch { continue; }
                 visitor.VisitList(elements);
             }
 
