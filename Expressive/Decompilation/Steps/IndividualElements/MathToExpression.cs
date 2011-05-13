@@ -7,16 +7,24 @@ using System.Reflection.Emit;
 using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class AddToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
+    using BinaryConverter = Func<Expression, Expression, Expression>;
+
+    public class MathToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
+        private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
+            { OpCodes.Add, Expression.Add },
+            { OpCodes.And, Expression.And }
+        };
+
         public override bool CanInterpret(InstructionElement instruction) {
-            return instruction.OpCode == OpCodes.Add;
+            return operators.ContainsKey(instruction.OpCode);
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var right = context.CapturePreceding<ExpressionElement>().Expression;
             var left = context.CapturePreceding<ExpressionElement>().Expression;
+            var binary = operators[instruction.OpCode];
 
-            return new ExpressionElement(Expression.Add(left, right));
+            return new ExpressionElement(binary(left, right));
         }
     }
 }

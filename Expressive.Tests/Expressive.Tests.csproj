@@ -53,6 +53,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AshMind.Extensions, Version=1.0.4.0, Culture=neutral, PublicKeyToken=32a35e6126a2a893, processorArchitecture=MSIL">
+      <HintPath>..\$packages\AshMind.Extensions.1.0.4\lib\3.5\AshMind.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Gallio" />
     <Reference Include="MbUnit" />
     <Reference Include="System" />
@@ -77,6 +80,7 @@
     <Compile Include="Massive\InstructionCollectionVisitor.cs" />
     <Compile Include="Massive\InstructionSupportTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestClasses\ExpectedExpressionAttribute.cs" />
     <Compile Include="TestClasses\Numerics.cs" />
     <Compile Include="TestClasses\ClassWithNames.cs" />
     <Compile Include="TestClasses\ComplexClass.cs" />
@@ -109,6 +113,9 @@
       <Project>{25C28BD4-127C-4F95-9FDC-25D1A10E5012}</Project>
       <Name>Expressive</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

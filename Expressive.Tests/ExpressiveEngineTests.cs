@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+
 using MbUnit.Framework;
+
+using AshMind.Extensions;
 
 using Expressive.Tests.Helpers;
 using Expressive.Tests.TestClasses;
@@ -98,17 +101,35 @@ namespace Expressive.Tests {
         }
 
         [Test]
-        public void TestNumericsAdd() {
-            this.TestDecompilesTo(
-                Method.Get(() => Numerics.Add(0, 0)),
-                new[] { typeof(int), typeof(int) },
-                "(a, b) => (a + b)"
-            );
-        }
-
-        private void TestDecompilesTo(MethodInfo method, IEnumerable<Type> parameterTypes, string pattern) {
+        [Factory("GetTestMethodsAndProperties")]
+        public void TestDecompilesTo(MethodBase method, IEnumerable<Type> parameterTypes, string pattern) {
             var decompiled = ExpressiveEngine.ToExpression(method);
             AssertMatches(parameterTypes, pattern, decompiled);
+        }
+
+        public IEnumerable<object[]> GetTestMethodsAndProperties() {
+            var someTestClass = typeof(ClassWithNames);
+            var attributed = from type in someTestClass.Assembly.GetTypes()
+                             where type.Namespace == someTestClass.Namespace
+                             from member in type.GetMembers()
+                             let attribute = member.GetCustomAttributes<ExpectedExpressionAttribute>().SingleOrDefault()
+                             where attribute != null
+                             from method in GetMethods(member)
+                             select new { method, attribute };
+
+            return attributed.Select(a => new object[] {
+                a.method,
+                a.attribute.ParameterTypes,
+                a.attribute.Pattern
+            });
+        }
+
+        private IEnumerable<MethodBase> GetMethods(MemberInfo member) {
+            var property = member as PropertyInfo;
+            if (property != null)
+                return property.GetAccessors();
+
+            return new[] { (MethodBase)member };
         }
 
         private void AssertMatches(IEnumerable<Type> parameterTypes, string pattern, LambdaExpression expression) {

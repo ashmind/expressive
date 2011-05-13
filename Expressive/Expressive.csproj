@@ -47,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decompilation\Steps\IndividualElements\AddToExpression.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\MathToExpression.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdnullToConstant.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Disassembler.cs" />
