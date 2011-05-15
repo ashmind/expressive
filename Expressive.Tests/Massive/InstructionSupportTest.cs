@@ -6,6 +6,7 @@ using System.Reflection.Emit;
 using Expressive.Decompilation;
 using Expressive.Decompilation.Pipelines;
 using Expressive.Elements;
+using Expressive.Elements.Instructions;
 using MbUnit.Framework;
 
 namespace Expressive.Tests.Massive {
@@ -26,7 +27,7 @@ namespace Expressive.Tests.Massive {
             var disassembler = new Disassembler();
             var visitor = new InstructionCollectingVisitor();
 
-            foreach (var method in GetAllMethods()) {
+            foreach (var method in GetAllNonGenericMethods()) {
                 var elements = disassembler.Disassemble(method).Select(i => (IElement)new InstructionElement(i)).ToList();
                 try { ApplyPipeline(pipeline, elements, method); } catch { continue; }
                 visitor.VisitList(elements);
@@ -40,24 +41,26 @@ namespace Expressive.Tests.Massive {
         
         [Test]
         [Ignore("Manual only for now")]
-        [Factory("GetAllMethodsWithSupportedInstructions")]
-        public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method, IList<IElement> elements) {
+        [Factory("GetAllSupportedMethods")]
+        public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method, IList<Instruction> instructions) {
             var pipeline = new DefaultPipeline();
+            var elements = instructions.Select(i => (IElement)new InstructionElement(i)).ToList();
             Assert.DoesNotThrow(
                 () => ApplyPipeline(pipeline, elements, method)
             );
         }
 
-        private IEnumerable<object[]> GetAllMethodsWithSupportedInstructions() {
+        private IEnumerable<object[]> GetAllSupportedMethods() {
             var disassembler = new Disassembler();
-            return GetAllMethods()
+            return GetAllNonGenericMethods()
                         .Select(method => new { method, instructions = disassembler.Disassemble(method).ToList() })
-                        .Where(x => !x.instructions.OfType<InstructionElement>().Any(i => UnsupportedOpCodes.Contains(i.OpCode)))
+                        .Where(x => !x.instructions.Any(i => UnsupportedOpCodes.Contains(i.OpCode)))
                         .Select(x => new object[] { x.method, x.instructions });
         }
 
-        private IEnumerable<MethodInfo> GetAllMethods() {
-            return typeof(string).Assembly.GetTypes().SelectMany(t => t.GetMethods());
+        private IEnumerable<MethodInfo> GetAllNonGenericMethods() {
+            return typeof(string).Assembly.GetTypes().SelectMany(t => t.GetMethods())
+                                                     .Where(m => !m.IsGenericMethodDefinition);
         }
 
         private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, MethodBase method) {
