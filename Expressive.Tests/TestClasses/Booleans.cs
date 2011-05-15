@@ -17,7 +17,10 @@ namespace Expressive.Tests.TestClasses {
             return a || b;
         }
 
-        [ExpectedExpression("(a, b) => ((a == b) OrElse ((a != null) AndAlso ((b != null) AndAlso a.Equals(b))))")]
+        private const string ObjectEqualsExpression1 = "(a, b) => ((a == b) OrElse ((a != null) AndAlso ((b != null) AndAlso a.Equals(b))))";
+        private const string ObjectEqualsExpression2 = "(a, b) => ((a == b) OrElse (((a != null) AndAlso (b != null)) AndAlso a.Equals(b)))";
+
+        [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
         public static bool ObjectEquals(object a, object b) {
             return a == b
                 || (
@@ -25,9 +28,34 @@ namespace Expressive.Tests.TestClasses {
                 );
         }
 
-        //[ExpectedExpression("(a, b) => ((a == b) OrElse ((a != null) AndAlso ((b != null) AndAlso a.Equals(b))))")]
-        //Not working yet, work in progress
-        public static readonly AssembledMethod OtherEquals = new AssembledMethod("AssembledEquals")
+        [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
+        public static readonly MethodBase ObjectEqualsRelease = new TestMethodBuilder()
+            .Name("ObjectEquals{Release}")
+            .Parameter<object>("a")
+            .Parameter<object>("b")
+            .Assemble(a => a
+                .Ldarg_0
+                .Ldarg_1
+                .Beq_S(0x14)
+                .Ldarg_0
+                .Brfalse_S(0x12)
+                .Ldarg_1
+                .Brfalse_S(0x12)
+                .Ldarg_0
+                .Ldarg_1
+                .Callvirt<object>(o => o.Equals(null))
+                .Ret
+                .Ldc_I4_0
+                .Ret
+                .Ldc_I4_1
+                .Ret
+            )
+            .Returns<bool>()
+            .ToMethod();
+
+        [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
+        public static readonly MethodBase OtherEquals = new TestMethodBuilder()
+            .Name("AssembledEquals")
             .Parameter<object>("a")
             .Parameter<object>("b")
             .Assemble(a => a
@@ -46,6 +74,8 @@ namespace Expressive.Tests.TestClasses {
                 .Ldarg_1
                 .Callvirt<object>(o => o.Equals(null))
                 .Ret
-            );
+            )
+            .Returns<bool>()
+            .ToMethod();
     }
 }

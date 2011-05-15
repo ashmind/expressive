@@ -7,7 +7,7 @@ using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps {
-    public static class BrProcessing {
+    public static class BranchProcessing {
         public static bool Matches(IElement element, Func<OpCode, bool> predicate) {
             var instruction = element as InstructionElement;
             if (instruction == null)
@@ -24,7 +24,7 @@ namespace Expressive.Decompilation.Steps {
         public static int FindTargetIndexOrThrow(IElement br, IList<IElement> elements) {
             var targetIndex = FindTargetIndexOrNull(br, elements);
             if (targetIndex == null)
-                BrProcessing.ThrowTargetNotFound(br);
+                BranchProcessing.ThrowTargetNotFound(br);
 
             return (int)targetIndex;
         }

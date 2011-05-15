@@ -11,6 +11,7 @@ namespace Expressive.Decompilation.Steps.Clarity {
     public class NotImprovementVisitor : ElementVisitor {
         private static readonly Dictionary<ExpressionType, Func<BinaryExpression, BinaryExpression>> binaryInversions = new Dictionary<ExpressionType, Func<BinaryExpression, BinaryExpression>> {
             { ExpressionType.Equal, e => Expression.NotEqual(e.Left, e.Right) },
+            { ExpressionType.NotEqual, e => Expression.Equal(e.Left, e.Right) },
             { ExpressionType.LessThan, e => Expression.GreaterThanOrEqual(e.Left, e.Right) },
             { ExpressionType.GreaterThan, e => Expression.LessThanOrEqual(e.Left, e.Right) },
             { ExpressionType.LessThanOrEqual, e => Expression.GreaterThan(e.Left, e.Right) },

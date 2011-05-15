@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Reflection;
 
 namespace Expressive.Tests.Methods {
-    public abstract class StaticPseudoMethod : MethodBase {
+    public abstract class StaticPseudoMethod : MethodInfo {
         public override MemberTypes MemberType {
             get { return MemberTypes.Method; }
         }
@@ -42,6 +42,14 @@ namespace Expressive.Tests.Methods {
 
         public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture) {
             throw new NotSupportedException();
+        }
+
+        public override MethodInfo GetBaseDefinition() {
+            return null;
+        }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes {
+            get { return this.ReturnType; }
         }
     }
 }

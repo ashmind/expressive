@@ -13,9 +13,8 @@ namespace Expressive.Decompilation.Pipelines {
     public class DefaultPipeline : DecompilationPipeline {
         public DefaultPipeline() : base(
             new NopRemovalStep(),
-            new BrCuttingStep(),
-            new BrResolutionStep(),
-            new CutBranchesRemovalStep(),
+            new BranchResolutionStep(),
+            new UnconditionalBranchesRemovalStep(),
             new IndividualDecompilationStep(
                 new LdfldToField(),
                 new LdstrToConstant(),
@@ -31,6 +30,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new RetToReturn()
             ),
             new VisitorSequenceStep(
+                new IfThenCollapsingVisitor(), // must be before following two
                 new IfAssignmentInliningVisitor(),
                 new IfReturnInliningVisitor(),
                 new ConditionImprovementVisitor(),

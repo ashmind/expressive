@@ -49,10 +49,10 @@
   <ItemGroup>
     <Compile Include="Decompilation\Steps\IndividualElements\MathToExpression.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdnullToConstant.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\IfThenCollapsingVisitor.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Disassembler.cs" />
-    <Compile Include="Elements\ConditionalBranchElement.cs" />
-    <Compile Include="Elements\CutBranchElement.cs" />
+    <Compile Include="Elements\BranchingElement.cs" />
     <Compile Include="Elements\IfThenElement.cs" />
     <Compile Include="Elements\Instructions\BranchInstruction.cs" />
     <Compile Include="Elements\Instructions\IValueInstruction.cs" />
@@ -86,9 +86,8 @@
     <Compile Include="Decompilation\Pipelines\IDecompilationPipeline.cs" />
     <Compile Include="DecompilationException.cs" />
     <Compile Include="Decompilation\Steps\BranchingAwareStepBase.cs" />
-    <Compile Include="Decompilation\Steps\BrCuttingStep.cs" />
-    <Compile Include="Decompilation\Steps\BrResolutionStep.cs" />
-    <Compile Include="Decompilation\Steps\BrProcessing.cs" />
+    <Compile Include="Decompilation\Steps\BranchResolutionStep.cs" />
+    <Compile Include="Decompilation\Steps\BranchProcessing.cs" />
     <Compile Include="Decompilation\Steps\BooleanEqualityImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\ConditionImprovementVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NotImprovementVisitor.cs" />
@@ -105,7 +104,7 @@
     <Compile Include="Decompilation\Steps\IndividualDecompilationContext.cs" />
     <Compile Include="Decompilation\Steps\IndividualDecompilationStep.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\IElementInterpretation.cs" />
-    <Compile Include="Decompilation\Steps\CutBranchesRemovalStep.cs" />
+    <Compile Include="Decompilation\Steps\UnconditionalBranchesRemovalStep.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdargToParameter.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\IfReturnInliningVisitor.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\IfAssignmentInliningVisitor.cs" />

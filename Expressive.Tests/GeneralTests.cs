@@ -17,7 +17,7 @@ namespace Expressive.Tests {
         [Test]
         [Factory("GetTestMethods")]
         public void TestDecompilesTo(MethodBase method, IEnumerable<string> patterns) {
-            var decompiled = new Decompiler(new ExtendedDisassembler(), new DefaultPipeline()).Decompile(method);
+            var decompiled = new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
             var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
             if (!method.IsStatic)
                 parameterTypes.Insert(0, method.DeclaringType);

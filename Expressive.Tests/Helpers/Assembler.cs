@@ -4,10 +4,31 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
+using AshMind.Extensions;
+
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Tests.Helpers {
     public class Assembler {
+        private readonly IDictionary<OperandType, int> OperandSizes = new Dictionary<OperandType, int> {
+            { OperandType.InlineBrTarget,      4 },
+            { OperandType.InlineField,         4 },
+            { OperandType.InlineI,             4 },
+            { OperandType.InlineI8,            8 },
+            { OperandType.InlineMethod,        4 },
+            { OperandType.InlineR,             8 },
+            { OperandType.InlineSig,           4 },
+            { OperandType.InlineString,        4 },
+            { OperandType.InlineSwitch,        4 },
+            { OperandType.InlineTok,           4 },
+            { OperandType.InlineType,          4 },
+            { OperandType.InlineVar,           2 },
+            { OperandType.ShortInlineBrTarget, 1 },
+            { OperandType.ShortInlineI,        1 },
+            { OperandType.ShortInlineR,        4 },
+            { OperandType.ShortInlineVar,      1 }
+        };
+
         private int offset = 0;
         private readonly IList<Instruction> instructions = new List<Instruction>();
 
@@ -17,7 +38,7 @@ namespace Expressive.Tests.Helpers {
 
         private Assembler Append(Instruction instruction) {
             this.instructions.Add(instruction);
-            this.offset += 1;
+            this.offset += instruction.OpCode.Size + OperandSizes.GetValueOrDefault(instruction.OpCode.OperandType);
             return this;
         }
 

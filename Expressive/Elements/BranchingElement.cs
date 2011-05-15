@@ -7,12 +7,12 @@ using System.Text;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class ConditionalBranchElement : IBranchingElement {
+    public class BranchingElement : IBranchingElement {
         public OpCode OpCode  { get; set; }
         public IList<IElement> Target  { get; private set; }
         public IList<IElement> Fallback { get; private set; }
 
-        public ConditionalBranchElement(OpCode opCode, IList<IElement> target, IList<IElement> fallback) {
+        public BranchingElement(OpCode opCode, IList<IElement> target, IList<IElement> fallback) {
             this.OpCode = opCode;
             this.Target = target;
             this.Fallback = fallback;

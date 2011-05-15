@@ -9,7 +9,7 @@ using AshMind.Extensions;
 using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class BranchToCondition : ElementInterpretation<ConditionalBranchElement, IElement> {
+    public class BranchToCondition : ElementInterpretation<BranchingElement, IElement> {
         private static readonly IDictionary<string, Func<Expression, Expression>> unary = new Dictionary<string, Func<Expression, Expression>> {
             { OpCodes.Brtrue.Name,  e => e },
             { OpCodes.Brfalse.Name, e => Expression.Not(e) },
@@ -24,7 +24,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Bne_Un.Name.SubstringBefore("."), Expression.NotEqual }
         };
 
-        public override IElement Interpret(ConditionalBranchElement branch, IndividualDecompilationContext context) {
+        public override IElement Interpret(BranchingElement branch, IndividualDecompilationContext context) {
             var condition = CaptureCondition(branch, context);
             var targetAsExpression = AsSingleExpression(branch.Target);
             var fallbackAsExpression = AsSingleExpression(branch.Fallback);
@@ -47,7 +47,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             return new IfThenElement(condition, ifTrue, ifFalse);
         }
 
-        private Expression CaptureCondition(ConditionalBranchElement branch, IndividualDecompilationContext context) {
+        private Expression CaptureCondition(BranchingElement branch, IndividualDecompilationContext context) {
             var rootOpCodeName = branch.OpCode.Name.SubstringBefore(".");
             var isUnary = unary.ContainsKey(rootOpCodeName);
             if (isUnary) {

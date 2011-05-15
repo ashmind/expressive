@@ -24,7 +24,7 @@ namespace Expressive.Elements {
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
                        || this.TryVisit<VariableAssignmentElement>(this.VisitAssignment, ref element)
                        || this.TryVisit<ReturnElement>(this.VisitReturn, ref element)
-                       || this.TryVisit<ConditionalBranchElement>(this.VisitConditionalBranch, ref element)
+                       || this.TryVisit<BranchingElement>(this.VisitBranching, ref element)
                        || this.TryVisit<IfThenElement>(this.VisitIfThen, ref element);
 
             if (!visited)
@@ -67,7 +67,7 @@ namespace Expressive.Elements {
                  : new ReturnElement(result);
         }
 
-        protected virtual IElement VisitConditionalBranch(ConditionalBranchElement branch) {
+        protected virtual IElement VisitBranching(BranchingElement branch) {
             this.VisitList(branch.Target);
             this.VisitList(branch.Fallback);
 

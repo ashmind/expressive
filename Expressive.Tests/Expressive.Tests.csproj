@@ -74,14 +74,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Methods\AssembledMethod.cs" />
+    <Compile Include="Methods\TestMethod.cs" />
     <Compile Include="GeneralTests.cs" />
     <Compile Include="Helpers\Assembler.cs" />
     <Compile Include="Helpers\Method.cs" />
     <Compile Include="Helpers\Property.cs" />
     <Compile Include="Massive\InstructionCollectionVisitor.cs" />
     <Compile Include="Massive\InstructionSupportTest.cs" />
-    <Compile Include="Methods\ExtendedDisassembler.cs" />
+    <Compile Include="Methods\TestDisassembler.cs" />
+    <Compile Include="Methods\TestMethodBuilder.cs" />
+    <Compile Include="Methods\PseudoLocalVariable.cs" />
+    <Compile Include="Methods\PseudoMethodBody.cs" />
     <Compile Include="Methods\PseudoParameter.cs" />
     <Compile Include="Methods\StaticPseudoMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
