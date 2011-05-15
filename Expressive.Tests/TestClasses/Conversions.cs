@@ -10,6 +10,16 @@ namespace Expressive.Tests.TestClasses {
         #region Int32ToXXX
 
         [ExpectedExpression(Explicit)]
+        public static sbyte Int32ToSByte(int x) {
+            return (sbyte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static byte Int32ToByte(int x) {
+            return (byte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
         public static short Int32ToInt16(int x) {
             return (short)x;
         }
@@ -49,6 +59,16 @@ namespace Expressive.Tests.TestClasses {
         #region Int64ToXXX
 
         [ExpectedExpression(Explicit)]
+        public static sbyte Int64ToSByte(long x) {
+            return (sbyte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static byte Int64ToByte(long x) {
+            return (byte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
         public static short Int64ToInt16(long x) {
             return (short)x;
         }
@@ -81,6 +101,55 @@ namespace Expressive.Tests.TestClasses {
         [ExpectedExpression(Explicit)]
         public static double Int64ToDouble(long x) {
             return x;
+        }
+
+        #endregion
+
+        #region DoubleToXXX
+
+        [ExpectedExpression(Explicit)]
+        public static sbyte DoubleToSByte(double x) {
+            return (sbyte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static byte DoubleToByte(double x) {
+            return (byte)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static short DoubleToInt16(double x) {
+            return (short)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static ushort DoubleToUInt16(double x) {
+            return (ushort)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static int DoubleToInt32(double x) {
+            return (int)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static uint DoubleToUInt32(double x) {
+            return (uint)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static long DoubleToInt64(double x) {
+            return (long)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static ulong DoubleToUInt64(double x) {
+            return (ulong)x;
+        }
+
+        [ExpectedExpression(Explicit)]
+        public static float DoubleToSingle(double x) {
+            return (float)x;
         }
 
         #endregion
