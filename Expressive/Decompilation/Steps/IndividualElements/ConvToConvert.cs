@@ -9,6 +9,7 @@ using Expressive.Elements;
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class ConvToConvert : ElementInterpretation<InstructionElement, ExpressionElement> {
         private static readonly IDictionary<OpCode, Func<Expression, Expression>> conversions = new Dictionary<OpCode, Func<Expression, Expression>> {
+            { OpCodes.Conv_I2, e => Expression.Convert(e, typeof(short)) },
             { OpCodes.Conv_I8, e => Expression.Convert(e, typeof(long)) }
         };
 
