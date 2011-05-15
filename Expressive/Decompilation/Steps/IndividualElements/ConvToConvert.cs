@@ -11,6 +11,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         private static readonly IDictionary<OpCode, Func<Expression, Expression>> conversions = new Dictionary<OpCode, Func<Expression, Expression>> {
             { OpCodes.Conv_I2, e => Expression.Convert(e, typeof(short)) },
             { OpCodes.Conv_U2, e => Expression.Convert(e, typeof(ushort)) },
+            { OpCodes.Conv_I4, e => Expression.Convert(e, typeof(int)) },
+            { OpCodes.Conv_U4, e => Expression.Convert(e, typeof(uint)) },
             { OpCodes.Conv_I8, e => Expression.Convert(e, typeof(long)) },
             { OpCodes.Conv_R4, e => Expression.Convert(e, typeof(float)) },
             { OpCodes.Conv_R8, e => Expression.Convert(e, typeof(double)) }

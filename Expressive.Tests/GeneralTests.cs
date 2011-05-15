@@ -25,9 +25,14 @@ namespace Expressive.Tests {
             Assert.AreElementsSame(parameterTypes, decompiled.Parameters.Select(p => p.Type));
 
             var parameterNames = decompiled.Parameters.Select(p => p.Name).ToArray();
-            var expected = patterns.Select(p => string.Format(p, parameterNames));
+            var expected = patterns.Select(p => string.Format(p, parameterNames)).ToList();
 
-            Assert.Contains(expected, decompiled.ToString());
+            if (expected.Count <= 1) {
+                Assert.AreEqual(expected.Single(), decompiled.ToString());
+            }
+            else {
+                Assert.Contains(expected, decompiled.ToString());
+            }
         }
 
         public IEnumerable<object[]> GetTestMethods() {
