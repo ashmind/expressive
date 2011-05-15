@@ -17,6 +17,11 @@ namespace Expressive.Tests.TestClasses {
             return a || b;
         }
 
+        [ExpectedExpression("() => Or(True, False)")]
+        public static bool CallWithConstants() {
+            return Or(true, false);
+        }
+
         private const string ObjectEqualsExpression1 = "(a, b) => ((a == b) OrElse ((a != null) AndAlso ((b != null) AndAlso a.Equals(b))))";
         private const string ObjectEqualsExpression2 = "(a, b) => ((a == b) OrElse (((a != null) AndAlso (b != null)) AndAlso a.Equals(b)))";
 

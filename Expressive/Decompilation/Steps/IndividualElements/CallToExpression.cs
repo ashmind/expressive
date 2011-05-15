@@ -46,6 +46,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             }
             arguments.Reverse();
 
+            for (var i = 0; i < arguments.Count; i++) {
+                arguments[i] = BooleanSupport.ConvertIfRequired(arguments[i], parameters[i].ParameterType);
+            }
+
             return Expression.Call(target, method, arguments);
         }
 
