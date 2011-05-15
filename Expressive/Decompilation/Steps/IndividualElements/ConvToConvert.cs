@@ -10,7 +10,9 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
     public class ConvToConvert : ElementInterpretation<InstructionElement, ExpressionElement> {
         private static readonly IDictionary<OpCode, Func<Expression, Expression>> conversions = new Dictionary<OpCode, Func<Expression, Expression>> {
             { OpCodes.Conv_I2, e => Expression.Convert(e, typeof(short)) },
-            { OpCodes.Conv_I8, e => Expression.Convert(e, typeof(long)) }
+            { OpCodes.Conv_I8, e => Expression.Convert(e, typeof(long)) },
+            { OpCodes.Conv_R4, e => Expression.Convert(e, typeof(float)) },
+            { OpCodes.Conv_R8, e => Expression.Convert(e, typeof(double)) }
         };
 
         public override bool CanInterpret(InstructionElement instruction) {
