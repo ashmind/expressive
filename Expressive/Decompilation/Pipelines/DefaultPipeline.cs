@@ -19,6 +19,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new LdfldToField(),
                 new LdstrToConstant(),
                 new LdnullToConstant(),
+                new ConvToConvert(),
                 new CxxToCondition(),
                 new MathToExpression(),
                 new CallToExpression(),
