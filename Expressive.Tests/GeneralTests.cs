@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 using MbUnit.Framework;
@@ -17,12 +18,7 @@ namespace Expressive.Tests {
         [Test]
         [Factory("GetTestMethods")]
         public void TestDecompilesTo(MethodBase method, IEnumerable<string> patterns) {
-            var decompiled = new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
-            var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
-            if (!method.IsStatic)
-                parameterTypes.Insert(0, method.DeclaringType);
-
-            Assert.AreElementsSame(parameterTypes, decompiled.Parameters.Select(p => p.Type));
+            var decompiled = Decompile(method);
 
             var parameterNames = decompiled.Parameters.Select(p => p.Name).ToArray();
             var expected = patterns.Select(p => string.Format(p, parameterNames)).ToList();
@@ -33,6 +29,38 @@ namespace Expressive.Tests {
             else {
                 Assert.Contains(expected, decompiled.ToString());
             }
+        }
+
+        [Test]
+        [Factory("GetTestMethods")]
+        public void TestDecompilationResultHasCorrectParameters(MethodBase method) {
+            var decompiled = new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
+            var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
+            if (!method.IsStatic)
+                parameterTypes.Insert(0, method.DeclaringType);
+
+            Assert.AreElementsSame(parameterTypes, decompiled.Parameters.Select(p => p.Type));
+        }
+
+        [Test]
+        [Ignore("http://connect.microsoft.com/VisualStudio/feedback/details/361546/provide-implementation-for-getmethodbody-in-dynamicmethod")]
+        public void TestDecompilationOfConversion(
+            [Column(typeof(int))] Type originalType,
+            [Column(typeof(int))] Type targetType
+        ) {
+            var parameter = Expression.Parameter(originalType, "x");
+            var lambda = Expression.Lambda(
+                typeof(Func<,>).MakeGenericType(originalType, targetType),
+                parameter,
+                parameter
+            ).Compile();
+
+            var decompiled = Decompile(lambda.Method);
+            Assert.AreEqual("x => x", decompiled.ToString());
+        }
+
+        private static LambdaExpression Decompile(MethodBase method) {
+            return new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
         }
 
         public IEnumerable<object[]> GetTestMethods() {

@@ -53,6 +53,7 @@
     <Compile Include="Decompilation\Steps\StatementInlining\IfThenCollapsingVisitor.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Disassembler.cs" />
+    <Compile Include="Disassembly\FailSafeModuleTokenResolver.cs" />
     <Compile Include="Elements\BranchingElement.cs" />
     <Compile Include="Elements\IfThenElement.cs" />
     <Compile Include="Elements\Instructions\BranchInstruction.cs" />
