@@ -127,6 +127,9 @@
     <Compile Include="Decompilation\Steps\VisitorSequenceStep.cs" />
     <Compile Include="IDecompiler.cs" />
     <Compile Include="IDisassembler.cs" />
+    <Compile Include="IInliner.cs" />
+    <Compile Include="Inliner.cs" />
+    <Compile Include="Inlining\InliningVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
