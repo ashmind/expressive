@@ -255,7 +255,7 @@ namespace MsdnExamples {
             return lambda;
         }
 
-        protected virtual NewExpression VisitNew(NewExpression nex) {
+        protected virtual Expression VisitNew(NewExpression nex) {
             IEnumerable<Expression> args = this.VisitExpressionList(nex.Arguments);
             if (args != nex.Arguments) {
                 if (nex.Members != null)
@@ -267,19 +267,19 @@ namespace MsdnExamples {
         }
 
         protected virtual Expression VisitMemberInit(MemberInitExpression init) {
-            NewExpression n = this.VisitNew(init.NewExpression);
+            var n = this.VisitNew(init.NewExpression);
             IEnumerable<MemberBinding> bindings = this.VisitBindingList(init.Bindings);
             if (n != init.NewExpression || bindings != init.Bindings) {
-                return Expression.MemberInit(n, bindings);
+                return Expression.MemberInit((NewExpression)n, bindings);
             }
             return init;
         }
 
         protected virtual Expression VisitListInit(ListInitExpression init) {
-            NewExpression n = this.VisitNew(init.NewExpression);
+            var n = this.VisitNew(init.NewExpression);
             IEnumerable<ElementInit> initializers = this.VisitElementInitializerList(init.Initializers);
             if (n != init.NewExpression || initializers != init.Initializers) {
-                return Expression.ListInit(n, initializers);
+                return Expression.ListInit((NewExpression)n, initializers);
             }
             return init;
         }

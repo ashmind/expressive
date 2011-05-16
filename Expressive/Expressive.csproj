@@ -49,7 +49,9 @@
   <ItemGroup>
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
-    <Compile Include="Decompilation\Steps\ExpressionMatcher.cs" />
+    <Compile Include="Decompilation\Steps\Clarity\NewNullableToCastVisitor.cs" />
+    <Compile Include="Elements\Expressions\Matchers\MatcherUnaryExtensions.cs" />
+    <Compile Include="Elements\Expressions\Matchers\MatcherExpressionExtensions.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\ConvToConvert.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\PopToRemove.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\DupToCopy.cs" />
@@ -61,6 +63,8 @@
     <Compile Include="Disassembler.cs" />
     <Compile Include="Disassembly\FailSafeModuleTokenResolver.cs" />
     <Compile Include="Elements\BranchingElement.cs" />
+    <Compile Include="Elements\Expressions\Matchers\Matcher.cs" />
+    <Compile Include="Elements\Expressions\Matchers\MatcherMethodCallExtensions.cs" />
     <Compile Include="Elements\IfThenElement.cs" />
     <Compile Include="Elements\Instructions\BranchInstruction.cs" />
     <Compile Include="Elements\Instructions\IValueInstruction.cs" />

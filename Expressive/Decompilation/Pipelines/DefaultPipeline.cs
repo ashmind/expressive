@@ -40,9 +40,12 @@ namespace Expressive.Decompilation.Pipelines {
                 new ConditionImprovementVisitor(),
                 new BooleanEqualityImprovementVisitor(),
                 new NotImprovementVisitor(),
-                new CoalescingVisitor()
+                new NewNullableToCastVisitor()
             ),
-            new VariableInliningStep()
+            new VariableInliningStep(),
+            new VisitorSequenceStep(
+                new CoalescingVisitor()
+            )
         ) {
         }
 

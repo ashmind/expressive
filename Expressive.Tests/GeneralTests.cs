@@ -34,12 +34,19 @@ namespace Expressive.Tests {
         [Test]
         [Factory("GetTestMethods")]
         public void TestDecompilationResultHasCorrectParameters(MethodBase method) {
-            var decompiled = new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
+            var decompiled = Decompile(method);
             var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
             if (!method.IsStatic)
                 parameterTypes.Insert(0, method.DeclaringType);
 
             Assert.AreElementsSame(parameterTypes, decompiled.Parameters.Select(p => p.Type));
+        }
+
+        [Test]
+        [Factory("GetTestMethods")]
+        public void TestDecompilationResultIsCompilable(MethodBase method) {
+            var decompiled = Decompile(method);
+            Assert.DoesNotThrow(() => decompiled.Compile());
         }
 
         [Test]

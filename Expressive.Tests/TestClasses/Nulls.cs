@@ -9,7 +9,7 @@ namespace Expressive.Tests.TestClasses {
             return a ?? b;
         }
 
-        [ExpectedExpression("(a, b) => IIF(a.HasValue, new Nullable`1(a.GetValueOrDefault()), b)")]
+        [ExpectedExpression("(a, b) => (a ?? b)")]
         public static int? CoalesceNullable(int? a, int? b) {
             return a ?? b;
         }
@@ -24,7 +24,7 @@ namespace Expressive.Tests.TestClasses {
             return (int)a;
         }
 
-        [ExpectedExpression("a => new Nullable`1(a)")]
+        [ExpectedExpression("a => Convert(a)")]
         public static int? CastToNullable(int a) {
             return a;
         }
