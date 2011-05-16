@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Expressive.Elements.Expressions.Matchers {
     public class Matcher<T> {
@@ -52,6 +53,10 @@ namespace Expressive.Elements.Expressions.Matchers {
 
             this.Matched = this.Matched && match(this.Target);
             return this;
+        }
+
+        public Matcher<TOther> Match<TOther>(TOther value) {
+            return this.Get(t => value);
         }
     }
 

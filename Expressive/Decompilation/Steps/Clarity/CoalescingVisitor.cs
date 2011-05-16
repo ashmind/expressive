@@ -20,25 +20,20 @@ namespace Expressive.Decompilation.Steps.Clarity {
 
         private Expression TryToCoalesceAsNullable(ConditionalExpression c) {
             var hasValueTarget = (Expression)null;
+            var getValueTarget = (Expression)null;
+
             var matched = Matcher
-                .Match(c.Test)
-                .AsPropertyOrField()
+                .Match(c.Test).AsPropertyOrField()
                     .Property(property => property.Name == "HasValue" && property.DeclaringType.IsGenericTypeDefinedAs(typeof(Nullable<>)))
                     .Do(p => hasValueTarget = p.Expression)
-                .Matched;
 
-            if (!matched)
-                return null;
-
-            var getValueTarget = (Expression)null;
-            matched = Matcher
-                .Match(c.IfTrue)
-                .AsConvert()
+                .Match(c.IfTrue).AsConvert()
                     .Type(typeof(Nullable<>))
                     .Operand().AsMethodCall()
                         .Method(method => method.Name == "GetValueOrDefault"
                                        && method.DeclaringType.IsGenericTypeDefinedAs(typeof(Nullable<>)))
                         .Do(call => getValueTarget = call.Object)
+
                 .Matched;
 
             if (!matched)
