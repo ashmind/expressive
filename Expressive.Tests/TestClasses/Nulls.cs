@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Expressive.Tests.TestClasses {
     public static class Nulls {
-        [ExpectedExpression("(a, b) => IIF((a != null), a, b)")]
+        [ExpectedExpression("(a, b) => (a ?? b)")]
         public static object CoalesceObjects(object a, object b) {
             return a ?? b;
         }
@@ -14,7 +14,7 @@ namespace Expressive.Tests.TestClasses {
             return a ?? b;
         }
 
-        [ExpectedExpression("(a, b) => IIF((a != null), a, b)")]
+        [ExpectedExpression("(a, b) => (a ?? b)")]
         public static object IfNull(object a, object b) {
             return a != null ? a : b;
         }

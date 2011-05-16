@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
+    <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
+    <Compile Include="Decompilation\Steps\ExpressionMatcher.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\ConvToConvert.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\PopToRemove.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\DupToCopy.cs" />
