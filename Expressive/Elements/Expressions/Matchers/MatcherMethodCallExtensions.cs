@@ -10,7 +10,7 @@ namespace Expressive.Elements.Expressions.Matchers {
             this Matcher<MethodCallExpression> matcher,
             Func<MethodInfo, bool> matchMethod
         ) {
-            return matcher.MatchIf(m => matchMethod(m.Target.Method));
+            return matcher.Match(target => matchMethod(target.Method));
         }
     }
 }

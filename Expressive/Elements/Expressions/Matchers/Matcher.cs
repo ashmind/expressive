@@ -23,8 +23,8 @@ namespace Expressive.Elements.Expressions.Matchers {
         public Matcher<T> MatchAs<TOther>(Func<TOther, bool> match)
             where TOther : class
         {
-            return this.MatchIf(m => {
-                var typed = m.Target as TOther;
+            return this.Match(target => {
+                var typed = target as TOther;
                 if (typed == null)
                     return false;
 
@@ -32,11 +32,11 @@ namespace Expressive.Elements.Expressions.Matchers {
             });
         }
 
-        public Matcher<T> MatchIf(Func<Matcher<T>, bool> match) {
+        public Matcher<T> Match(Func<T, bool> match) {
             if (!this.Matched)
                 return this;
 
-            this.Matched = this.Matched && match(this);
+            this.Matched = this.Matched && match(this.Target);
             return this;
         }
     }

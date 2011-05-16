@@ -11,7 +11,7 @@ namespace Expressive.Elements.Expressions.Matchers {
         public static Matcher<TExpression> OneOf<TExpression>(this Matcher<TExpression> matcher, params ExpressionType[] types) 
             where TExpression : Expression
         {
-            return matcher.MatchIf(m => types.Contains(m.Target.NodeType));
+            return matcher.Match(target => types.Contains(target.NodeType));
         }
 
         public static Matcher<TExpression> BinaryWith<TExpression>(
@@ -86,9 +86,9 @@ namespace Expressive.Elements.Expressions.Matchers {
         public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Type type)
             where TExpression : Expression
         {
-            return matcher.MatchIf(
-                m => m.Target.Type == type
-                  || m.Target.Type.IsGenericTypeDefinedAs(type)
+            return matcher.Match(
+                target => target.Type == type
+                       || target.Type.IsGenericTypeDefinedAs(type)
             );
         }
     }

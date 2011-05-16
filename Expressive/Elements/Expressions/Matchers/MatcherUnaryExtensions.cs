@@ -9,7 +9,7 @@ namespace Expressive.Elements.Expressions.Matchers {
             this Matcher<UnaryExpression> matcher,
             Func<Matcher<Expression>, Matcher<Expression>> matchOperand
         ) {
-            return matcher.MatchIf(m => matchOperand(Matcher.Match(m.Target.Operand)).Matched);
+            return matcher.Match(target => matchOperand(Matcher.Match(target.Operand)).Matched);
         }
     }
 }
