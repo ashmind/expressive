@@ -24,7 +24,12 @@ namespace Expressive {
             var elements = this.disassembler.Disassemble(method)
                                             .Select(i => (IElement)new InstructionElement(i))
                                             .ToList();
-            var context = new DecompilationContext(method);
+
+            var parameters = method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
+            if (!method.IsStatic)
+                parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));
+
+            var context = new DecompilationContext(method, i => parameters[i]);
 
             try {
                 foreach (var step in this.pipeline.GetSteps()) {
@@ -42,7 +47,7 @@ namespace Expressive {
             }
 
             var expression = GetSingleExpression(elements);
-            return Expression.Lambda(expression, context.ExtractedParameters.ToArray());
+            return Expression.Lambda(expression, parameters.ToArray());
         }
 
         protected virtual Expression GetSingleExpression(IList<IElement> elements) {

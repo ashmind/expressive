@@ -26,14 +26,6 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
         public override void Initialize(DecompilationContext context) {
             this.primaryContext = context;
-            context.ExtractedParameters.Clear();
-
-            if (!context.Method.IsStatic)
-                context.ExtractedParameters.Add(Expression.Parameter(context.Method.DeclaringType, "<this>"));
-
-            context.ExtractedParameters.AddRange(
-                context.Method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name))
-            );
         }
 
         public override bool CanInterpret(InstructionElement instruction) {
@@ -42,7 +34,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var indexGetter = parameterIndexGetters[instruction.OpCode];
-            var parameter = this.primaryContext.ExtractedParameters[indexGetter(instruction.Instruction)];
+            var parameter = this.primaryContext.GetParameter(indexGetter(instruction.Instruction));
             
             return new ExpressionElement(parameter);
         }

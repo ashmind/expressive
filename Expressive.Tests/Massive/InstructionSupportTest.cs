@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using Expressive.Decompilation;
@@ -64,7 +65,11 @@ namespace Expressive.Tests.Massive {
         }
 
         private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, MethodBase method) {
-            var context = new DecompilationContext(method);
+            var parameters = method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
+            if (!method.IsStatic)
+                parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));
+
+            var context = new DecompilationContext(method, i => parameters[i]);
             foreach (var step in pipeline.GetSteps()) {
                 step.Apply(elements, context);
             }

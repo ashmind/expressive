@@ -1,26 +1,16 @@
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Expressive.Decompilation {
     public class DecompilationContext {
-        #region ParameterExpressionCollection Class
-
-        public class ParameterExpressionCollection : KeyedCollection<string, ParameterExpression> {
-            protected override string GetKeyForItem(ParameterExpression item) {
-                return item.Name;
-            }
-        }
-
-        #endregion
-
-        public DecompilationContext(MethodBase method) {
+        public DecompilationContext(MethodBase method, Func<int, Expression> getParameter) {
             this.Method = method;
-            this.ExtractedParameters = new ParameterExpressionCollection();
+            this.GetParameter = getParameter;
         }
 
         public MethodBase Method { get; private set; }
-        public ParameterExpressionCollection ExtractedParameters { get; private set; }
+        public Func<int, Expression> GetParameter { get; private set; }
     }
 }
