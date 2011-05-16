@@ -30,7 +30,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new LdcToConstant(),
                 new BranchToCondition(),
                 new DupToCopy(),
-                new PopToMove(),
+                new PopToRemove(),
                 new RetToReturn()
             ),
             new VisitorSequenceStep(

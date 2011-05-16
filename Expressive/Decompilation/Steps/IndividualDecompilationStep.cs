@@ -20,18 +20,24 @@ namespace Expressive.Decompilation.Steps {
             base.Apply(elements, context);
         }
 
-        protected override void ApplyToSpecificBranch(IList<IElement> elements, DecompilationContext context) {
-            var individualContext = new IndividualDecompilationContext(elements);
-            for (var i = 0; i < elements.Count; i++) {
-                var element = elements[i];
-                var interpretation = this.Interpretations.FirstOrDefault(x => x.CanInterpret(elements[i]));
-                if (interpretation == null)
-                    continue;
+        protected override void ApplyToSpecificElement(ref int index, IList<IElement> elements, Stack<BranchStackFrame> branchStack, DecompilationContext context) {
+            var individualContext = new IndividualDecompilationContext(elements, branchStack);
 
-                individualContext.CurrentIndex = i;
-                var result = interpretation.Interpret(element, individualContext);
-                i = individualContext.CurrentIndex; // some elements may have been captured, changing the collection, so index resync is needed
-                elements[i] = result;
+            var element = elements[index];
+            var indexFixed = index;
+            var interpretation = this.Interpretations.FirstOrDefault(x => x.CanInterpret(elements[indexFixed]));
+            if (interpretation == null)
+                return;
+
+            individualContext.CurrentIndex = index;
+            var result = interpretation.Interpret(element, individualContext);
+            index = individualContext.CurrentIndex; // some elements may have been captured, changing the collection, so index resync is needed
+            if (result != null) {
+                elements[index] = result;
+            }
+            else {
+                elements.RemoveAt(index);
+                index -= 1;
             }
         }
     }

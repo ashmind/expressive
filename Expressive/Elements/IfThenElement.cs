@@ -6,7 +6,7 @@ using System.Text;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class IfThenElement : IBranchingElement {
+    public class IfThenElement : IElement {
         public Expression Condition { get; set; }
         public IList<IElement> Then { get; set; }
         public IList<IElement> Else { get; set; }

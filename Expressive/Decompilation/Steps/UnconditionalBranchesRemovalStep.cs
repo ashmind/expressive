@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-using AshMind.Extensions;
-
 using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps {
     public class UnconditionalBranchesRemovalStep : BranchingAwareStepBase {
-        protected override void ApplyToSpecificBranch(IList<IElement> elements, DecompilationContext context) {
-            elements.RemoveWhere(e => {
-                var branching = e as BranchingElement;
-                return (branching != null) && (
-                    branching.OpCode == OpCodes.Br
-                    ||
-                    branching.OpCode == OpCodes.Br_S
-                );
-            });
+        protected override void ApplyToSpecificElement(ref int index, IList<IElement> elements, Stack<BranchStackFrame> branchStack, DecompilationContext context) {
+            var branching = elements[index] as BranchingElement;
+            if (branching != null && (branching.OpCode == OpCodes.Br || branching.OpCode == OpCodes.Br_S)) {
+                elements.RemoveAt(index);
+                index -= 1;
+            }
         }
     }
 }

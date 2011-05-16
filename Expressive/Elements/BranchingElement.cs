@@ -4,13 +4,25 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 
+using AshMind.Extensions;
+
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class BranchingElement : IBranchingElement {
+    public class BranchingElement : IElement {      
+        private static readonly IDictionary<string, int> nullaryAndUnaryParameterCounts = new Dictionary<string, int> {
+            { OpCodes.Br.Name, 0 },
+            { OpCodes.Brtrue.Name, 1 },
+            { OpCodes.Brfalse.Name, 1 }
+        };
+
         public OpCode OpCode  { get; set; }
         public IList<IElement> Target  { get; private set; }
         public IList<IElement> Fallback { get; private set; }
+
+        public int ParameterCount {
+            get { return nullaryAndUnaryParameterCounts.GetValueOrDefault(this.OpCode.Name.SubstringBefore("."), 2); }
+        }
 
         public BranchingElement(OpCode opCode, IList<IElement> target, IList<IElement> fallback) {
             this.OpCode = opCode;

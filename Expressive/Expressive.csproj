@@ -47,8 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\ConvToConvert.cs" />
-    <Compile Include="Decompilation\Steps\IndividualElements\PopToMove.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\PopToRemove.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\DupToCopy.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\MathToExpression.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdnullToConstant.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Elements\IPreservingOffset.cs" />
     <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
-    <Compile Include="Elements\IBranchingElement.cs" />
     <Compile Include="Elements\Presentation\Indent.cs" />
     <Compile Include="External\ExpressionVisitor.cs" />
     <Compile Include="Elements\Expressions\LocalExpression.cs" />
