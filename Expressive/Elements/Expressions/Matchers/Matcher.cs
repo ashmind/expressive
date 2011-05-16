@@ -32,6 +32,20 @@ namespace Expressive.Elements.Expressions.Matchers {
             });
         }
 
+        public Matcher<TOther> As<TOther>() {
+            if (!this.Matched || !(this.Target is TOther))
+                return new Matcher<TOther>(default(TOther)) { Matched = false };
+
+            return new Matcher<TOther>((TOther)(object)this.Target);
+        }
+
+        public Matcher<TOther> Get<TOther>(Func<T, TOther> get) {
+            if (!this.Matched)
+                return new Matcher<TOther>(default(TOther)) { Matched = false };
+
+            return new Matcher<TOther>(get(this.Target));
+        }
+
         public Matcher<T> Match(Func<T, bool> match) {
             if (!this.Matched)
                 return this;

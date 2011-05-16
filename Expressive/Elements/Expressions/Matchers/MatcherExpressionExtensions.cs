@@ -38,23 +38,17 @@ namespace Expressive.Elements.Expressions.Matchers {
             });
         }
 
-        public static Matcher<TExpression> MethodCall<TExpression>(
-            this Matcher<TExpression> matcher,
-            Func<Matcher<MethodCallExpression>, Matcher<MethodCallExpression>> matchCall
-        )
-        where TExpression : Expression
+        public static Matcher<MethodCallExpression> AsMethodCall<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression
         {
-            return matcher.MatchAs<MethodCallExpression>(m => matchCall(Matcher.Match(m)).Matched);
+            return matcher.As<MethodCallExpression>();
         }
 
-        public static Matcher<TExpression> Convert<TExpression>(
-            this Matcher<TExpression> matcher,
-            Func<Matcher<UnaryExpression>, Matcher<UnaryExpression>> matchConvert
-        )
-        where TExpression : Expression
+        public static Matcher<UnaryExpression> AsConvert<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression
         {
             return matcher.OneOf(ExpressionType.Convert, ExpressionType.ConvertChecked)
-                          .MatchAs<UnaryExpression>(c => matchConvert(Matcher.Match(c)).Matched);
+                          .As<UnaryExpression>();
         }
 
         public static Matcher<TExpression> Property<TExpression>(

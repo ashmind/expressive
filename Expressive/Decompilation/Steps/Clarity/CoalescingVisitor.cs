@@ -33,16 +33,12 @@ namespace Expressive.Decompilation.Steps.Clarity {
             var getValueTarget = (Expression)null;
             matched = Matcher
                 .Match(c.IfTrue)
-                .Convert(convert => convert
+                .AsConvert()
                     .Type(typeof(Nullable<>))
-                    .Operand(o => o
-                        .MethodCall(call => call
-                            .Method(method => method.Name == "GetValueOrDefault"
-                                           && method.DeclaringType.IsGenericTypeDefinedAs(typeof(Nullable<>)))
-                            .Do(x => getValueTarget = x.Object)
-                        )
-                    )
-                )
+                    .Operand().AsMethodCall()
+                        .Method(method => method.Name == "GetValueOrDefault"
+                                       && method.DeclaringType.IsGenericTypeDefinedAs(typeof(Nullable<>)))
+                        .Do(x => getValueTarget = x.Object)
                 .Matched;
 
             if (!matched)
