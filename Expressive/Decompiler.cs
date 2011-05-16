@@ -21,16 +21,20 @@ namespace Expressive {
         }
 
         public virtual LambdaExpression Decompile(MethodBase method) {
-            var elements = this.disassembler.Disassemble(method)
-                                            .Select(i => (IElement)new InstructionElement(i))
-                                            .ToList();
-
             var parameters = method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
             if (!method.IsStatic)
                 parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));
 
-            var context = new DecompilationContext(method, i => parameters[i]);
+            var body = this.Decompile(method, parameters.Cast<Expression>().ToArray());
+            return Expression.Lambda(body, parameters.ToArray());
+        }
 
+        public virtual Expression Decompile(MethodBase method, IList<Expression> arguments) {
+            var elements = this.disassembler.Disassemble(method)
+                                .Select(i => (IElement)new InstructionElement(i))
+                                .ToList();
+
+            var context = new DecompilationContext(method, i => arguments[i]);
             try {
                 foreach (var step in this.pipeline.GetSteps()) {
                     step.Apply(elements, context);
@@ -39,15 +43,14 @@ namespace Expressive {
             catch (Exception ex) {
                 throw new DecompilationException(
                     "Exception while interpreting "
-                        + Environment.NewLine
-                        + ElementHelper.ToString(elements, Indent.FourSpaces)
-                        + Environment.NewLine
-                        + ex.Message, ex
+                    + Environment.NewLine
+                    + ElementHelper.ToString(elements, Indent.FourSpaces)
+                    + Environment.NewLine
+                    + ex.Message, ex
                 );
             }
 
-            var expression = GetSingleExpression(elements);
-            return Expression.Lambda(expression, parameters.ToArray());
+            return GetSingleExpression(elements);
         }
 
         protected virtual Expression GetSingleExpression(IList<IElement> elements) {
