@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
 using Expressive.Decompilation.Pipelines;
 
 namespace Expressive {
     public static class ExpressiveEngine {
-        public static LambdaExpression ToExpression(MethodBase method) {
-            return new Decompiler(new Disassembler(), new DefaultPipeline()).Decompile(method);
+        static ExpressiveEngine() {
+            ExpressiveEngine.GetDisassembler = () => new Disassembler();
+            ExpressiveEngine.GetDecompiler = () => new Decompiler(ExpressiveEngine.GetDisassembler(), new DefaultPipeline());
+            ExpressiveEngine.GetInliner = () => new Inliner(ExpressiveEngine.GetDecompiler());
         }
+
+        public static Func<IDisassembler> GetDisassembler { get; set; }
+        public static Func<IDecompiler> GetDecompiler { get; set; }
+        public static Func<IInliner> GetInliner { get; set; }
     }
 }
