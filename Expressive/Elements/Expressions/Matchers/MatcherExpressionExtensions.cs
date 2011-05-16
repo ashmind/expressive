@@ -44,28 +44,17 @@ namespace Expressive.Elements.Expressions.Matchers {
             return matcher.As<MethodCallExpression>();
         }
 
+        public static Matcher<MemberExpression> AsPropertyOrField<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression
+        {
+            return matcher.As<MemberExpression>();
+        }
+
         public static Matcher<UnaryExpression> AsConvert<TExpression>(this Matcher<TExpression> matcher)
             where TExpression : Expression
         {
             return matcher.OneOf(ExpressionType.Convert, ExpressionType.ConvertChecked)
                           .As<UnaryExpression>();
-        }
-
-        public static Matcher<TExpression> Property<TExpression>(
-            this Matcher<TExpression> matcher,
-            Func<PropertyInfo, bool> matchProperty,
-            Action<MemberExpression> process
-        )
-        where TExpression : Expression
-        {
-            return matcher.MatchAs<MemberExpression>(m => {
-                var property = m.Member as PropertyInfo;
-                var matched = property != null && matchProperty(property);
-                if (matched)
-                    process(m);
-
-                return matched;
-            });
         }
 
         public static Matcher<TExpression> Constant<TExpression>(
