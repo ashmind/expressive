@@ -20,20 +20,25 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             return new ExpressionElement(IdentifyAndCollectCall(method, context));
         }
 
-        private Expression IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {
+        protected Expression IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {
             var parameters = methodBase.GetParameters();
-            var target = !methodBase.IsStatic
-                       ? context.CapturePreceding<ExpressionElement>(-parameters.Length-1).Expression
-                       : null;
+            var getTarget = !methodBase.IsStatic
+                          ? (Func<Expression>)(() => context.CapturePreceding<ExpressionElement>().Expression)
+                          : () => null;
 
             var property = GetProperty(methodBase);
             if (property != null)
-                return Expression.Property(target, property);
+                return Expression.Property(getTarget(), property);
 
             var method = methodBase as MethodInfo;
             if (method == null)
                 throw new NotImplementedException("Only method and property calls are implemented.");
 
+            var arguments = CaptureArguments(parameters, methodBase, context);
+            return Expression.Call(getTarget(), method, arguments);
+        }
+
+        protected IEnumerable<Expression> CaptureArguments(ParameterInfo[] parameters, MethodBase methodBase, IndividualDecompilationContext context) {
             context.VerifyPrecedingCount(parameters.Length, (actualCount, precedingString) => string.Format(
                 "Method {0} expects {1} parameters." + Environment.NewLine +
                 "However, there are only {2} preceding elements: " + Environment.NewLine + "{3}",
@@ -44,13 +49,13 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             while (arguments.Count < parameters.Length) {
                 arguments.Add(context.CapturePreceding<ExpressionElement>().Expression);
             }
-            arguments.Reverse();
 
+            arguments.Reverse();
             for (var i = 0; i < arguments.Count; i++) {
                 arguments[i] = BooleanSupport.ConvertIfRequired(arguments[i], parameters[i].ParameterType);
             }
 
-            return Expression.Call(target, method, arguments);
+            return arguments;
         }
 
         private PropertyInfo GetProperty(MethodBase method) {

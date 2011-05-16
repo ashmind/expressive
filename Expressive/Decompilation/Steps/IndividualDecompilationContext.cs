@@ -12,33 +12,29 @@ namespace Expressive.Decompilation.Steps {
         public IndividualDecompilationContext(IList<IElement> elements) {
             this.elements = elements;
         }
-
-        public TElement CapturePreceding<TElement>()
+        
+        public TElement CapturePreceding<TElement>() 
             where TElement : class, IElement
         {
-            return this.CapturePreceding<TElement>(-1);
+            var preceding = this.GetPreceding<TElement>();
+            var precedingIndex = this.CurrentIndex - 1;
+
+            this.elements.RemoveAt(precedingIndex);
+            this.CurrentIndex -= 1;
+            return preceding;
         }
 
-        public TElement CapturePreceding<TElement>(int negativeOffset) 
+        public TElement GetPreceding<TElement>()
             where TElement : class, IElement
         {
-            if (negativeOffset >= 0)
-                throw new ArgumentOutOfRangeException("negativeOffset");
-
-            //if (lastRecursivePreprocessedIndex < this.CurrentIndex)
-            //    RecursiveProcessAllPreceding();
-
-            var precedingIndex = this.CurrentIndex + negativeOffset;
-            var preceding = this.elements[precedingIndex];
+            var preceding = this.elements[this.CurrentIndex - 1];
             var typed = preceding as TElement;
             if (typed == null)
                 throw new InvalidOperationException("Element " + preceding + " must be an ExpressionElement to be used in this context.");
 
-            this.elements.RemoveAt(precedingIndex);
-            this.CurrentIndex -= 1;
             return typed;
         }
-
+        
         public void VerifyPrecedingCount(int requiredCount, Func<int, string, string> getMessage) {
             if (this.CurrentIndex >= requiredCount)
                 return;

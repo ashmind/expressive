@@ -11,6 +11,10 @@ namespace Expressive.Elements.Instructions {
             this.Value = value;
         }
 
+        public override string ToString() {
+            return base.ToString() + " " + this.Value;
+        }
+
         #region IValueInstruction Members
 
         object IValueInstruction.Value {

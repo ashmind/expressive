@@ -48,8 +48,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Decompilation\Steps\IndividualElements\ConvToConvert.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\PopToMove.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\DupToCopy.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\MathToExpression.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdnullToConstant.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\NewobjToNew.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\IfThenCollapsingVisitor.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Disassembler.cs" />

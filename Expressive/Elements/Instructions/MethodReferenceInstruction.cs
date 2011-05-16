@@ -11,5 +11,9 @@ namespace Expressive.Elements.Instructions {
         public MethodReferenceInstruction(int offset, OpCode opCode, MethodBase method) : base(offset, opCode) {
             this.Method = method;
         }
+
+        public override string ToString() {
+            return base.ToString() + " " + this.Method;
+        }
     }
 }

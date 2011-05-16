@@ -23,11 +23,14 @@ namespace Expressive.Decompilation.Pipelines {
                 new CxxToCondition(),
                 new MathToExpression(),
                 new CallToExpression(),
+                new NewobjToNew(),
                 new LdlocToVariable(),
                 new StlocToAssignment(),
                 new LdargToParameter(),
                 new LdcToConstant(),
                 new BranchToCondition(),
+                new DupToCopy(),
+                new PopToMove(),
                 new RetToReturn()
             ),
             new VisitorSequenceStep(

@@ -7,5 +7,9 @@ namespace Expressive.Elements.Instructions {
         public VariableReferenceInstruction(int offset, OpCode opCode, ushort ordinal) : base(offset, opCode) {
             this.Ordinal = ordinal;
         }
+
+        public override string ToString() {
+            return base.ToString() + " " + this.Ordinal;
+        }
     }
 }

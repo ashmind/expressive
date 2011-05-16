@@ -15,8 +15,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Ldloc_1, _ => 1 },
             { OpCodes.Ldloc_2, _ => 2 },
             { OpCodes.Ldloc_3, _ => 3 },
+            { OpCodes.Ldloc,   x => ((VariableReferenceInstruction)x).Ordinal },
             { OpCodes.Ldloc_S, x => ((VariableReferenceInstruction)x).Ordinal },
-            { OpCodes.Ldloc,   x => ((VariableReferenceInstruction)x).Ordinal }
+            { OpCodes.Ldloca,  x => ((VariableReferenceInstruction)x).Ordinal },
+            { OpCodes.Ldloca_S,  x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
         private MethodBody methodBody;
