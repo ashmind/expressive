@@ -50,6 +50,9 @@
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NewNullableToCastVisitor.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\LdftnToAddressOf.cs" />
+    <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
+    <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherMemberExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherUnaryExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherExpressionExtensions.cs" />
@@ -80,6 +83,7 @@
     <Compile Include="Elements\Instructions\Instruction.cs" />
     <Compile Include="Elements\Instructions\VariableReferenceInstruction.cs" />
     <Compile Include="Elements\IPreservingOffset.cs" />
+    <Compile Include="Elements\FieldAssignmentElement.cs" />
     <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
     <Compile Include="Elements\Presentation\Indent.cs" />

@@ -11,5 +11,9 @@ namespace Expressive.Elements.Instructions {
         public FieldReferenceInstruction(int offset, OpCode opCode, FieldInfo field) : base(offset, opCode) {
             this.Field = field;
         }
+
+        public override string ToString() {
+            return base.ToString() + " " + this.Field;
+        }
     }
 }

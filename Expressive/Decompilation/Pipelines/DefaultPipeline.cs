@@ -18,6 +18,7 @@ namespace Expressive.Decompilation.Pipelines {
             new IndividualDecompilationStep(
                 new LdfldToField(),
                 new LdstrToConstant(),
+                new LdftnToAddressOf(),
                 new LdnullToConstant(),
                 new ConvToConvert(),
                 new CxxToCondition(),
@@ -26,6 +27,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new NewobjToNew(),
                 new LdlocToVariable(),
                 new StlocToAssignment(),
+                new StfldToAssignment(),
                 new LdargToParameter(),
                 new LdcToConstant(),
                 new BranchToCondition(),
