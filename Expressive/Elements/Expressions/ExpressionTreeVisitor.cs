@@ -14,6 +14,10 @@ namespace Expressive.Elements.Expressions {
             if (addressOf != null)
                 return this.VisitAddressOf(addressOf);
 
+            var newArrayWithSize = exp as NewArrayWithSizeExpression;
+            if (newArrayWithSize != null)
+                return this.VisitNewArrayWithSize(newArrayWithSize);
+
             return base.Visit(exp);
         }
 
@@ -23,6 +27,10 @@ namespace Expressive.Elements.Expressions {
 
         protected virtual Expression VisitAddressOf(AddressOfExpression addressOf) {
             return addressOf;
+        }
+
+        protected virtual Expression VisitNewArrayWithSize(NewArrayWithSizeExpression newArrayWithSize) {
+            return newArrayWithSize;
         }
     }
 }

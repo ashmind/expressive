@@ -23,10 +23,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             return this.Interpret((TInputElement)element, context);
         }
 
-        public virtual bool CanInterpret(TInputElement element) {
-            return true;
-        }
-
+        public abstract bool CanInterpret(TInputElement element);
         public abstract TResultElement Interpret(TInputElement element, IndividualDecompilationContext context);
     }
 }

@@ -10,5 +10,9 @@ namespace Expressive.Elements.Instructions {
         public TypeReferenceInstruction(int offset, OpCode opCode, Type type) : base(offset, opCode) {
             this.Type = type;
         }
+
+        public override string ToString() {
+            return base.ToString() + " " + this.Type;
+        }
     }
 }

@@ -24,6 +24,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Bne_Un.Name.SubstringBefore("."), Expression.NotEqual }
         };
 
+        public override bool CanInterpret(BranchingElement element) {
+            return true;
+        }
+
         public override IElement Interpret(BranchingElement branch, IndividualDecompilationContext context) {
             var condition = CaptureCondition(branch, context);
             var targetAsExpression = AsSingleExpression(branch.Target);

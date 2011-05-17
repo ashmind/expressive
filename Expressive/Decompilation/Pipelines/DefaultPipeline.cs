@@ -25,6 +25,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new MathToExpression(),
                 new CallToExpression(),
                 new NewobjToNew(),
+                new NewarrToNewArray(),
                 new LdlocToVariable(),
                 new StlocToAssignment(),
                 new StfldToAssignment(),
