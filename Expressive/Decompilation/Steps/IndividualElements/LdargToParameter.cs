@@ -4,13 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using AshMind.Extensions;
-
-using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class LdargToParameter : ElementInterpretation<InstructionElement, ExpressionElement> {
+    public class LdargToParameter : InstructionToExpression {
         private static readonly IDictionary<OpCode, Func<Instruction, int>> parameterIndexGetters = new Dictionary<OpCode, Func<Instruction, int>> {
             { OpCodes.Ldarg_0,  _ => 0 },
             { OpCodes.Ldarg_1,  _ => 1 },
@@ -28,15 +25,13 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             this.primaryContext = context;
         }
 
-        public override bool CanInterpret(InstructionElement instruction) {
+        public override bool CanInterpret(Instruction instruction) {
             return parameterIndexGetters.ContainsKey(instruction.OpCode);
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
             var indexGetter = parameterIndexGetters[instruction.OpCode];
-            var parameter = this.primaryContext.GetParameter(indexGetter(instruction.Instruction));
-            
-            return new ExpressionElement(parameter);
+            return this.primaryContext.GetParameter(indexGetter(instruction));
         }
     }
 }

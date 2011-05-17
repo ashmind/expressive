@@ -10,17 +10,15 @@ using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class LdcToConstant : ElementInterpretation<InstructionElement, ExpressionElement> {
+    public class LdcToConstant : InstructionToExpression {
         private static readonly string LdcNamePrefix = OpCodes.Ldc_I4.Name.SubstringBefore(".");
 
-        public override bool CanInterpret(InstructionElement instruction) {
+        public override bool CanInterpret(Instruction instruction) {
             return instruction.OpCode.Name.StartsWith(LdcNamePrefix);
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            return new ExpressionElement(Expression.Constant(
-                GetValue(instruction.Instruction)
-            ));
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
+            return Expression.Constant(GetValue(instruction));
         }
 
         private object GetValue(Instruction instruction) {

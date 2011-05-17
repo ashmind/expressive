@@ -4,16 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class LdnullToConstant : ElementInterpretation<InstructionElement, ExpressionElement> {
-        public override bool CanInterpret(InstructionElement instruction) {
+    public class LdnullToConstant : InstructionToExpression {
+        public override bool CanInterpret(Instruction instruction) {
             return instruction.OpCode == OpCodes.Ldnull;
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            return new ExpressionElement(Expression.Constant(null));
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
+            return Expression.Constant(null);
         }
     }
 }

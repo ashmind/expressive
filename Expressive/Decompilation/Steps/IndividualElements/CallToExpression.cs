@@ -5,19 +5,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class CallToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
-        public override bool CanInterpret(InstructionElement instruction) {
+    public class CallToExpression : InstructionToExpression {
+        public override bool CanInterpret(Instruction instruction) {
             return instruction.OpCode == OpCodes.Call
                 || instruction.OpCode == OpCodes.Callvirt;
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var method = ((MethodReferenceInstruction)instruction.Instruction).Method;
-            return new ExpressionElement(IdentifyAndCollectCall(method, context));
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
+            var method = ((MethodReferenceInstruction)instruction).Method;
+            return IdentifyAndCollectCall(method, context);
         }
 
         protected Expression IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {

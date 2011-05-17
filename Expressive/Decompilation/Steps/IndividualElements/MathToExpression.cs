@@ -4,12 +4,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     using BinaryConverter = Func<Expression, Expression, Expression>;
 
-    public class MathToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {
+    public class MathToExpression : InstructionToExpression {
         private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
             { OpCodes.Add, Expression.Add },
             { OpCodes.And, Expression.And },
@@ -23,18 +23,18 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Xor, Expression.ExclusiveOr }
         };
 
-        public override bool CanInterpret(InstructionElement instruction) {
+        public override bool CanInterpret(Instruction instruction) {
             return operators.ContainsKey(instruction.OpCode);
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
             var right = context.CapturePreceding();
             var left = context.CapturePreceding();
             var binary = operators[instruction.OpCode];
 
             Adapt(left, ref right);
 
-            return new ExpressionElement(binary(left, right));
+            return binary(left, right);
         }
 
         private void Adapt(Expression left, ref Expression right) {

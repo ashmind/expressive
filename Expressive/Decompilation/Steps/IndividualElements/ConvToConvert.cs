@@ -4,10 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using Expressive.Elements;
+using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class ConvToConvert : ElementInterpretation<InstructionElement, ExpressionElement> {
+    public class ConvToConvert : InstructionToExpression {
         private static readonly IDictionary<OpCode, Func<Expression, Expression>> conversions = new Dictionary<OpCode, Func<Expression, Expression>> {
             { OpCodes.Conv_I1, e => Expression.Convert(e, typeof(sbyte)) },
             { OpCodes.Conv_U1, e => Expression.Convert(e, typeof(byte)) },    
@@ -21,13 +21,13 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Conv_R8, e => Expression.Convert(e, typeof(double)) }
         };
 
-        public override bool CanInterpret(InstructionElement instruction) {
+        public override bool CanInterpret(Instruction instruction) {
             return conversions.ContainsKey(instruction.OpCode);
         }
 
-        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
             var target = context.CapturePreceding();
-            return new ExpressionElement(conversions[instruction.OpCode](target));
+            return conversions[instruction.OpCode](target);
         }
     }
 }
