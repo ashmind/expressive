@@ -69,10 +69,13 @@ namespace Expressive.Elements.Expressions.Matchers {
         public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Type type)
             where TExpression : Expression
         {
-            return matcher.Match(
-                target => target.Type == type
-                       || target.Type.IsGenericTypeDefinedAs(type)
-            );
+            return matcher.Type(t => t == type || t.IsGenericTypeDefinedAs(type));
+        }
+
+        public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Func<Type, bool> matchType)
+            where TExpression : Expression
+        {
+            return matcher.Match(target => matchType(target.Type));
         }
     }
 }

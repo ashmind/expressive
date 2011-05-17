@@ -13,12 +13,27 @@ namespace Expressive.Elements.Expressions.Matchers {
             this.Matched = true;
         }
 
+        public Matcher<T> AssignTo(out T value) {
+            if (!this.Matched) {
+                value = default(T);
+                return this;
+            }
+
+            value = this.Target;
+            return this;
+        }
+
         public Matcher<T> Do(Action<T> action) {
             if (!this.Matched)
                 return this;
 
             action(this.Target);
             return this;
+        }
+
+
+        public TResult Choose<TResult>(Func<TResult> ifMatched, TResult valueIfNotMatched) {
+            return this.Matched ? ifMatched() : valueIfNotMatched;
         }
 
         public Matcher<T> MatchAs<TOther>(Func<TOther, bool> match)

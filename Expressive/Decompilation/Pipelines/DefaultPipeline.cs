@@ -36,6 +36,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new RetToReturn()
             ),
             new VisitorSequenceStep(
+                new AddressOfToCreateDelegateVisitor(),
                 new IfThenCollapsingVisitor(), // must be before following two
                 new IfAssignmentInliningVisitor(),
                 new IfReturnInliningVisitor(),

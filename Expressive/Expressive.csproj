@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Decompilation\Steps\AddressOfToCreateDelegateVisitor.cs" />
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NewNullableToCastVisitor.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
+    <Compile Include="Elements\Expressions\Matchers\MatcherNewExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherMemberExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherUnaryExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherExpressionExtensions.cs" />
