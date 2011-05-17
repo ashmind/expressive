@@ -21,8 +21,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var right = context.CapturePreceding<ExpressionElement>().Expression;
-            var left = context.CapturePreceding<ExpressionElement>().Expression;
+            var right = context.CapturePreceding();
+            var left = context.CapturePreceding();
 
             BooleanSupport.ConvertIfRequired(ref left, ref right);
 

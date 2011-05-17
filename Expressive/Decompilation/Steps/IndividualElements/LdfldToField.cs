@@ -17,7 +17,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var field = ((FieldReferenceInstruction)instruction.Instruction).Field;
             var instance = !field.IsStatic
-                         ? context.CapturePreceding<ExpressionElement>().Expression
+                         ? context.CapturePreceding()
                          : null;
             return new ExpressionElement(Expression.Field(instance, field));
         }

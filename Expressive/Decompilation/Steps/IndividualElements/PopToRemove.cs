@@ -12,7 +12,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override IElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            context.CapturePreceding<IElement>();
+            context.CapturePreceding();
             return null;
         }
     }

@@ -26,7 +26,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var target = context.CapturePreceding<ExpressionElement>().Expression;
+            var target = context.CapturePreceding();
             return new ExpressionElement(conversions[instruction.OpCode](target));
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Expressive.Elements;
 using Expressive.Elements.Presentation;
@@ -15,27 +16,28 @@ namespace Expressive.Decompilation.Steps {
             this.branchStack = branchStack;
         }
 
-        public TElement CapturePreceding<TElement>() 
-            where TElement : class, IElement
-        {
-            var preceding = this.GetPreceding<TElement>();
-            var precedingIndex = this.CurrentIndex - 1;
+        public Expression CapturePreceding() {
+            var precedingIndex = this.GetPrecedingIndex();
+            var preceding = this.elements[precedingIndex];
 
             this.elements.RemoveAt(precedingIndex);
             this.CurrentIndex -= 1;
-            return preceding;
+
+            return ToExpression(preceding);
         }
 
-        public TElement GetPreceding<TElement>()
-            where TElement : class, IElement
-        {
+        public Expression GetPreceding() {
+            var preceding = this.elements[this.GetPrecedingIndex()];
+            return ToExpression(preceding);
+        }
+
+        private int GetPrecedingIndex() {
             if (this.CurrentIndex == 0) {
                 this.ImportPrecedingIntoBranches(this.branchStack.GetEnumerator());
                 this.CurrentIndex += 1;
             }
 
-            var preceding = this.elements[this.CurrentIndex - 1];
-            return Cast<TElement>(preceding);
+            return this.CurrentIndex - 1;
         }
 
         private void ImportPrecedingIntoBranches(IEnumerator<BranchStackFrame> enumerator) {
@@ -60,13 +62,11 @@ namespace Expressive.Decompilation.Steps {
             frame.CurrentIndex -= 1;
         }
 
-        private static TElement Cast<TElement>(IElement element)
-            where TElement : class, IElement
-        {
-            var typed = element as TElement;
+        private static Expression ToExpression(IElement element) {
+            var typed = element as ExpressionElement;
             if (typed == null)
                 throw new InvalidOperationException("Element " + element + " must be an ExpressionElement to be used in this context.");
-            return typed;
+            return typed.Expression;
         }
 
         public void VerifyPrecedingCount(int requiredCount, Func<int, string, string> getMessage) {

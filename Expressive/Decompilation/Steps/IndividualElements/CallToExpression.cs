@@ -23,7 +23,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         protected Expression IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {
             var parameters = methodBase.GetParameters();
             var getTarget = !methodBase.IsStatic
-                          ? (Func<Expression>)(() => context.CapturePreceding<ExpressionElement>().Expression)
+                          ? (Func<Expression>)(context.CapturePreceding)
                           : () => null;
 
             var property = GetProperty(methodBase);
@@ -47,7 +47,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
             var arguments = new List<Expression>();
             while (arguments.Count < parameters.Length) {
-                arguments.Add(context.CapturePreceding<ExpressionElement>().Expression);
+                arguments.Add(context.CapturePreceding());
             }
 
             arguments.Reverse();

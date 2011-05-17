@@ -51,13 +51,13 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             var rootOpCodeName = branch.OpCode.Name.SubstringBefore(".");
             var isUnary = unary.ContainsKey(rootOpCodeName);
             if (isUnary) {
-                var operand = context.CapturePreceding<ExpressionElement>().Expression;
+                var operand = context.CapturePreceding();
                 operand = BooleanSupport.ConvertIfRequired(operand, typeof(bool));
                 return unary[rootOpCodeName].Invoke(operand);
             }
 
-            var right = context.CapturePreceding<ExpressionElement>().Expression;
-            var left = context.CapturePreceding<ExpressionElement>().Expression;
+            var right = context.CapturePreceding();
+            var left = context.CapturePreceding();
             return binary[rootOpCodeName].Invoke(left, right);
         }
 

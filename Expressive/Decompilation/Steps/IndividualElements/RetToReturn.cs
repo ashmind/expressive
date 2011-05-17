@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
+
 using Expressive.Elements;
-using Expressive.Elements.Expressions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class RetToReturn : ElementInterpretation<InstructionElement, ReturnElement> {
@@ -24,7 +23,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
         public override ReturnElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var result = this.returnType != typeof(void)
-                       ? context.CapturePreceding<ExpressionElement>().Expression
+                       ? context.CapturePreceding()
                        : null;
 
             result = BooleanSupport.ConvertIfRequired(result, this.returnType);

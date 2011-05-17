@@ -29,7 +29,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override VariableAssignmentElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            var value = context.CapturePreceding<ExpressionElement>().Expression;
+            var value = context.CapturePreceding();
             var index = variableIndexGetters[instruction.OpCode](instruction.Instruction);
             var type = this.methodBody.LocalVariables[index].LocalType;
 

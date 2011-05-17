@@ -16,10 +16,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
 
         public override FieldAssignmentElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var field = ((FieldReferenceInstruction)instruction.Instruction).Field;
-            var value = context.CapturePreceding<ExpressionElement>().Expression;
+            var value = context.CapturePreceding();
             var instance = (Expression)null;
             if (!field.IsStatic)
-                instance = context.CapturePreceding<ExpressionElement>().Expression;
+                instance = context.CapturePreceding();
 
             value = BooleanSupport.ConvertIfRequired(value, field.FieldType);
             return new FieldAssignmentElement(instance, field, value);

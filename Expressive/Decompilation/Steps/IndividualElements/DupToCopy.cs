@@ -5,13 +5,13 @@ using System.Reflection.Emit;
 using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class DupToCopy : ElementInterpretation<InstructionElement, IElement> {
+    public class DupToCopy : ElementInterpretation<InstructionElement, ExpressionElement> {
         public override bool CanInterpret(InstructionElement instruction) {
             return instruction.OpCode == OpCodes.Dup;
         }
 
-        public override IElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
-            return context.GetPreceding<IElement>();
+        public override ExpressionElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+            return new ExpressionElement(context.GetPreceding());
         }
     }
 }
