@@ -7,6 +7,7 @@ using AshMind.Extensions;
 
 using Expressive.Elements;
 using Expressive.Elements.Expressions.Matchers;
+using Expressive.Matching;
 
 namespace Expressive.Decompilation.Steps.Clarity {
     public class CoalescingVisitor : ElementVisitor {
@@ -53,7 +54,7 @@ namespace Expressive.Decompilation.Steps.Clarity {
                 .OneOf(ExpressionType.Equal, ExpressionType.NotEqual)
                 .AsBinary()
                 .LeftOrRight(
-                    leftOrRight => leftOrRight.Constant(v => v == null),
+                    leftOrRight => leftOrRight.AsConstant().ValueIsNull(),
                     other => testPart = other
                 )
                 .Matched;

@@ -5,7 +5,9 @@ using System.Linq.Expressions;
 
 using AshMind.Extensions;
 
-namespace Expressive.Elements.Expressions.Matchers {
+using Expressive.Elements.Expressions.Matchers;
+
+namespace Expressive.Matching {
     public static class MatcherExpressionExtensions {
         public static Matcher<TExpression> OneOf<TExpression>(this Matcher<TExpression> matcher, params ExpressionType[] types) 
             where TExpression : Expression
@@ -38,13 +40,10 @@ namespace Expressive.Elements.Expressions.Matchers {
                           .As<UnaryExpression>();
         }
 
-        public static Matcher<ConstantExpression> Constant<TExpression>(
-            this Matcher<TExpression> matcher,
-            Func<object, bool> matchValue
-        )
-        where TExpression : Expression
+        public static Matcher<ConstantExpression> AsConstant<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression
         {
-            return matcher.As<ConstantExpression>().Match(c => matchValue(c.Value));
+            return matcher.As<ConstantExpression>();
         }
 
         public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Type type)

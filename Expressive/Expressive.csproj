@@ -51,6 +51,7 @@
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
     <Compile Include="Decompilation\Steps\Clarity\NewNullableToCastVisitor.cs" />
+    <Compile Include="Decompilation\Steps\ContextualVisitor.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdftnToAddressOf.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\LambdaInliningVisitor.cs">
@@ -58,12 +59,13 @@
     </Compile>
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherCollectionExtensions.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherBinaryExtensions.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherNewExtensions.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherMemberExtensions.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherUnaryExtensions.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherExpressionExtensions.cs" />
+    <Compile Include="Matching\MatcherConstantExtensions.cs" />
+    <Compile Include="Matching\MatcherCollectionExtensions.cs" />
+    <Compile Include="Matching\MatcherBinaryExtensions.cs" />
+    <Compile Include="Matching\MatcherNewExtensions.cs" />
+    <Compile Include="Matching\MatcherMemberExtensions.cs" />
+    <Compile Include="Matching\MatcherUnaryExtensions.cs" />
+    <Compile Include="Matching\MatcherExpressionExtensions.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\ConvToConvert.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\PopToRemove.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\DupToCopy.cs" />
@@ -75,8 +77,8 @@
     <Compile Include="Disassembler.cs" />
     <Compile Include="Disassembly\FailSafeModuleTokenResolver.cs" />
     <Compile Include="Elements\BranchingElement.cs" />
-    <Compile Include="Elements\Expressions\Matchers\Matcher.cs" />
-    <Compile Include="Elements\Expressions\Matchers\MatcherMethodCallExtensions.cs" />
+    <Compile Include="Matching\Matcher.cs" />
+    <Compile Include="Matching\MatcherMethodCallExtensions.cs" />
     <Compile Include="Elements\IfThenElement.cs" />
     <Compile Include="Elements\Instructions\BranchInstruction.cs" />
     <Compile Include="Elements\Instructions\IValueInstruction.cs" />

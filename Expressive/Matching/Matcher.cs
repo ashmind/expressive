@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Expressive.Elements.Expressions.Matchers {
+namespace Expressive.Matching {
     public class Matcher<T> {
         public T Target { get; private set; }
         public bool Matched { get; private set; }
 
         internal Matcher(T target) {
             this.Target = target;
-            this.Matched = true;
+            this.Matched = target != null;
         }
 
         public Matcher<T> AssignTo(out T value) {
@@ -42,6 +42,10 @@ namespace Expressive.Elements.Expressions.Matchers {
             return new Matcher<TOther>((TOther)(object)this.Target);
         }
 
+        public Matcher<TOther> For<TOther>(TOther value) {
+            return this.For(t => value);
+        }
+
         public Matcher<TOther> For<TOther>(Func<T, TOther> get) {
             if (!this.Matched)
                 return new Matcher<TOther>(default(TOther)) { Matched = false };
@@ -55,10 +59,6 @@ namespace Expressive.Elements.Expressions.Matchers {
 
             this.Matched = this.Matched && match(this.Target);
             return this;
-        }
-
-        public Matcher<TOther> For<TOther>(TOther value) {
-            return this.For(t => value);
         }
     }
 

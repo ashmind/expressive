@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Expressive.Matching;
 
 namespace Expressive.Elements.Expressions.Matchers {
     public static class MatcherCollectionExtensions {

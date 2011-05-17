@@ -8,14 +8,14 @@ using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps {
     public class VisitorSequenceStep : IDecompilationStep {
-        public IList<ElementVisitor> Visitors { get; private set; }
+        public IList<Func<DecompilationContext, ElementVisitor>> Visitors { get; private set; }
 
-        public VisitorSequenceStep(params ElementVisitor[] visitors) {
+        public VisitorSequenceStep(params Func<DecompilationContext, ElementVisitor>[] visitors) {
             this.Visitors = visitors.ToList();
         }
 
         public void Apply(IList<IElement> elements, DecompilationContext context) {
-            this.Visitors.ForEach(v => v.VisitList(elements));
+            this.Visitors.ForEach(visitor => visitor(context).VisitList(elements));
         }
     }
 }

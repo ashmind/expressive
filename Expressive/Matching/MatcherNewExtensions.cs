@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Expressive.Elements.Expressions.Matchers {
+using Expressive.Elements.Expressions.Matchers;
+
+namespace Expressive.Matching {
     public static class MatcherNewExtensions {
         public static Matcher<NewExpression> Constructor(
             this Matcher<NewExpression> matcher,

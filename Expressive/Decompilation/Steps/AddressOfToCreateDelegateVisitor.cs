@@ -9,10 +9,11 @@ using AshMind.Extensions;
 using Expressive.Elements;
 using Expressive.Elements.Expressions;
 using Expressive.Elements.Expressions.Matchers;
+using Expressive.Matching;
 
 namespace Expressive.Decompilation.Steps {
     public class AddressOfToCreateDelegateVisitor : ElementVisitor {
-        private static readonly MethodInfo CreateDelegate = ((Func<Type, object, MethodInfo, bool, Delegate>)Delegate.CreateDelegate).Method;
+        public static readonly MethodInfo CreateDelegateMethodInfo = ((Func<Type, object, MethodInfo, bool, Delegate>)Delegate.CreateDelegate).Method;
 
         protected override Expression VisitNew(NewExpression nex) {
             nex = (NewExpression)base.VisitNew(nex);
@@ -29,7 +30,7 @@ namespace Expressive.Decompilation.Steps {
                         .Do(x => method = x.Method)
 
                 .Choose<Expression>(
-                    () => Expression.Call(null, CreateDelegate, new[] {
+                    () => Expression.Call(null, CreateDelegateMethodInfo, new[] {
                         Expression.Constant(nex.Type),
                         instance,
                         Expression.Constant(method),

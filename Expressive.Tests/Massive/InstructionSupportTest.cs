@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using Expressive.Decompilation;
 using Expressive.Decompilation.Pipelines;
+using Expressive.Decompilation.Steps.StatementInlining;
 using Expressive.Elements;
 using Expressive.Elements.Instructions;
 using MbUnit.Framework;
@@ -24,7 +25,7 @@ namespace Expressive.Tests.Massive {
         [Test]
         [Ignore("Not passing yet")]
         public void TestAllInstructionsExceptSpecificOnesAreSupported() {
-            var pipeline = new DefaultPipeline();
+            var pipeline = new DefaultPipeline().Without<LambdaInliningVisitor>();
             var disassembler = new Disassembler();
             var visitor = new InstructionCollectingVisitor();
 
@@ -44,7 +45,7 @@ namespace Expressive.Tests.Massive {
         [Ignore("Manual only for now")]
         [Factory("GetAllSupportedMethods")]
         public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method, IList<Instruction> instructions) {
-            var pipeline = new DefaultPipeline();
+            var pipeline = new DefaultPipeline().Without<LambdaInliningVisitor>();
             var elements = instructions.Select(i => (IElement)new InstructionElement(i)).ToList();
             Assert.DoesNotThrow(
                 () => ApplyPipeline(pipeline, elements, method)
@@ -69,7 +70,7 @@ namespace Expressive.Tests.Massive {
             if (!method.IsStatic)
                 parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));
 
-            var context = new DecompilationContext(method, i => parameters[i]);
+            var context = new DecompilationContext(null, method, i => parameters[i]);
             foreach (var step in pipeline.GetSteps()) {
                 step.Apply(elements, context);
             }

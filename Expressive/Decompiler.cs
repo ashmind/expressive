@@ -34,7 +34,7 @@ namespace Expressive {
                                 .Select(i => (IElement)new InstructionElement(i))
                                 .ToList();
 
-            var context = new DecompilationContext(method, i => arguments[i]);
+            var context = new DecompilationContext(this, method, i => arguments[i]);
             try {
                 foreach (var step in this.pipeline.GetSteps()) {
                     step.Apply(elements, context);

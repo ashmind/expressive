@@ -36,19 +36,19 @@ namespace Expressive.Decompilation.Pipelines {
                 new RetToReturn()
             ),
             new VisitorSequenceStep(
-                new AddressOfToCreateDelegateVisitor(),
-                new IfThenCollapsingVisitor(), // must be before following two
-                new IfAssignmentInliningVisitor(),
-                new IfReturnInliningVisitor(),
-                new ConditionImprovementVisitor(),
-                new BooleanEqualityImprovementVisitor(),
-                new NotImprovementVisitor(),
-                new LambdaInliningVisitor(),
-                new NewNullableToCastVisitor()
+                c => new AddressOfToCreateDelegateVisitor(),
+                c => new IfThenCollapsingVisitor(), // must be before following two
+                c => new IfAssignmentInliningVisitor(),
+                c => new IfReturnInliningVisitor(),
+                c => new ConditionImprovementVisitor(),
+                c => new BooleanEqualityImprovementVisitor(),
+                c => new NotImprovementVisitor(),
+                c => new LambdaInliningVisitor(c),
+                c => new NewNullableToCastVisitor()
             ),
             new VariableInliningStep(),
             new VisitorSequenceStep(
-                new CoalescingVisitor()
+                c => new CoalescingVisitor()
             )
         ) {
         }
