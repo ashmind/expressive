@@ -12,6 +12,10 @@ namespace Expressive.Elements {
     public class InstructionElement : IElement, IPreservingOffset { 
         public Instruction Instruction { get; private set; }
 
+        public InstructionElement(Instruction instruction) {
+            this.Instruction = instruction;
+        }
+
         public OpCode OpCode {
             get { return this.Instruction.OpCode; }
         }
@@ -20,8 +24,8 @@ namespace Expressive.Elements {
             get { return this.Instruction.Offset; }
         }
 
-        public InstructionElement(Instruction instruction) {
-            this.Instruction = instruction;
+        public ElementKind Kind {
+            get { return ElementKind.Undefined; }
         }
         
         public override string ToString() {

@@ -10,11 +10,19 @@ namespace Expressive.Elements.Expressions {
             if (local != null)
                 return this.VisitLocal(local);
 
+            var addressOf = exp as AddressOfExpression;
+            if (addressOf != null)
+                return this.VisitAddressOf(addressOf);
+
             return base.Visit(exp);
         }
 
         protected virtual Expression VisitLocal(LocalExpression local) {
             return local;
+        }
+
+        protected virtual Expression VisitAddressOf(AddressOfExpression addressOf) {
+            return addressOf;
         }
     }
 }

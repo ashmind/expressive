@@ -13,6 +13,10 @@ namespace Expressive.Elements {
             this.Expression = expression;
         }
 
+        public ElementKind Kind {
+            get { return ElementKind.Expression; }
+        }
+
         public override string ToString() {
             return this.Expression.ToString();
         }

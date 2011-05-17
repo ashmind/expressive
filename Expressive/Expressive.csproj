@@ -52,6 +52,7 @@
     <Compile Include="Decompilation\Steps\Clarity\NewNullableToCastVisitor.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\LdftnToAddressOf.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
+    <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherMemberExtensions.cs" />
     <Compile Include="Elements\Expressions\Matchers\MatcherUnaryExtensions.cs" />

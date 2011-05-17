@@ -20,9 +20,13 @@ namespace Expressive.Elements {
         }
 
         public virtual IElement Visit(IElement element) {
+            if (element == null)
+                return null;
+
             var visited = this.TryVisit<ExpressionElement>(this.TransparentlyVisitExpressionElement, ref element)
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
-                       || this.TryVisit<VariableAssignmentElement>(this.VisitAssignment, ref element)
+                       || this.TryVisit<VariableAssignmentElement>(this.VisitVariableAssignment, ref element)
+                       || this.TryVisit<FieldAssignmentElement>(this.VisitFieldAssignment, ref element)
                        || this.TryVisit<ReturnElement>(this.VisitReturn, ref element)
                        || this.TryVisit<BranchingElement>(this.VisitBranching, ref element)
                        || this.TryVisit<IfThenElement>(this.VisitIfThen, ref element);
@@ -53,18 +57,20 @@ namespace Expressive.Elements {
             return instruction;
         }
 
-        protected virtual IElement VisitAssignment(VariableAssignmentElement assignment) {
-            var value = this.Visit(assignment.Value);
-            return value == assignment.Value
-                 ? assignment
-                 : new VariableAssignmentElement(assignment.VariableIndex, value);
+        protected virtual IElement VisitVariableAssignment(VariableAssignmentElement assignment) {
+            assignment.Value = this.Visit(assignment.Value);
+            return assignment;
+        }
+
+        protected virtual IElement VisitFieldAssignment(FieldAssignmentElement assignment) {
+            assignment.Instance = this.Visit(assignment.Instance);
+            assignment.Value = this.Visit(assignment.Value);
+            return assignment;
         }
 
         protected virtual IElement VisitReturn(ReturnElement @return) {
-            var result = (@return.Result != null) ? this.Visit(@return.Result) : null;
-            return result == @return.Result
-                 ? @return
-                 : new ReturnElement(result);
+            @return.Result = this.Visit(@return.Result);
+            return @return;
         }
 
         protected virtual IElement VisitBranching(BranchingElement branch) {

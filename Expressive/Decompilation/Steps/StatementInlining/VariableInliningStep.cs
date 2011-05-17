@@ -26,10 +26,10 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
                                               .ToSet();
             }
 
-            protected override IElement VisitAssignment(VariableAssignmentElement assignment) {
+            protected override IElement VisitVariableAssignment(VariableAssignmentElement assignment) {
                 assignmentCount[assignment.VariableIndex] =
                     assignmentCount.GetValueOrDefault(assignment.VariableIndex) + 1;
-                return base.VisitAssignment(assignment);
+                return base.VisitVariableAssignment(assignment);
             }
         }
 
@@ -55,8 +55,8 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
                 return value ?? local;
             }
 
-            protected override IElement VisitAssignment(VariableAssignmentElement assignment) {
-                assignment = (VariableAssignmentElement)base.VisitAssignment(assignment);
+            protected override IElement VisitVariableAssignment(VariableAssignmentElement assignment) {
+                assignment = (VariableAssignmentElement)base.VisitVariableAssignment(assignment);
                 if (!inlineable.Contains(assignment.VariableIndex))
                     return assignment;
                 

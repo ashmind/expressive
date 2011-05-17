@@ -30,6 +30,10 @@ namespace Expressive.Elements {
             this.Fallback = fallback;
         }
 
+        public ElementKind Kind {
+            get { return ElementKind.Undefined; }
+        }
+
         public override string ToString() {
             return this.ToString(Indent.FourSpaces);
         }

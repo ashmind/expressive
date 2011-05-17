@@ -32,33 +32,57 @@ namespace Expressive.Decompilation.Steps {
         }
 
         private int GetPrecedingIndex() {
-            if (this.CurrentIndex == 0) {
-                this.ImportPrecedingIntoBranches(this.branchStack.GetEnumerator());
-                this.CurrentIndex += 1;
-            }
+            //BranchStackFrame frame;
+            //IEnumerator<BranchStackFrame> stackEnumerator;
 
-            return this.CurrentIndex - 1;
+            //if (branchStack.Count == 0) {
+                var frame = new BranchStackFrame(this.elements, null, this.CurrentIndex);
+                var stackEnumerator = this.branchStack.GetEnumerator();
+            //}
+            //else {
+            //    stackEnumerator = this.branchStack.GetEnumerator();
+            //    stackEnumerator.MoveNext();
+            //    frame = stackEnumerator.Current;
+            //}
+
+            var index = this.FindPrecedingIndex(this.CurrentIndex - 1, frame, stackEnumerator);
+            this.CurrentIndex = frame.CurrentIndex;
+            return index;
         }
 
-        private void ImportPrecedingIntoBranches(IEnumerator<BranchStackFrame> enumerator) {
-            if (!enumerator.MoveNext())
-                throw new InvalidOperationException("There is no previous element in this context.");
+        private int FindPrecedingIndex(int startingIndex, BranchStackFrame frame, IEnumerator<BranchStackFrame> stack) {
+            var index = startingIndex;
+            while (true) {
+                if (index < 0) {
+                    this.ImportPrecedingIntoBranches(stack);
+                    frame.CurrentIndex += 1;
+                    index += 1;
+                }
 
-            var frame = enumerator.Current;
-            var targetIndex = frame.CurrentIndex - frame.Branching.ParameterCount;
-            if (targetIndex < 0) {
-                ImportPrecedingIntoBranches(enumerator);
-                frame.CurrentIndex += 1;
+                var kind = frame.Elements[index].Kind;
+                if (kind == ElementKind.Undefined)
+                    throw new InvalidOperationException("Element " + frame.Elements[index] + " must be identified as either statement or expression to be traversed over or captured.");
+
+                if (kind == ElementKind.Expression)
+                    return index;
+
+                if (kind == ElementKind.Statement)
+                    index -= 1;
             }
+        }
 
-            targetIndex = frame.CurrentIndex - frame.Branching.ParameterCount;
-            if (targetIndex < 0)
-                throw new InvalidOperationException("There are no available elements before " + frame.Branching + ".");
+        private void ImportPrecedingIntoBranches(IEnumerator<BranchStackFrame> stack) {
+            if (!stack.MoveNext())
+                throw new InvalidOperationException("There is no preceding expression in this context.");
+
+            var frame = stack.Current;
+            var targetIndex = frame.CurrentIndex - frame.Branching.ParameterCount;
+            var index = this.FindPrecedingIndex(targetIndex, frame, stack);
 
             foreach (var branch in frame.Branching.GetBranches()) {
-                branch.Insert(0, frame.Elements[targetIndex]);
+                branch.Insert(0, frame.Elements[index]);
             }
-            frame.Elements.RemoveAt(targetIndex);
+            frame.Elements.RemoveAt(index);
             frame.CurrentIndex -= 1;
         }
 

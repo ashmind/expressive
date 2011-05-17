@@ -8,14 +8,18 @@ using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
     public class FieldAssignmentElement : IElement {
-        public Expression Instance { get; private set; }
+        public Expression Instance { get; set; }
         public FieldInfo Field { get; private set; }
-        public Expression Value  { get; private set; }
+        public Expression Value  { get; set; }
 
         public FieldAssignmentElement(Expression instance, FieldInfo field, Expression value) {
             this.Instance = instance;
             this.Field = field;
             this.Value = value;
+        }
+
+        public ElementKind Kind {
+            get { return ElementKind.Statement; }
         }
 
         public override string ToString() {

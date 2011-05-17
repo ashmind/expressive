@@ -19,8 +19,16 @@ namespace Expressive.Elements {
             this.Then = then;
             this.Else = @else;
         }
+
+        public ElementKind Kind {
+            get {
+                return this.GetBranches().SelectMany(e => e).All(e => e.Kind == ElementKind.Statement)
+                     ? ElementKind.Statement
+                     : ElementKind.Undefined;
+            }
+        }
         
-        public IEnumerable<IList<IElement>> GetBranches() {
+        private IEnumerable<IList<IElement>> GetBranches() {
             yield return this.Then;
             yield return this.Else;
         }
