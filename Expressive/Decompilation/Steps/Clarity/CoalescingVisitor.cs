@@ -23,11 +23,11 @@ namespace Expressive.Decompilation.Steps.Clarity {
             var getValueTarget = (Expression)null;
 
             var matched = Matcher
-                .Match(c.Test).AsPropertyOrField()
+                .For(c.Test).AsPropertyOrField()
                     .Property(property => property.Name == "HasValue" && property.DeclaringType.IsGenericTypeDefinedAs(typeof(Nullable<>)))
                     .Do(p => hasValueTarget = p.Expression)
 
-                .Match(c.IfTrue).AsConvert()
+                .For(c.IfTrue).AsConvert()
                     .Type(typeof(Nullable<>))
                     .Operand().AsMethodCall()
                         .Method(method => method.Name == "GetValueOrDefault"
@@ -49,9 +49,10 @@ namespace Expressive.Decompilation.Steps.Clarity {
         private static Expression TryToCoalesceAsObjects(ConditionalExpression c) {
             var testPart = (Expression)null;
             var matched = Matcher
-                .Match(c.Test)
+                .For(c.Test)
                 .OneOf(ExpressionType.Equal, ExpressionType.NotEqual)
-                .BinaryWith(
+                .AsBinary()
+                .LeftOrRight(
                     leftOrRight => leftOrRight.Constant(v => v == null),
                     other => testPart = other
                 )

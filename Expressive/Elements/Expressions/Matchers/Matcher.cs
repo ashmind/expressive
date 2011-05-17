@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Expressive.Elements.Expressions.Matchers {
     public class Matcher<T> {
@@ -36,18 +35,6 @@ namespace Expressive.Elements.Expressions.Matchers {
             return this.Matched ? ifMatched() : valueIfNotMatched;
         }
 
-        public Matcher<T> MatchAs<TOther>(Func<TOther, bool> match)
-            where TOther : class
-        {
-            return this.Match(target => {
-                var typed = target as TOther;
-                if (typed == null)
-                    return false;
-
-                return match(typed);
-            });
-        }
-
         public Matcher<TOther> As<TOther>() {
             if (!this.Matched || !(this.Target is TOther))
                 return new Matcher<TOther>(default(TOther)) { Matched = false };
@@ -55,7 +42,7 @@ namespace Expressive.Elements.Expressions.Matchers {
             return new Matcher<TOther>((TOther)(object)this.Target);
         }
 
-        public Matcher<TOther> Get<TOther>(Func<T, TOther> get) {
+        public Matcher<TOther> For<TOther>(Func<T, TOther> get) {
             if (!this.Matched)
                 return new Matcher<TOther>(default(TOther)) { Matched = false };
 
@@ -70,13 +57,13 @@ namespace Expressive.Elements.Expressions.Matchers {
             return this;
         }
 
-        public Matcher<TOther> Match<TOther>(TOther value) {
-            return this.Get(t => value);
+        public Matcher<TOther> For<TOther>(TOther value) {
+            return this.For(t => value);
         }
     }
 
     public static class Matcher {
-        public static Matcher<T> Match<T>(T target) {
+        public static Matcher<T> For<T>(T target) {
             return new Matcher<T>(target);
         }
     }

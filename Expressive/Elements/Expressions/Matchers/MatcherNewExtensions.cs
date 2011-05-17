@@ -15,7 +15,7 @@ namespace Expressive.Elements.Expressions.Matchers {
 
         public static Matcher<Expression> Argument(this Matcher<NewExpression> matcher, int index) {
             return matcher.Match(n => index >= 0 && index <= n.Arguments.Count - 1)
-                          .Get(n => n.Arguments[index]);
+                          .For(n => n.Arguments[index]);
         }
     }
 }

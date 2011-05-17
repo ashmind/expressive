@@ -43,6 +43,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new ConditionImprovementVisitor(),
                 new BooleanEqualityImprovementVisitor(),
                 new NotImprovementVisitor(),
+                new LambdaInliningVisitor(),
                 new NewNullableToCastVisitor()
             ),
             new VariableInliningStep(),

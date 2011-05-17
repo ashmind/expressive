@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 using AshMind.Extensions;
 
@@ -14,28 +13,10 @@ namespace Expressive.Elements.Expressions.Matchers {
             return matcher.Match(target => types.Contains(target.NodeType));
         }
 
-        public static Matcher<TExpression> BinaryWith<TExpression>(
-            this Matcher<TExpression> matcher,
-            Func<Matcher<Expression>, Matcher<Expression>> matchPart,
-            Action<Expression> otherPart
-        )
-        where TExpression : Expression
+        public static Matcher<BinaryExpression> AsBinary<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression
         {
-            return matcher.MatchAs<BinaryExpression>(b => {
-                var leftMatched = matchPart(Matcher.Match(b.Left)).Matched;
-                if (leftMatched) {
-                    otherPart(b.Right);
-                    return true;
-                }
-
-                var rightMatched = matchPart(Matcher.Match(b.Right)).Matched;
-                if (rightMatched) {
-                    otherPart(b.Left);
-                    return true;
-                }
-
-                return false;
-            });
+            return matcher.As<BinaryExpression>();
         }
 
         public static Matcher<MethodCallExpression> AsMethodCall<TExpression>(this Matcher<TExpression> matcher)
@@ -57,13 +38,13 @@ namespace Expressive.Elements.Expressions.Matchers {
                           .As<UnaryExpression>();
         }
 
-        public static Matcher<TExpression> Constant<TExpression>(
+        public static Matcher<ConstantExpression> Constant<TExpression>(
             this Matcher<TExpression> matcher,
             Func<object, bool> matchValue
         )
         where TExpression : Expression
         {
-            return matcher.MatchAs<ConstantExpression>(c => matchValue(c.Value));
+            return matcher.As<ConstantExpression>().Match(c => matchValue(c.Value));
         }
 
         public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Type type)

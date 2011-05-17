@@ -20,11 +20,11 @@ namespace Expressive.Decompilation.Steps {
             var instance = (Expression)null;
             var method = (MethodBase)null;
             return Matcher
-                .Match(nex)
+                .For(nex)
                     .Type(t => t.IsSubclassOf<Delegate>())
                     .Argument(0).AssignTo(out instance)
                 
-                .Match(nex)
+                .For(nex)
                     .Argument(1).As<AddressOfExpression>()
                         .Do(x => method = x.Method)
 

@@ -15,5 +15,9 @@ namespace Expressive.Elements.Expressions.Matchers {
                 return property != null && matchProperty(property);
             });
         }
+
+        public static Matcher<FieldInfo> Field(this Matcher<MemberExpression> matcher) {
+            return matcher.For(m => m.Member).As<FieldInfo>();
+        }
     }
 }
