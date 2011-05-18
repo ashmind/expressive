@@ -70,9 +70,6 @@
     <Compile Include="Elements\ArrayItemAssignmentElement.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
-    <Compile Include="Elements\Expressions\NewArrayWithSizeExpression.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Matching\MatcherParameterExtensions.cs" />
     <Compile Include="Matching\MatcherConstantExtensions.cs" />
     <Compile Include="Matching\MatcherCollectionExtensions.cs" />

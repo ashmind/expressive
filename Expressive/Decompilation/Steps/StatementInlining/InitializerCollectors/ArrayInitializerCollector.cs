@@ -4,11 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 
 using Expressive.Elements;
-using Expressive.Elements.Expressions;
 using Expressive.Matching;
 
 namespace Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors {
-    public class ArrayInitializerCollector : InitializerCollector<NewArrayWithSizeExpression, ArrayItemAssignmentElement, Expression> {
+    public class ArrayInitializerCollector : InitializerCollector<NewArrayExpression, ArrayItemAssignmentElement, Expression> {
         protected override Matcher<ArrayItemAssignmentElement> MatchFollowing(Matcher<ArrayItemAssignmentElement> itemMatcher, int indexOffset, out Expression expression) {
             var expressionFixed = (Expression)null;
             var matcher = itemMatcher
@@ -26,7 +25,7 @@ namespace Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors
             return rawElement.Array;
         }
 
-        protected override Expression ToInitializer(NewArrayWithSizeExpression @new, IList<Expression> values) {
+        protected override Expression ToInitializer(NewArrayExpression @new, IList<Expression> values) {
             return Expression.NewArrayInit(@new.Type.GetElementType(), values);
         }
     }

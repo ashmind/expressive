@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using AshMind.Extensions;
+
 using Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors;
 using Expressive.Elements;
-using Expressive.Elements.Expressions;
 using Expressive.Matching;
 
 namespace Expressive.Decompilation.Steps.StatementInlining {
@@ -32,7 +33,7 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
             var matched = Matcher
                 .For(elements[index]).As<VariableAssignmentElement>()
                 .AssignTo(out assignment)
-                .For(v => v.Value).Match(e => e.GetType() == collector.NewExpressionType)
+                .For(v => v.Value).Match(e => e.GetType().IsSameAsOrSubclassOf(collector.NewExpressionType))
                     .AssignTo(out @new)
                 .Matched;
 

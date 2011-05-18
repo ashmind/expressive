@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
-using Expressive.Elements.Expressions;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
@@ -14,8 +13,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         }
 
         public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
-            var type = ((TypeReferenceInstruction)instruction).Type.MakeArrayType();
-            return new NewArrayWithSizeExpression(type, context.CapturePreceding());
+            var type = ((TypeReferenceInstruction)instruction).Type;
+            return Expression.NewArrayBounds(type, context.CapturePreceding());
         }
     }
 }
