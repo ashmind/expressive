@@ -44,13 +44,13 @@ namespace Expressive.Decompilation.Pipelines {
                 c => new ConditionImprovementVisitor(),
                 c => new BooleanEqualityImprovementVisitor(),
                 c => new NotImprovementVisitor(),
-                c => new LambdaInliningVisitor(c),
-                c => new NewNullableToCastVisitor(),
-                c => new ObjectInitializerDetectingVisitor()
+                c => new ObjectInitializerDetectingVisitor(),
+                c => new NewNullableToCastVisitor()
             ),
             new VariableInliningStep(),
             new VisitorSequenceStep(
-                c => new CoalescingVisitor()
+                c => new CoalescingVisitor(),
+                c => new LambdaInliningVisitor(c)
             )
         ) {
         }

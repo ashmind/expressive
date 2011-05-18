@@ -29,7 +29,7 @@ namespace Expressive.Decompilation.Steps {
                     .Argument(1).As<AddressOfExpression>()
                         .Do(x => method = x.Method)
 
-                .Choose<Expression>(
+                .IfMatched<Expression>(
                     () => Expression.Call(null, CreateDelegateMethodInfo, new[] {
                         Expression.Constant(nex.Type),
                         instance,

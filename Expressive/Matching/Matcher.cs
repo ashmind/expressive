@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Expressive.Matching {
-    public class Matcher<T> {
+    public class Matcher<T> : Matcher {
         public T Target { get; private set; }
-        public bool Matched { get; private set; }
 
         internal Matcher(T target) {
             this.Target = target;
@@ -31,7 +30,7 @@ namespace Expressive.Matching {
         }
 
 
-        public TResult Choose<TResult>(Func<TResult> ifMatched, TResult valueIfNotMatched) {
+        public TResult IfMatched<TResult>(Func<TResult> ifMatched, TResult valueIfNotMatched) {
             return this.Matched ? ifMatched() : valueIfNotMatched;
         }
 
@@ -42,7 +41,7 @@ namespace Expressive.Matching {
             return new Matcher<TOther>((TOther)(object)this.Target);
         }
 
-        public Matcher<TOther> For<TOther>(TOther value) {
+        public new Matcher<TOther> For<TOther>(TOther value) {
             return this.For(t => value);
         }
 
@@ -62,9 +61,11 @@ namespace Expressive.Matching {
         }
     }
 
-    public static class Matcher {
+    public abstract class Matcher {
         public static Matcher<T> For<T>(T target) {
             return new Matcher<T>(target);
         }
+
+        public bool Matched { get; protected set; }
     }
 }

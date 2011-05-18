@@ -46,6 +46,12 @@ namespace Expressive.Matching {
             return matcher.As<ConstantExpression>();
         }
 
+        public static Matcher<ParameterExpression> AsParameter<TExpression>(this Matcher<TExpression> matcher)
+            where TExpression : Expression 
+        {
+            return matcher.As<ParameterExpression>();
+        }
+
         public static Matcher<TExpression> Type<TExpression>(this Matcher<TExpression> matcher, Type type)
             where TExpression : Expression
         {

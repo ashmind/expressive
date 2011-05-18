@@ -31,5 +31,9 @@ namespace Expressive.Matching {
                 return null;
             });
         }
+
+        public static Matcher<MethodCallExpression> Argument<TParameter>(this Matcher<MethodCallExpression> matcher, Func<Matcher<Expression>, Matcher> matchArgument) {
+            return matcher.Match(_ => matchArgument(matcher.Argument<TParameter>()).Matched);
+        }
     }
 }
