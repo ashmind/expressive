@@ -59,6 +59,10 @@
     </Compile>
     <Compile Include="Decompilation\Steps\IndividualElements\StelemToAssignment.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\ArrayInitializerCollector.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\ObjectInitializerCollector.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\IInitializerCollector.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\InitializerCollector.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\LambdaInliningVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
