@@ -9,8 +9,7 @@ namespace Expressive.Tests.TestClasses {
             return query.Where(c => c.FirstName.Length > 5);
         }
 
-        //[ExpectedExpression("")]
-        // Work in progress: depends on initializers
+        [ExpectedExpression("(query, length) => query.Where(Convert(CreateDelegate(System.Func`2[Expressive.Tests.TestClasses.ClassWithNames,System.Boolean], new {length = length}, Boolean <WhereWithClosureOverParameter>b__2(Expressive.Tests.TestClasses.ClassWithNames), True)))")]
         public static IEnumerable<ClassWithNames> WhereWithClosureOverParameter(IEnumerable<ClassWithNames> query, int length) {
             return query.Where(c => c.FirstName.Length > length);
         }
