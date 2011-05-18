@@ -61,6 +61,7 @@
     <Compile Include="Decompilation\Steps\StatementInlining\LambdaInliningVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Decompilation\Steps\StatementInlining\ObjectInitializerDetectingVisitor.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
     <Compile Include="Elements\Expressions\NewArrayWithSizeExpression.cs">

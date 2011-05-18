@@ -21,7 +21,9 @@ namespace Expressive.Tests {
             var decompiled = Decompile(method);
 
             var parameterNames = decompiled.Parameters.Select(p => p.Name).ToArray();
-            var expected = patterns.Select(p => string.Format(p, parameterNames)).ToList();
+            var expected = patterns.Select(
+                p => p.Contains("{0}") ? string.Format(p, parameterNames) : p
+            ).ToList();
 
             if (expected.Count <= 1) {
                 Assert.AreEqual(expected.Single(), decompiled.ToString());
