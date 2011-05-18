@@ -93,7 +93,7 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
                     .Method(outer => outer == AddressOfToCreateDelegateVisitor.CreateDelegateMethodInfo)
                     .Argument<object>(a => a.Do(x => memberInit = x as MemberInitExpression))
                     .Argument<MethodInfo>()
-                        .AsConstant().Value().As<MethodInfo>()
+                        .AsConstant().Value<MethodInfo>()
                             .Match(IsCompilerLambda)
                             .AssignTo(out method)
 

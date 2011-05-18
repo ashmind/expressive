@@ -57,11 +57,13 @@
     <Compile Include="Decompilation\Steps\IndividualElements\NewarrToNewArray.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Decompilation\Steps\IndividualElements\StelemToAssignment.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\LambdaInliningVisitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Decompilation\Steps\StatementInlining\ObjectInitializerDetectingVisitor.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\InitializerDetectingVisitor.cs" />
+    <Compile Include="Elements\ArrayItemAssignmentElement.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
     <Compile Include="Elements\Expressions\NewArrayWithSizeExpression.cs">

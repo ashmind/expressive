@@ -52,6 +52,20 @@ namespace Expressive.Matching {
             return new Matcher<TOther>(get(this.Target));
         }
 
+        public Matcher<T> For<TOther>(Func<T, TOther> get, Func<Matcher<TOther>, Matcher> match) {
+            var matcher = this.For(get);
+            return this.Match(match(matcher).Matched);
+        }
+
+        public Matcher<T> Is(T value) {
+            return this.Match(Equals(this.Target, value));
+        }
+
+        protected Matcher<T> Match(bool matched) {
+            this.Matched = this.Matched && matched;
+            return this;
+        }
+
         public Matcher<T> Match(Func<T, bool> match) {
             if (!this.Matched)
                 return this;

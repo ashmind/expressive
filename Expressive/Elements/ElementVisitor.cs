@@ -26,7 +26,8 @@ namespace Expressive.Elements {
             var visited = this.TryVisit<ExpressionElement>(this.TransparentlyVisitExpressionElement, ref element)
                        || this.TryVisit<InstructionElement>(this.VisitInstruction, ref element)
                        || this.TryVisit<VariableAssignmentElement>(this.VisitVariableAssignment, ref element)
-                       || this.TryVisit<MemberAssignmentElement>(this.VisitFieldAssignment, ref element)
+                       || this.TryVisit<MemberAssignmentElement>(this.VisitMemberAssignment, ref element)
+                       || this.TryVisit<ArrayItemAssignmentElement>(this.VisitArrayItemAssignment, ref element)
                        || this.TryVisit<ReturnElement>(this.VisitReturn, ref element)
                        || this.TryVisit<BranchingElement>(this.VisitBranching, ref element)
                        || this.TryVisit<IfThenElement>(this.VisitIfThen, ref element);
@@ -62,8 +63,15 @@ namespace Expressive.Elements {
             return assignment;
         }
 
-        protected virtual IElement VisitFieldAssignment(MemberAssignmentElement assignment) {
+        protected virtual IElement VisitMemberAssignment(MemberAssignmentElement assignment) {
             assignment.Instance = this.Visit(assignment.Instance);
+            assignment.Value = this.Visit(assignment.Value);
+            return assignment;
+        }
+
+        protected virtual IElement VisitArrayItemAssignment(ArrayItemAssignmentElement assignment) {
+            assignment.Array = this.Visit(assignment.Array);
+            assignment.Index = this.Visit(assignment.Index);
             assignment.Value = this.Visit(assignment.Value);
             return assignment;
         }

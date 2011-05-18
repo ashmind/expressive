@@ -29,6 +29,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new LdlocToVariable(),
                 new StlocToAssignment(),
                 new StfldToAssignment(),
+                new StelemToAssignment(),
                 new LdargToParameter(),
                 new LdcToConstant(),
                 new BranchToCondition(),
@@ -44,7 +45,7 @@ namespace Expressive.Decompilation.Pipelines {
                 c => new ConditionImprovementVisitor(),
                 c => new BooleanEqualityImprovementVisitor(),
                 c => new NotImprovementVisitor(),
-                c => new ObjectInitializerDetectingVisitor(),
+                c => new InitializerDetectingVisitor(),
                 c => new NewNullableToCastVisitor()
             ),
             new VariableInliningStep(),

@@ -12,8 +12,7 @@ namespace Expressive.Tests.TestClasses {
             public object PropertyB { get; set; }
         }
 
-        //[ExpectedExpression("?")]
-        // Work in progress
+        [ExpectedExpression("(a, b) => new [] {a, b}")]
         public static object[] ObjectArray(object a, object b) {
             return new[] { a, b };
         }
