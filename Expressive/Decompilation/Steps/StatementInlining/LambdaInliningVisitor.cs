@@ -36,9 +36,9 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
                 
                 .For(ifThen.Then)
                     .Count(1)
-                    .For(list => list.Single()).As<FieldAssignmentElement>()
-                        .Match(a => a.Field == cachingField)
-                        .Do(a => collectedFieldValues.Add(a.Field, a.Value))
+                    .For(list => list.Single()).As<MemberAssignmentElement>()
+                        .Match(a => a.Member == cachingField)
+                        .Do(a => collectedFieldValues.Add((FieldInfo)a.Member, a.Value))
                 
                 .For(ifThen.Else).Count(0)
 

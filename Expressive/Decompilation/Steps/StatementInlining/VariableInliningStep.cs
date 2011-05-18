@@ -10,10 +10,20 @@ using Expressive.Elements.Expressions;
 
 namespace Expressive.Decompilation.Steps.StatementInlining {
     public class VariableInliningStep : IDecompilationStep {
-        #region EsimatingVisitor Class
+        #region EstimatingVisitor Class
 
         private class EstimatingVisitor : ElementVisitor {
-            private readonly IDictionary<int, int> assignmentCount = new Dictionary<int, int>();
+            private class VariableDetails {
+                public VariableDetails() {
+                    this.Trivial = true;
+                }
+
+                public int AssignmentCount { get; set; }
+                public int UseCount { get; set; }
+                public bool Trivial { get; set; }
+            }
+
+            private readonly IDictionary<int, VariableDetails> details = new Dictionary<int, VariableDetails>();
 
             private EstimatingVisitor() {
             }
@@ -21,15 +31,39 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
             public static HashSet<int> Estimate(IList<IElement> elements) {
                 var visitor = new EstimatingVisitor();
                 visitor.VisitList(elements);
-                return visitor.assignmentCount.Where(p => p.Value == 1)
-                                              .Select(p => p.Key)
-                                              .ToSet();
+                return visitor.details.Where(p => p.Value.AssignmentCount == 1 && (p.Value.UseCount < 2 || p.Value.Trivial))
+                                      .Select(p => p.Key)
+                                      .ToSet();
             }
 
             protected override IElement VisitVariableAssignment(VariableAssignmentElement assignment) {
-                assignmentCount[assignment.VariableIndex] =
-                    assignmentCount.GetValueOrDefault(assignment.VariableIndex) + 1;
+                var details = GetDetails(assignment.VariableIndex);
+                details.AssignmentCount += 1;
+                details.Trivial = details.Trivial && IsTrivial(assignment.Value);
                 return base.VisitVariableAssignment(assignment);
+            }
+
+            protected override Expression VisitLocal(LocalExpression local) {
+                GetDetails(local.Index).UseCount += 1;
+                return base.VisitLocal(local);
+            }
+
+            private VariableDetails GetDetails(int localIndex) {
+                var detailsItem = this.details.GetValueOrDefault(localIndex);
+                if (detailsItem == null) {
+                    detailsItem = new VariableDetails();
+                    this.details.Add(localIndex, detailsItem);
+                }
+
+                return detailsItem;
+            }
+
+            private bool IsTrivial(Expression expression) {
+                return expression is ParameterExpression
+                    || (
+                        expression is ConstantExpression
+                        && expression.Type.IsPrimitive
+                    );
             }
         }
 

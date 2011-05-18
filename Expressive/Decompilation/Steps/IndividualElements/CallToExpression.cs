@@ -5,36 +5,44 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
+using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class CallToExpression : InstructionToExpression {
-        public override bool CanInterpret(Instruction instruction) {
+    public class CallToElement : ElementInterpretation<InstructionElement, IElement> {
+        public override bool CanInterpret(InstructionElement instruction) {
             return instruction.OpCode == OpCodes.Call
                 || instruction.OpCode == OpCodes.Callvirt;
         }
 
-        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
-            var method = ((MethodReferenceInstruction)instruction).Method;
+        public override IElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+            var method = ((MethodReferenceInstruction)instruction.Instruction).Method;
             return IdentifyAndCollectCall(method, context);
         }
 
-        protected Expression IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {
+        protected IElement IdentifyAndCollectCall(MethodBase methodBase, IndividualDecompilationContext context) {
             var parameters = methodBase.GetParameters();
-            var getTarget = !methodBase.IsStatic
-                          ? (Func<Expression>)(context.CapturePreceding)
-                          : () => null;
+            var captureTarget = !methodBase.IsStatic
+                              ? (Func<Expression>)(context.CapturePreceding)
+                              : () => null;
 
-            var property = GetProperty(methodBase);
-            if (property != null)
-                return Expression.Property(getTarget(), property);
+            bool isSetter;
+            var property = GetProperty(methodBase, out isSetter);
+            if (property != null) {
+                if (isSetter) {
+                    var value = context.CapturePreceding();
+                    return new MemberAssignmentElement(captureTarget(), property, value);
+                }
+
+                return new ExpressionElement(Expression.Property(captureTarget(), property));
+            }
 
             var method = methodBase as MethodInfo;
             if (method == null)
                 throw new NotImplementedException("Only method and property calls are implemented.");
 
             var arguments = CaptureArguments(parameters, methodBase, context);
-            return Expression.Call(getTarget(), method, arguments);
+            return new ExpressionElement(Expression.Call(captureTarget(), method, arguments));
         }
 
         protected IEnumerable<Expression> CaptureArguments(ParameterInfo[] parameters, MethodBase methodBase, IndividualDecompilationContext context) {
@@ -57,7 +65,8 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             return arguments;
         }
 
-        private PropertyInfo GetProperty(MethodBase method) {
+        private PropertyInfo GetProperty(MethodBase method, out bool isSetter) {
+            isSetter = false;
             if (!method.IsSpecialName)
                 return null;
 
@@ -65,7 +74,17 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
                 (method.IsStatic ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.Public | BindingFlags.NonPublic
             );
 
-            return properties.FirstOrDefault(p => p.GetAccessors().Any(a => a.MetadataToken == method.MetadataToken));
+            foreach (var property in properties) {
+                if (method == property.GetGetMethod())
+                    return property;
+
+                if (method == property.GetSetMethod()) {
+                    isSetter = true;
+                    return property;
+                }
+            }
+
+            return null;
         }
     }
 }

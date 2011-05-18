@@ -8,13 +8,13 @@ using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class StfldToAssignment : ElementInterpretation<InstructionElement, FieldAssignmentElement> {
+    public class StfldToAssignment : ElementInterpretation<InstructionElement, MemberAssignmentElement> {
         public override bool CanInterpret(InstructionElement instruction) {
             return instruction.OpCode == OpCodes.Stfld
                 || instruction.OpCode == OpCodes.Stsfld;
         }
 
-        public override FieldAssignmentElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+        public override MemberAssignmentElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var field = ((FieldReferenceInstruction)instruction.Instruction).Field;
             var value = context.CapturePreceding();
             var instance = (Expression)null;
@@ -22,7 +22,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
                 instance = context.CapturePreceding();
 
             value = BooleanSupport.ConvertIfRequired(value, field.FieldType);
-            return new FieldAssignmentElement(instance, field, value);
+            return new MemberAssignmentElement(instance, field, value);
         }
     }
 }

@@ -100,7 +100,7 @@
     <Compile Include="Elements\Instructions\Instruction.cs" />
     <Compile Include="Elements\Instructions\VariableReferenceInstruction.cs" />
     <Compile Include="Elements\IPreservingOffset.cs" />
-    <Compile Include="Elements\FieldAssignmentElement.cs" />
+    <Compile Include="Elements\MemberAssignmentElement.cs" />
     <Compile Include="Elements\Presentation\ElementHelper.cs" />
     <Compile Include="Elements\Expressions\ExpressionTreeVisitor.cs" />
     <Compile Include="Elements\Presentation\Indent.cs" />

@@ -23,7 +23,7 @@ namespace Expressive.Decompilation.Pipelines {
                 new ConvToConvert(),
                 new CxxToCondition(),
                 new MathToExpression(),
-                new CallToExpression(),
+                new CallToElement(),
                 new NewobjToNew(),
                 new NewarrToNewArray(),
                 new LdlocToVariable(),

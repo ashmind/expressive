@@ -5,19 +5,20 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
+using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    public class NewobjToNew : CallToExpression {
-        public override bool CanInterpret(Instruction instruction) {
+    public class NewobjToNew : CallToElement {
+        public override bool CanInterpret(InstructionElement instruction) {
             return instruction.OpCode == OpCodes.Newobj;
         }
 
-        public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
-            var constructor = (ConstructorInfo)((MethodReferenceInstruction)instruction).Method;
+        public override IElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
+            var constructor = (ConstructorInfo)((MethodReferenceInstruction)instruction.Instruction).Method;
             var arguments = this.CaptureArguments(constructor.GetParameters(), constructor, context);
 
-            return Expression.New(constructor, arguments);
+            return new ExpressionElement(Expression.New(constructor, arguments));
         }
     }
 }

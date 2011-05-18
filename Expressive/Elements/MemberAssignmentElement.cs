@@ -7,14 +7,14 @@ using System.Reflection;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {
-    public class FieldAssignmentElement : IElement {
+    public class MemberAssignmentElement : IElement {
         public Expression Instance { get; set; }
-        public FieldInfo Field { get; private set; }
+        public MemberInfo Member { get; private set; }
         public Expression Value  { get; set; }
 
-        public FieldAssignmentElement(Expression instance, FieldInfo field, Expression value) {
+        public MemberAssignmentElement(Expression instance, MemberInfo member, Expression value) {
             this.Instance = instance;
-            this.Field = field;
+            this.Member = member;
             this.Value = value;
         }
 
@@ -29,11 +29,11 @@ namespace Expressive.Elements {
         public string ToString(Indent indent) {
             var target = this.Instance != null
                        ? this.Instance.ToString()
-                       : this.Field.DeclaringType.FullName;
+                       : this.Member.DeclaringType.FullName;
 
             return string.Format(
                 "{0}{1}.{2} = {3}",
-                    indent.Value, target, this.Field.Name, this.Value
+                    indent.Value, target, this.Member.Name, this.Value
             );
         }
     }
