@@ -33,7 +33,7 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
             var matched = Matcher
                 .For(elements[index]).As<VariableAssignmentElement>()
                 .AssignTo(out assignment)
-                .For(v => v.Value).Match(e => e.GetType().IsSameAsOrSubclassOf(collector.NewExpressionType))
+                .For(v => v.Value).Match(collector.MatchNew)
                     .AssignTo(out @new)
                 .Matched;
 
@@ -41,10 +41,12 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
                 return false;
 
             var initializer = collector.AttemptToCollect(@new, assignment.VariableIndex, index, elements);
-            if (initializer != null)
+            if (initializer != null) {
                 assignment.Value = initializer;
+                return true;
+            }
 
-            return true;
+            return false;
         }
     }
 }

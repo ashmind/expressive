@@ -17,6 +17,11 @@ namespace Expressive.Tests.TestClasses {
             return new[] { a, b };
         }
 
+        [ExpectedExpression("(a, b) => new List`1() {Void Add(System.Object)(a), Void Add(System.Object)(b)}")]
+        public static IList<object> ObjectList(object a, object b) {
+            return new List<object> { a, b };
+        }
+
         [ExpectedExpression("(a, b) => new SimpleClass() {PropertyA = a, PropertyB = b}")]
         public static SimpleClass ClassWithProperties(object a, object b) {
             return new SimpleClass { PropertyA = a, PropertyB = b };

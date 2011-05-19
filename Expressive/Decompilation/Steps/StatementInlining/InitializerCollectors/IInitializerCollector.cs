@@ -6,7 +6,7 @@ using Expressive.Elements;
 
 namespace Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors {
     public interface IInitializerCollector {
-        Type NewExpressionType { get; }
+        bool MatchNew(Expression expression);
         Expression AttemptToCollect(Expression @new, int variableIndex, int elementIndex, IList<IElement> elements);
     }
 }

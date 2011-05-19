@@ -48,7 +48,8 @@ namespace Expressive.Decompilation.Pipelines {
                 c => new NotImprovementVisitor(),
                 c => new InitializerDetectingVisitor(
                     new ObjectInitializerCollector(),
-                    new ArrayInitializerCollector()
+                    new ArrayInitializerCollector(),
+                    new CollectionInitializerCollector()
                 ),
                 c => new NewNullableToCastVisitor()
             ),

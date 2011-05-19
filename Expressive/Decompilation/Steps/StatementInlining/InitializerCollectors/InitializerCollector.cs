@@ -12,8 +12,8 @@ namespace Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors
         where TNewExpression : Expression
         where TFollowingElement : IElement
     {
-        public Type NewExpressionType {
-            get { return typeof(TNewExpression); }
+        public virtual bool MatchNew(TNewExpression expression) {
+            return true;
         }
 
         public Expression AttemptToCollect(TNewExpression @new, int variableIndex, int elementIndex, IList<IElement> elements) {
@@ -47,7 +47,15 @@ namespace Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors
         protected abstract Expression ToInitializer(TNewExpression newExpression, IList<TValue> values);
 
         #region IInitializerCollector Members
-        
+
+        bool IInitializerCollector.MatchNew(Expression expression) {
+            var typed = expression as TNewExpression;
+            if (typed == null)
+                return false;
+
+            return this.MatchNew(typed);
+        }
+
         Expression IInitializerCollector.AttemptToCollect(Expression @new, int variableIndex, int elementIndex, IList<IElement> elements) {
             return this.AttemptToCollect((TNewExpression)@new, variableIndex, elementIndex, elements);
         }
