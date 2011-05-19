@@ -22,6 +22,11 @@ namespace Expressive.Tests.TestClasses {
             return new List<object> { a, b };
         }
 
+        [ExpectedExpression("(key, value) => new Dictionary`2() {Void Add(System.Object, System.Object)(key, value)}")]
+        public static IDictionary<object, object> ObjectDictionary(object key, object value) {
+            return new Dictionary<object, object> { { key, value } };
+        }
+
         [ExpectedExpression("(a, b) => new SimpleClass() {PropertyA = a, PropertyB = b}")]
         public static SimpleClass ClassWithProperties(object a, object b) {
             return new SimpleClass { PropertyA = a, PropertyB = b };
