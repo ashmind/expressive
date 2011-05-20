@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using AshMind.Extensions;
-
+using Expressive.Decompilation.Steps.StatementInlining.AssignmentInlining;
 using Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors;
 using Expressive.Elements;
 using Expressive.Matching;
 
 namespace Expressive.Decompilation.Steps.StatementInlining {
     public class InitializerDetectingVisitor : ElementVisitor {
+        private readonly AssignmentInliner inliner;
         private readonly IInitializerCollector[] collectors;
 
-        public InitializerDetectingVisitor(params IInitializerCollector[] collectors) {
+        public InitializerDetectingVisitor(AssignmentInliner inliner, params IInitializerCollector[] collectors) {
+            this.inliner = inliner;
             this.collectors = collectors;
         }
 
@@ -43,6 +44,7 @@ namespace Expressive.Decompilation.Steps.StatementInlining {
             var initializer = collector.AttemptToCollect(@new, assignment.VariableIndex, index, elements);
             if (initializer != null) {
                 assignment.Value = initializer;
+                this.inliner.Inline(elements, i => i == assignment.VariableIndex);
                 return true;
             }
 

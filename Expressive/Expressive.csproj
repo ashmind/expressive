@@ -59,6 +59,8 @@
     </Compile>
     <Compile Include="Decompilation\Steps\IndividualElements\StelemToAssignment.cs" />
     <Compile Include="Decompilation\Steps\IndividualElements\StfldToAssignment.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\AssignmentInlining\AssignmentEstimatingVisitor.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\AssignmentInlining\AssignmentInliningVisitor.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\ArrayInitializerCollector.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\CollectionInitializerCollector.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerCollectors\ObjectInitializerCollector.cs" />
@@ -68,6 +70,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerDetectingVisitor.cs" />
+    <Compile Include="Decompilation\Steps\StatementInlining\AssignmentInlining\AssignmentInliner.cs" />
     <Compile Include="Elements\ArrayItemAssignmentElement.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />

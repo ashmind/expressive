@@ -10,6 +10,8 @@ namespace Expressive.Tests.TestClasses {
 
             public object PropertyA { get; set; }
             public object PropertyB { get; set; }
+
+            public SimpleClass Recursive { get; set; }
         }
 
         [ExpectedExpression("(a, b) => new [] {a, b}")]
@@ -37,10 +39,17 @@ namespace Expressive.Tests.TestClasses {
             return new SimpleClass { PropertyA = a, PropertyB = b };
         }
 
-
         [ExpectedExpression("(a, b) => new SimpleClass() {FieldA = a, FieldB = b}")]
         public static SimpleClass ClassWithFields(object a, object b) {
             return new SimpleClass { FieldA = a, FieldB = b };
+        }
+
+        [ExpectedExpression("(a, b) => new SimpleClass() {PropertyA = a, Recursive = new SimpleClass() {PropertyB = b}}")]
+        public static SimpleClass ClassWithRecursiveUsingDirectSetter(object a, object b) {
+            return new SimpleClass {
+                PropertyA = a,
+                Recursive = new SimpleClass { PropertyB = b }
+            };
         }
     }
 }

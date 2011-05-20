@@ -8,6 +8,7 @@ using Expressive.Decompilation.Steps;
 using Expressive.Decompilation.Steps.Clarity;
 using Expressive.Decompilation.Steps.IndividualElements;
 using Expressive.Decompilation.Steps.StatementInlining;
+using Expressive.Decompilation.Steps.StatementInlining.AssignmentInlining;
 using Expressive.Decompilation.Steps.StatementInlining.InitializerCollectors;
 
 namespace Expressive.Decompilation.Pipelines {
@@ -47,13 +48,14 @@ namespace Expressive.Decompilation.Pipelines {
                 c => new BooleanEqualityImprovementVisitor(),
                 c => new NotImprovementVisitor(),
                 c => new InitializerDetectingVisitor(
+                    new AssignmentInliner(),
                     new ObjectInitializerCollector(),
                     new ArrayInitializerCollector(),
                     new CollectionInitializerCollector()
                 ),
                 c => new NewNullableToCastVisitor()
             ),
-            new VariableInliningStep(),
+            new VariableInliningStep(new AssignmentInliner()),
             new VisitorSequenceStep(
                 c => new CoalescingVisitor(),
                 c => new LambdaInliningVisitor(c)
