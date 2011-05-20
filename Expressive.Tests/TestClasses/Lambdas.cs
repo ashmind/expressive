@@ -13,5 +13,14 @@ namespace Expressive.Tests.TestClasses {
         public static IEnumerable<ClassWithNames> LambdaWithClosureOverParameter(IEnumerable<ClassWithNames> query, int length) {
             return query.Where(c => c.FirstName.Length > length);
         }
+
+        [ExpectedExpression("() => Return(() => Return(() => Return(() => null)))")]
+        public static object LambdaWithinLambdaWithnLambda() {
+            return Return(() => Return(() => Return(() => null)));
+        }
+
+        private static object Return(Func<object> func) {
+            return func();
+        }
     }
 }
