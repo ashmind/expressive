@@ -4,13 +4,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 
+using AshMind.Extensions;
+
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
-    using BinaryConverter = Func<Expression, Expression, Expression>;
+    using BinaryOperator = Func<Expression, Expression, Expression>;
+    using UnaryOperator = Func<Expression, Expression>;
 
     public class MathToExpression : InstructionToExpression {
-        private static readonly IDictionary<OpCode, BinaryConverter> operators = new Dictionary<OpCode, BinaryConverter> {
+        private static readonly IDictionary<OpCode, BinaryOperator> binaryOperators = new Dictionary<OpCode, BinaryOperator> {
             { OpCodes.Add, Expression.Add },
             { OpCodes.And, Expression.And },
             { OpCodes.Div, Expression.Divide },
@@ -23,18 +26,28 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Xor, Expression.ExclusiveOr }
         };
 
+        private static readonly IDictionary<OpCode, UnaryOperator> unaryOperators = new Dictionary<OpCode, UnaryOperator> {
+            { OpCodes.Not, Expression.Not },
+            { OpCodes.Neg, Expression.Negate } 
+        };
+
         public override bool CanInterpret(Instruction instruction) {
-            return operators.ContainsKey(instruction.OpCode);
+            return binaryOperators.ContainsKey(instruction.OpCode)
+                || unaryOperators.ContainsKey(instruction.OpCode);
         }
 
         public override Expression Interpret(Instruction instruction, IndividualDecompilationContext context) {
-            var right = context.CapturePreceding();
+            var singleOrRight = context.CapturePreceding();
+            var unary = unaryOperators.GetValueOrDefault(instruction.OpCode);
+            if (unary != null)
+                return unary(singleOrRight);
+
             var left = context.CapturePreceding();
-            var binary = operators[instruction.OpCode];
+            var binary = binaryOperators[instruction.OpCode];
 
-            Adapt(left, ref right);
+            Adapt(left, ref singleOrRight);
 
-            return binary(left, right);
+            return binary(left, singleOrRight);
         }
 
         private void Adapt(Expression left, ref Expression right) {

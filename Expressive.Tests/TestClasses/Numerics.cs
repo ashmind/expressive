@@ -14,6 +14,12 @@ namespace Expressive.Tests.TestClasses {
             return a - b;
         }
 
+        [ExpectedExpression("a => -a")]
+        public static int Minus(int a)
+        {
+            return -a;
+        }
+
         [ExpectedExpression("(a, b) => (a % b)")]
         public static int Mod(int a, int b) {
             return a % b;
@@ -27,6 +33,12 @@ namespace Expressive.Tests.TestClasses {
         [ExpectedExpression("(a, b) => (a * b)")]
         public static int Multiply(int a, int b) {
             return a * b;
+        }
+
+        [ExpectedExpression("a => Not(a)")]
+        public static int Not(int a)
+        {
+            return ~a;
         }
 
         [ExpectedExpression("(a, b) => (a & b)")]

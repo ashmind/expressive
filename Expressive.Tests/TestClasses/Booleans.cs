@@ -7,6 +7,12 @@ using Expressive.Tests.Methods;
 
 namespace Expressive.Tests.TestClasses {
     public static class Booleans {
+        [ExpectedExpression("a => Not(a)")]
+        public static bool Not(bool a)
+        {
+            return !a;
+        }
+
         [ExpectedExpression("(a, b) => (a AndAlso b)")]
         public static bool And(bool a, bool b) {
             return a && b;
