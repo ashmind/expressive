@@ -24,7 +24,7 @@ namespace Expressive.Tests.TestClasses {
             return (int)a;
         }
 
-        [ExpectedExpression("a => Convert(a)")]
+        [ExpectedExpression("a => (Int32?)a")]
         public static int? CastToNullable(int a) {
             return a;
         }

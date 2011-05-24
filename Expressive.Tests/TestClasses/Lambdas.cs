@@ -14,7 +14,7 @@ namespace Expressive.Tests.TestClasses {
             return query.Where(c => c.FirstName.Length > length);
         }
 
-        [ExpectedExpression("() => Return(() => Return(() => Return(() => null)))")]
+        [ExpectedExpression("() => Lambdas.Return(() => Lambdas.Return(() => Lambdas.Return(() => null)))")]
         public static object LambdaWithinLambdaWithnLambda() {
             return Return(() => Return(() => Return(() => null)));
         }

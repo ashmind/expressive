@@ -74,6 +74,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\ToStringVisitor.cs" />
     <Compile Include="InlinerTest.cs" />
     <Compile Include="Methods\TestMethod.cs" />
     <Compile Include="GeneralTests.cs" />

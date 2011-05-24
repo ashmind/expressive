@@ -17,13 +17,13 @@ namespace Expressive.Tests.TestClasses {
             get { return this.FirstName; }
         }
 
-        [ExpectedExpression(@"{0} => Concat({0}.FirstName, "" "", {0}.LastName)")]
+        [ExpectedExpression(@"{0} => String.Concat({0}.FirstName, "" "", {0}.LastName)")]
         public string FullNameSimple {
             get { return this.FirstName + " " + this.LastName; }
         }
 
-        private const string FullNameExpression1 = @"{0} => IIF(Not(IsNullOrEmpty({0}.FirstName)), Concat({0}.FirstName, "" "", {0}.LastName), {0}.LastName)";
-        private const string FullNameExpression2 = @"{0} => IIF(IsNullOrEmpty({0}.FirstName), {0}.LastName, Concat({0}.FirstName, "" "", {0}.LastName))";
+        private const string FullNameExpression1 = @"{0} => (!String.IsNullOrEmpty({0}.FirstName) ? String.Concat({0}.FirstName, "" "", {0}.LastName) : {0}.LastName)";
+        private const string FullNameExpression2 = @"{0} => (String.IsNullOrEmpty({0}.FirstName) ? {0}.LastName : String.Concat({0}.FirstName, "" "", {0}.LastName))";
 
         [ExpectedExpression(FullNameExpression1, FullNameExpression2)]
         public string FullNameWithInlineConditional {

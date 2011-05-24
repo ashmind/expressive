@@ -7,7 +7,7 @@ using Expressive.Tests.Methods;
 
 namespace Expressive.Tests.TestClasses {
     public static class Booleans {
-        [ExpectedExpression("a => Not(a)")]
+        [ExpectedExpression("a => !a")]
         public static bool Not(bool a)
         {
             return !a;
@@ -23,7 +23,7 @@ namespace Expressive.Tests.TestClasses {
             return a || b;
         }
 
-        [ExpectedExpression("() => Or(True, False)")]
+        [ExpectedExpression("() => Booleans.Or(True, False)")]
         public static bool CallWithConstants() {
             return Or(true, false);
         }

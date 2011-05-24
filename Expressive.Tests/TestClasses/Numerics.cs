@@ -35,7 +35,7 @@ namespace Expressive.Tests.TestClasses {
             return a * b;
         }
 
-        [ExpectedExpression("a => Not(a)")]
+        [ExpectedExpression("a => !a")]
         public static int Not(int a)
         {
             return ~a;
@@ -56,12 +56,12 @@ namespace Expressive.Tests.TestClasses {
             return a ^ b;
         }
 
-        [ExpectedExpression("(a, b) => (a >> (b & Convert(31)))")]
+        [ExpectedExpression("(a, b) => (a >> (b & (Int32)31))")]
         public static int Shr(int a, int b) {
             return a >> b;
         }
 
-        [ExpectedExpression("(a, b) => (a << (b & Convert(31)))")]
+        [ExpectedExpression("(a, b) => (a << (b & (Int32)31))")]
         public static int Shl(int a, int b) {
             return a << b;
         }

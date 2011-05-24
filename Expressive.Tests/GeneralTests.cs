@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-
+using Expressive.Tests.Helpers;
 using MbUnit.Framework;
 
 using AshMind.Extensions;
@@ -26,10 +26,10 @@ namespace Expressive.Tests {
             ).ToList();
 
             if (expected.Count <= 1) {
-                Assert.AreEqual(expected.Single(), decompiled.ToString());
+                Assert.AreEqual(expected.Single(), ToStringVisitor.ToString(decompiled));
             }
             else {
-                Assert.Contains(expected, decompiled.ToString());
+                Assert.Contains(expected, ToStringVisitor.ToString(decompiled));
             }
         }
 

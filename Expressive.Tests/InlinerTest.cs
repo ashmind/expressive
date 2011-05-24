@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Expressive.Decompilation.Pipelines;
+using Expressive.Tests.Helpers;
 using MbUnit.Framework;
 
 using Expressive.Tests.TestClasses;
@@ -17,7 +18,7 @@ namespace Expressive.Tests {
 
             var inlined = inliner.Inline(predicate, p => p.Name == "FullNameSimple");
 
-            Assert.AreEqual("c => Concat(c.FirstName, \" \", c.LastName).Contains(\"Test\")", inlined.ToString());
+            Assert.AreEqual("c => String.Concat(c.FirstName, \" \", c.LastName).Contains(\"Test\")", ToStringVisitor.ToString(inlined));
         }
     }
 }
