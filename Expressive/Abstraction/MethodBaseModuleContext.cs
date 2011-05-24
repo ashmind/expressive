@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using ClrTest.Reflection;
-
-namespace Expressive.Disassembly {
-    public class FailSafeModuleTokenResolver : ITokenResolver {
+namespace Expressive.Abstraction {
+    public class MethodBaseModuleContext : IManagedMethodContext {
         private readonly Module module;
         private readonly Type[] genericMethodArguments;
         private readonly Type[] genericTypeArguments;
 
-        public FailSafeModuleTokenResolver(MethodBase method) {
+        public MethodBaseModuleContext(MethodBase method) {
             this.module = method.Module;
             this.genericMethodArguments = (method.IsGenericMethod || method.IsGenericMethodDefinition) ? method.GetGenericArguments() : new Type[0];
 

@@ -3,42 +3,59 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Expressive.Abstraction;
 using Expressive.Elements.Instructions;
 
 namespace Expressive.Tests.Methods {
-    public class TestMethod : StaticPseudoMethod {
+    public class TestMethod : IManagedMethod {
         private readonly string name;
         private readonly Type returnType;
-        private readonly IList<ParameterInfo> parameters;
-        private readonly IList<LocalVariableInfo> locals;
+        private readonly IEnumerable<IManagedMethodParameter> parameters;
+        private readonly IList<Type> localTypes;
         private readonly Instruction[] instructions;
 
-        public TestMethod(string name, Type returnType, IList<ParameterInfo> parameters, IList<LocalVariableInfo> locals, Instruction[] instructions) {
+        public TestMethod(string name, Type returnType, IEnumerable<IManagedMethodParameter> parameters, IList<Type> localTypes, Instruction[] instructions) {
             this.name = name;
             this.returnType = returnType;
             this.parameters = parameters;
-            this.locals = locals;
+            this.localTypes = localTypes;
             this.instructions = instructions;
         }
 
-        public override string Name {
+        public string Name {
             get { return this.name; }
         }
 
-        public override Type ReturnType {
+        public Type ReturnType {
             get { return returnType; }
         }
 
-        public override ParameterInfo[] GetParameters() {
+        public IEnumerable<IManagedMethodParameter> GetParameters() {
             return parameters.ToArray();
+        }
+
+        public Type GetTypeOfLocal(int index) {
+            return this.localTypes[index];
         }
 
         public Instruction[] GetInstructions() {
             return this.instructions;
         }
 
-        public override MethodBody GetMethodBody() {
-            return new PseudoMethodBody(this.locals.ToArray());
+        public IManagedMethodContext Context {
+            get { throw new NotImplementedException(); }
+        }
+
+        public bool IsStatic {
+            get { return true; }
+        }
+
+        public Type DeclaringType {
+            get { return null; }
+        }
+        
+        public byte[] GetByteArray() {
+            throw new NotSupportedException();
         }
 
         public override string ToString() {

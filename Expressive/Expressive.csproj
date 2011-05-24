@@ -47,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstraction\IManagedMethodContext.cs" />
+    <Compile Include="Abstraction\IManagedMethod.cs" />
+    <Compile Include="Abstraction\IManagedMethodParameter.cs" />
+    <Compile Include="Abstraction\MethodBaseAdapter.cs" />
+    <Compile Include="Abstraction\ParameterInfoAdapter.cs" />
     <Compile Include="Decompilation\Steps\AddressOfToCreateDelegateVisitor.cs" />
     <Compile Include="Decompilation\Steps\BranchStackFrame.cs" />
     <Compile Include="Decompilation\Steps\Clarity\CoalescingVisitor.cs" />
@@ -71,6 +76,7 @@
     </Compile>
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerDetectingVisitor.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\AssignmentInlining\AssignmentInliner.cs" />
+    <Compile Include="ExpressiveExtensions.cs" />
     <Compile Include="Elements\ArrayItemAssignmentElement.cs" />
     <Compile Include="Elements\ElementKind.cs" />
     <Compile Include="Elements\Expressions\AddressOfExpression.cs" />
@@ -91,7 +97,7 @@
     <Compile Include="Decompilation\Steps\StatementInlining\IfThenCollapsingVisitor.cs" />
     <Compile Include="Decompiler.cs" />
     <Compile Include="Disassembler.cs" />
-    <Compile Include="Disassembly\FailSafeModuleTokenResolver.cs" />
+    <Compile Include="Abstraction\MethodBaseModuleContext.cs" />
     <Compile Include="Elements\BranchingElement.cs" />
     <Compile Include="Matching\Matcher.cs" />
     <Compile Include="Matching\MatcherMethodCallExtensions.cs" />

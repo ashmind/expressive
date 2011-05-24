@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
+using Expressive.Abstraction;
 using Expressive.Tests.Methods;
 
 namespace Expressive.Tests.TestClasses {
@@ -40,7 +40,7 @@ namespace Expressive.Tests.TestClasses {
         }
 
         [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
-        public static readonly MethodBase ObjectEqualsRelease = new TestMethodBuilder()
+        public static readonly IManagedMethod ObjectEqualsRelease = new TestMethodBuilder()
             .Name("ObjectEquals{Release}")
             .Parameter<object>("a")
             .Parameter<object>("b")
@@ -65,7 +65,7 @@ namespace Expressive.Tests.TestClasses {
             .ToMethod();
 
         [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
-        public static readonly MethodBase OtherEquals = new TestMethodBuilder()
+        public static readonly IManagedMethod OtherEquals = new TestMethodBuilder()
             .Name("AssembledEquals")
             .Parameter<object>("a")
             .Parameter<object>("b")

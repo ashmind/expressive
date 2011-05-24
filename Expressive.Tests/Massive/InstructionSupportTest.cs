@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Reflection.Emit;
+
+using Expressive.Abstraction;
 using Expressive.Decompilation;
 using Expressive.Decompilation.Pipelines;
 using Expressive.Decompilation.Steps.StatementInlining;
 using Expressive.Elements;
 using Expressive.Elements.Instructions;
+
 using MbUnit.Framework;
 
 namespace Expressive.Tests.Massive {
@@ -30,7 +32,8 @@ namespace Expressive.Tests.Massive {
             var visitor = new InstructionCollectingVisitor();
 
             foreach (var method in GetAllNonGenericMethods()) {
-                var elements = disassembler.Disassemble(method).Select(i => (IElement)new InstructionElement(i)).ToList();
+                var elements = disassembler.Disassemble(method)
+                                           .Select(i => (IElement)new InstructionElement(i)).ToList();
                 try { ApplyPipeline(pipeline, elements, method); } catch { continue; }
                 visitor.VisitList(elements);
             }
@@ -44,7 +47,7 @@ namespace Expressive.Tests.Massive {
         [Test]
         [Ignore("Manual only for now")]
         [Factory("GetAllSupportedMethods")]
-        public void TestNoExceptionsAreThrownWhenDecompiling(MethodInfo method, IList<Instruction> instructions) {
+        public void TestNoExceptionsAreThrownWhenDecompiling(IManagedMethod method, IList<Instruction> instructions) {
             var pipeline = new DefaultPipeline().Without<LambdaInliningVisitor>();
             var elements = instructions.Select(i => (IElement)new InstructionElement(i)).ToList();
             Assert.DoesNotThrow(() => {
@@ -64,12 +67,13 @@ namespace Expressive.Tests.Massive {
                         .Select(x => new object[] { x.method, x.instructions });
         }
 
-        private IEnumerable<MethodInfo> GetAllNonGenericMethods() {
+        private IEnumerable<IManagedMethod> GetAllNonGenericMethods() {
             return typeof(string).Assembly.GetTypes().SelectMany(t => t.GetMethods())
-                                                     .Where(m => !m.IsGenericMethodDefinition);
+                                                     .Where(m => !m.IsGenericMethodDefinition)
+                                                     .Select(method => new MethodBaseAdapter(method));
         }
 
-        private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, MethodBase method) {
+        private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, IManagedMethod method) {
             var parameters = method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
             if (!method.IsStatic)
                 parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));

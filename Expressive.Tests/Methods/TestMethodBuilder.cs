@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
+using Expressive.Abstraction;
 using Expressive.Elements.Instructions;
 using Expressive.Tests.Helpers;
 
@@ -10,8 +10,8 @@ namespace Expressive.Tests.Methods {
     public class TestMethodBuilder {
         private string name;
         private Type returnType;
-        private readonly IList<ParameterInfo> parameters = new List<ParameterInfo>();
-        private readonly IList<LocalVariableInfo> locals = new List<LocalVariableInfo>();
+        private readonly IList<TestMethodParameter> parameters = new List<TestMethodParameter>();
+        private readonly IList<Type> localTypes = new List<Type>();
         private Instruction[] instructions;
 
         public TestMethodBuilder Name(string name) {
@@ -33,7 +33,7 @@ namespace Expressive.Tests.Methods {
         }
 
         public TestMethodBuilder Parameter(string name, Type type) {
-            parameters.Add(new PseudoParameter(name, type));
+            this.parameters.Add(new TestMethodParameter(name, type));
             return this;
         }
 
@@ -42,7 +42,7 @@ namespace Expressive.Tests.Methods {
         }
 
         public TestMethodBuilder Local(Type type) {
-            locals.Add(new PseudoLocalVariable(type));
+            this.localTypes.Add(type);
             return this;
         }
 
@@ -51,12 +51,12 @@ namespace Expressive.Tests.Methods {
             return this;
         }
 
-        public MethodBase ToMethod() {
+        public IManagedMethod ToMethod() {
             return new TestMethod(
                 this.name ?? "TestMethod?",
                 this.returnType ?? typeof(void),
                 this.parameters,
-                this.locals,
+                this.localTypes,
                 this.instructions
             );
         }

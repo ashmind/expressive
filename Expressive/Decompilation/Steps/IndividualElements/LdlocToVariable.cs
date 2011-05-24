@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using Expressive.Abstraction;
 using Expressive.Elements;
 using Expressive.Elements.Expressions;
 using Expressive.Elements.Instructions;
@@ -21,10 +21,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Ldloca_S,  x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
-        private MethodBody methodBody;
+        private IManagedMethod method;
 
         public override void Initialize(DecompilationContext context) {
-            this.methodBody = context.Method.GetMethodBody();
+            this.method = context.Method;
         }
 
         public override bool CanInterpret(InstructionElement instruction) {
@@ -35,9 +35,9 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             var indexGetter = variableIndexGetters[instruction.OpCode];
             var variableIndex = indexGetter(instruction.Instruction);
             
-            return new ExpressionElement(new LocalExpression(
-                variableIndex, this.methodBody.LocalVariables[variableIndex].LocalType
-            ));
+            return new ExpressionElement(
+                new LocalExpression(variableIndex, this.method.GetTypeOfLocal(variableIndex))
+            );
         }
     }
 }

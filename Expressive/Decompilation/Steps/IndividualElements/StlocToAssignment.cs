@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-
+using Expressive.Abstraction;
 using Expressive.Elements;
 using Expressive.Elements.Instructions;
 
@@ -18,10 +18,10 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
             { OpCodes.Stloc,   x => ((VariableReferenceInstruction)x).Ordinal }
         };
 
-        private MethodBody methodBody;
+        private IManagedMethod method;
 
         public override void Initialize(DecompilationContext context) {
-            this.methodBody = context.Method.GetMethodBody();
+            this.method = context.Method;
         }
 
         public override bool CanInterpret(InstructionElement instruction) {
@@ -31,7 +31,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         public override VariableAssignmentElement Interpret(InstructionElement instruction, IndividualDecompilationContext context) {
             var value = context.CapturePreceding();
             var index = variableIndexGetters[instruction.OpCode](instruction.Instruction);
-            var type = this.methodBody.LocalVariables[index].LocalType;
+            var type = this.method.GetTypeOfLocal(index);
 
             value = BooleanSupport.ConvertIfRequired(value, type);
 

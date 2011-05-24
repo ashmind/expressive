@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+
 using ClrTest.Reflection;
-using Expressive.Disassembly;
+
+using Expressive.Abstraction;
 using Expressive.Elements.Instructions;
 
 namespace Expressive {
     public class Disassembler : IDisassembler {
-        public virtual IEnumerable<Instruction> Disassemble(MethodBase method) {
-            return new ILReader(
-                new MethodBaseILProvider(method),
-                new FailSafeModuleTokenResolver(method)
-            ).Select(Resolve);
+        public virtual IEnumerable<Instruction> Disassemble(IManagedMethod method) {
+            return new ILReader(method, method.Context).Select(Resolve);
         }
 
         private Instruction Resolve(ILInstruction instruction) {

@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
+
+using Expressive.Abstraction;
 
 namespace Expressive {
     public interface IDecompiler {
-        LambdaExpression Decompile(MethodBase method);
-        Expression Decompile(MethodBase method, IList<Expression> arguments);
+        LambdaExpression Decompile(IManagedMethod method);
+        Expression Decompile(IManagedMethod method, IList<Expression> arguments);
     }
 }

@@ -11,9 +11,7 @@ namespace Expressive.Decompilation.Steps.IndividualElements {
         private Type returnType;
 
         public override void Initialize(DecompilationContext context) {
-            var method = context.Method as MethodInfo;
-            this.returnType = method != null ? method.ReturnType : typeof(void);
-
+            this.returnType = context.Method.ReturnType;
             base.Initialize(context);
         }
 

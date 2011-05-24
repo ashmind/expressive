@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using ClrTest.Reflection;
+using Expressive.Abstraction;
 using Expressive.Decompilation.Pipelines;
 using Expressive.Elements;
 using Expressive.Elements.Presentation;
@@ -20,7 +20,7 @@ namespace Expressive {
             this.pipeline = pipeline;
         }
 
-        public virtual LambdaExpression Decompile(MethodBase method) {
+        public virtual LambdaExpression Decompile(IManagedMethod method) {
             var parameters = method.GetParameters().Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToList();
             if (!method.IsStatic)
                 parameters.Insert(0, Expression.Parameter(method.DeclaringType, "<this>"));
@@ -29,7 +29,7 @@ namespace Expressive {
             return Expression.Lambda(body, parameters.ToArray());
         }
 
-        public virtual Expression Decompile(MethodBase method, IList<Expression> arguments) {
+        public virtual Expression Decompile(IManagedMethod method, IList<Expression> arguments) {
             var elements = this.disassembler.Disassemble(method)
                                 .Select(i => (IElement)new InstructionElement(i))
                                 .ToList();

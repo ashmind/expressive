@@ -56,6 +56,10 @@
     <Reference Include="AshMind.Extensions, Version=1.0.4.0, Culture=neutral, PublicKeyToken=32a35e6126a2a893, processorArchitecture=MSIL">
       <HintPath>..\$packages\AshMind.Extensions.1.0.4\lib\3.5\AshMind.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="ClrTest.Reflection.ILReader, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\$libraries\ClrTest.Reflection.ILReader.dll</HintPath>
+    </Reference>
     <Reference Include="Gallio" />
     <Reference Include="MbUnit" />
     <Reference Include="System" />
@@ -85,10 +89,7 @@
     <Compile Include="Massive\InstructionSupportTest.cs" />
     <Compile Include="Methods\TestDisassembler.cs" />
     <Compile Include="Methods\TestMethodBuilder.cs" />
-    <Compile Include="Methods\PseudoLocalVariable.cs" />
-    <Compile Include="Methods\PseudoMethodBody.cs" />
-    <Compile Include="Methods\PseudoParameter.cs" />
-    <Compile Include="Methods\StaticPseudoMethod.cs" />
+    <Compile Include="Methods\TestMethodParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpectedExpressionAttribute.cs" />
     <Compile Include="TestClasses\Conversions.cs" />

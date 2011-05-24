@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Expressive.Abstraction;
 using Expressive.Tests.Helpers;
 using MbUnit.Framework;
 
@@ -17,7 +18,7 @@ namespace Expressive.Tests {
     public class GeneralTests {
         [Test]
         [Factory("GetTestMethods")]
-        public void TestDecompilesTo(MethodBase method, IEnumerable<string> patterns) {
+        public void TestDecompilesTo(IManagedMethod method, IEnumerable<string> patterns) {
             var decompiled = Decompile(method);
 
             var parameterNames = decompiled.Parameters.Select(p => p.Name).ToArray();
@@ -35,7 +36,7 @@ namespace Expressive.Tests {
 
         [Test]
         [Factory("GetTestMethods")]
-        public void TestDecompilationResultHasCorrectParameters(MethodBase method) {
+        public void TestDecompilationResultHasCorrectParameters(IManagedMethod method) {
             var decompiled = Decompile(method);
             var parameterTypes = method.GetParameters().Select(p => p.ParameterType).ToList();
             if (!method.IsStatic)
@@ -46,7 +47,7 @@ namespace Expressive.Tests {
 
         [Test]
         [Factory("GetTestMethods")]
-        public void TestDecompilationResultIsCompilable(MethodBase method) {
+        public void TestDecompilationResultIsCompilable(IManagedMethod method) {
             var decompiled = Decompile(method);
             Assert.DoesNotThrow(() => decompiled.Compile());
         }
@@ -64,11 +65,11 @@ namespace Expressive.Tests {
                 parameter
             ).Compile();
 
-            var decompiled = Decompile(lambda.Method);
+            var decompiled = Decompile(new MethodBaseAdapter(lambda.Method));
             Assert.AreEqual("x => x", decompiled.ToString());
         }
 
-        private static LambdaExpression Decompile(MethodBase method) {
+        private static LambdaExpression Decompile(IManagedMethod method) {
             return new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
         }
 
@@ -87,16 +88,16 @@ namespace Expressive.Tests {
             });
         }
 
-        private MethodBase GetMethod(MemberInfo member) {
+        private IManagedMethod GetMethod(MemberInfo member) {
             var property = member as PropertyInfo;
             if (property != null)
-                return property.GetGetMethod();
+                return new MethodBaseAdapter(property.GetGetMethod());
 
             var field = member as FieldInfo;
             if (field != null)
-                return (MethodBase)field.GetValue(null);
+                return (IManagedMethod)field.GetValue(null);
 
-            return (MethodBase)member;
+            return new MethodBaseAdapter((MethodBase)member);
         }
     }
 }
