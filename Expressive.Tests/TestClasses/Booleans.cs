@@ -13,12 +13,12 @@ namespace Expressive.Tests.TestClasses {
             return !a;
         }
 
-        [ExpectedExpression("(a, b) => (a AndAlso b)")]
+        [ExpectedExpression("(a, b) => (a && b)")]
         public static bool And(bool a, bool b) {
             return a && b;
         }
 
-        [ExpectedExpression("(a, b) => (a OrElse b)")]
+        [ExpectedExpression("(a, b) => (a || b)")]
         public static bool Or(bool a, bool b) {
             return a || b;
         }
@@ -28,8 +28,8 @@ namespace Expressive.Tests.TestClasses {
             return Or(true, false);
         }
 
-        private const string ObjectEqualsExpression1 = "(a, b) => ((a == b) OrElse ((a != null) AndAlso ((b != null) AndAlso a.Equals(b))))";
-        private const string ObjectEqualsExpression2 = "(a, b) => ((a == b) OrElse (((a != null) AndAlso (b != null)) AndAlso a.Equals(b)))";
+        private const string ObjectEqualsExpression1 = "(a, b) => ((a == b) || ((a != null) && ((b != null) && a.Equals(b))))";
+        private const string ObjectEqualsExpression2 = "(a, b) => ((a == b) || (((a != null) && (b != null)) && a.Equals(b)))";
 
         [ExpectedExpression(ObjectEqualsExpression1, ObjectEqualsExpression2)]
         public static bool ObjectEquals(object a, object b) {

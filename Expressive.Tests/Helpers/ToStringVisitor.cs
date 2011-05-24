@@ -34,8 +34,8 @@ namespace Expressive.Tests.Helpers {
             { ExpressionType.LessThanOrEqual,    "<=" },
  
             { ExpressionType.Not,                "!" },
-            { ExpressionType.AndAlso,            "AndAlso" },
-            { ExpressionType.OrElse,             "OrElse" }
+            { ExpressionType.AndAlso,            "&&" },
+            { ExpressionType.OrElse,             "||" }
         };
 
         private readonly StringBuilder builder;

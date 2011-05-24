@@ -9,7 +9,7 @@ namespace Expressive.Tests.TestClasses {
         public int Min { get; set; }
         public int Max { get; set; }
 
-        [ExpectedExpression("({0}, value) => ((value >= {0}.Min) AndAlso (value <= {0}.Max))")]
+        [ExpectedExpression("({0}, value) => ((value >= {0}.Min) && (value <= {0}.Max))")]
         public bool Contains(int value) {
             return value >= this.Min && value <= this.Max;
         }
