@@ -9,13 +9,13 @@ using ClrTest.Reflection;
 using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Disassembly {
-    public class InstructionReader {
+    public class InstructionReader : IInstructionReader {
         private static readonly OpCode[] AllOpCodes = typeof(OpCodes).GetFields().Select(f => (OpCode)f.GetValue(null)).ToArray();
         private static readonly IDictionary<byte, IDictionary<ushort, OpCode>> OpCodesByFirstByte =
             AllOpCodes.GroupBy(o => o.Size > 1 ? (byte)(o.Value >> 8) : (byte)(o.Value & 0xFF))
                       .ToDictionary(g => g.Key, g => (IDictionary<ushort, OpCode>)g.ToDictionary(o => (ushort)o.Value));
-        
-        private static readonly IDictionary<Type, Delegate> ByteConverters = new Dictionary<Type, Delegate> {
+
+        protected static readonly IDictionary<Type, Delegate> ByteConverters = new Dictionary<Type, Delegate> {
             { typeof(sbyte),  ByteConverter((bytes, index) => (sbyte)bytes[index]) },    
             { typeof(byte),   ByteConverter((bytes, index) => bytes[index]) },
             { typeof(short),  ByteConverter(BitConverter.ToInt16)  },
@@ -54,7 +54,7 @@ namespace Expressive.Disassembly {
             }
         }
 
-        public Instruction ReadFrom(OpCode code) {
+        protected virtual Instruction ReadFrom(OpCode code) {
             var offset = this.currentIndex;
             this.currentIndex += 1;
 
@@ -106,28 +106,28 @@ namespace Expressive.Disassembly {
             }
         }
 
-        private ValueInstruction<T> ReadValue<T>(int offset, OpCode code) {
+        protected ValueInstruction<T> ReadValue<T>(int offset, OpCode code) {
             return new ValueInstruction<T>(offset, code, Read<T>());
         }
 
-        private BranchInstruction ReadBranch<T>(int offset, OpCode code) 
+        protected BranchInstruction ReadBranch<T>(int offset, OpCode code) 
             where T : IConvertible
         {
             var targetOffset = this.currentIndex + SizeOf<T>() + Read<T>().ToInt32(null);
             return new BranchInstruction(offset, code, targetOffset);
         }
 
-        private T Read<T>() {
+        protected T Read<T>() {
             var value = ((Func<byte[], int, T>)ByteConverters[typeof(T)]).Invoke(this.bytes, this.currentIndex);
             this.currentIndex += SizeOf<T>();
             return value;
         }
 
-        private int SizeOf<T>() {
+        protected int SizeOf<T>() {
             return Marshal.SizeOf(typeof(T));
         }
 
-        private static Func<byte[], int, T> ByteConverter<T>(Func<byte[], int, T> converter) {
+        protected static Func<byte[], int, T> ByteConverter<T>(Func<byte[], int, T> converter) {
             return converter;
         }
     }

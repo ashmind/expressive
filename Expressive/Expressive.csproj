@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Decompilation\Steps\StatementInlining\InitializerDetectingVisitor.cs" />
     <Compile Include="Decompilation\Steps\StatementInlining\AssignmentInlining\AssignmentInliner.cs" />
+    <Compile Include="Disassembly\IInstructionReader.cs" />
     <Compile Include="Disassembly\InstructionReader.cs" />
     <Compile Include="Disassembly\Instructions\SimpleInstruction.cs" />
     <Compile Include="ExpressiveExtensions.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Expressive.Abstraction;
+using Expressive.Disassembly;
 using Expressive.Tests.Helpers;
 using MbUnit.Framework;
 
@@ -70,7 +71,10 @@ namespace Expressive.Tests {
         }
 
         private static LambdaExpression Decompile(IManagedMethod method) {
-            return new Decompiler(new TestDisassembler(), new DefaultPipeline()).Decompile(method);
+            return new Decompiler(
+                new TestDisassembler((bytes, context) => new InstructionReader(bytes, context)),
+                new DefaultPipeline()
+            ).Decompile(method);
         }
 
         public IEnumerable<object[]> GetTestMethods() {

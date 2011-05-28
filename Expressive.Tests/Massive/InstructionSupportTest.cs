@@ -28,7 +28,7 @@ namespace Expressive.Tests.Massive {
         [Ignore("Manual only for now")]
         [Factory("GetAllMethodsThatHaveBodies")]
         public void TestAllInstructionsCanBeDisassembled(IManagedMethod method) {
-            var disassembler = new Disassembler();
+            var disassembler = ExpressiveEngine.GetDisassembler();
             Assert.DoesNotThrow(() => disassembler.Disassemble(method));
         }
 
@@ -36,7 +36,7 @@ namespace Expressive.Tests.Massive {
         [Ignore("Not passing yet")]
         public void TestAllInstructionsExceptSpecificOnesAreProcessed() {
             var pipeline = new DefaultPipeline().Without<LambdaInliningVisitor>();
-            var disassembler = new Disassembler();
+            var disassembler = ExpressiveEngine.GetDisassembler();
             var visitor = new InstructionCollectingVisitor();
 
             foreach (var method in GetAllNonGenericMethods()) {
@@ -68,7 +68,7 @@ namespace Expressive.Tests.Massive {
         }
 
         private IEnumerable<object[]> GetAllSupportedMethods() {
-            var disassembler = new Disassembler();
+            var disassembler = ExpressiveEngine.GetDisassembler();
             return GetAllNonGenericMethods()
                         .Select(method => new { method, instructions = disassembler.Disassemble(method).ToList() })
                         .Where(x => !x.instructions.Any(i => UnsupportedOpCodes.Contains(i.OpCode)))

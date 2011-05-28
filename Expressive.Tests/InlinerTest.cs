@@ -14,7 +14,7 @@ namespace Expressive.Tests {
         [Test]
         public void TestInliningOfBasicProperty() {
             Expression<Func<ClassWithNames, bool>> predicate = c => c.FullNameSimple.Contains("Test"); // not a recommended database scenario
-            var inliner = new Inliner(new Decompiler(new Disassembler(), new DefaultPipeline()));
+            var inliner = new Inliner(ExpressiveEngine.GetDecompiler());
 
             var inlined = inliner.Inline(predicate, p => p.Name == "FullNameSimple");
 
