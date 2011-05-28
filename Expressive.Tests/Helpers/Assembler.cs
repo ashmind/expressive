@@ -5,8 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection.Emit;
 
 using AshMind.Extensions;
-
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Tests.Helpers {
     public class Assembler {

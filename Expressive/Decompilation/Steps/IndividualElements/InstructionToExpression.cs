@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-
+using Expressive.Disassembly.Instructions;
 using Expressive.Elements;
-using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public abstract class InstructionToExpression : ElementInterpretation<InstructionElement, ExpressionElement> {

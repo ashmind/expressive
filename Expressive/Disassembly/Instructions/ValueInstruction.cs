@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-namespace Expressive.Elements.Instructions {
+namespace Expressive.Disassembly.Instructions {
     public class ValueInstruction<T> : Instruction, IValueInstruction {
         public T Value { get; private set; }
 

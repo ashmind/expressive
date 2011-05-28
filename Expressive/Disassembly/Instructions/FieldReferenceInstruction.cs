@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Expressive.Elements.Instructions {
+namespace Expressive.Disassembly.Instructions {
     public class FieldReferenceInstruction : Instruction {
         public FieldInfo Field { get; private set; }
 

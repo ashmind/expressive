@@ -5,9 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection.Emit;
 
 using AshMind.Extensions;
-
+using Expressive.Disassembly.Instructions;
 using Expressive.Elements;
-using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class LdcToConstant : InstructionToExpression {

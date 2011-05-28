@@ -4,8 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 
 using ClrTest.Reflection;
-
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 using Expressive.Elements.Presentation;
 
 namespace Expressive.Elements {

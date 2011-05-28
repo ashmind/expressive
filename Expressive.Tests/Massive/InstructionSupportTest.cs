@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Reflection.Emit;
 
 using Expressive.Abstraction;
 using Expressive.Decompilation;
 using Expressive.Decompilation.Pipelines;
 using Expressive.Decompilation.Steps.StatementInlining;
+using Expressive.Disassembly.Instructions;
 using Expressive.Elements;
-using Expressive.Elements.Instructions;
-
 using MbUnit.Framework;
 
 namespace Expressive.Tests.Massive {
@@ -25,8 +25,16 @@ namespace Expressive.Tests.Massive {
         };
 
         [Test]
+        [Ignore("Manual only for now")]
+        [Factory("GetAllMethodsThatHaveBodies")]
+        public void TestAllInstructionsCanBeDisassembled(IManagedMethod method) {
+            var disassembler = new Disassembler();
+            Assert.DoesNotThrow(() => disassembler.Disassemble(method));
+        }
+
+        [Test]
         [Ignore("Not passing yet")]
-        public void TestAllInstructionsExceptSpecificOnesAreSupported() {
+        public void TestAllInstructionsExceptSpecificOnesAreProcessed() {
             var pipeline = new DefaultPipeline().Without<LambdaInliningVisitor>();
             var disassembler = new Disassembler();
             var visitor = new InstructionCollectingVisitor();
@@ -68,9 +76,18 @@ namespace Expressive.Tests.Massive {
         }
 
         private IEnumerable<IManagedMethod> GetAllNonGenericMethods() {
-            return typeof(string).Assembly.GetTypes().SelectMany(t => t.GetMethods())
-                                                     .Where(m => !m.IsGenericMethodDefinition)
-                                                     .Select(method => new MethodBaseAdapter(method));
+            return GetAllMethodsRaw().Where(m => !m.IsGenericMethodDefinition)
+                                     .Select(method => new MethodBaseAdapter(method));
+        }
+
+        private IEnumerable<IManagedMethod> GetAllMethodsThatHaveBodies() {
+            return GetAllMethodsRaw().Where(m => m.GetMethodBody() != null)
+                                     .Select(method => new MethodBaseAdapter(method));
+        }
+
+        private static IEnumerable<MethodInfo> GetAllMethodsRaw() {
+            return typeof(string).Assembly.GetTypes()
+                                .SelectMany(t => t.GetMethods());
         }
 
         private static void ApplyPipeline(IDecompilationPipeline pipeline, IList<IElement> elements, IManagedMethod method) {

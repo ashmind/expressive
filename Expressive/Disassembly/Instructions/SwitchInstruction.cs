@@ -6,7 +6,7 @@ using System.Reflection.Emit;
 
 using AshMind.Extensions;
 
-namespace Expressive.Elements.Instructions {
+namespace Expressive.Disassembly.Instructions {
     public class SwitchInstruction : Instruction {
         public ReadOnlyCollection<int> TargetOffsets { get; set; }
 

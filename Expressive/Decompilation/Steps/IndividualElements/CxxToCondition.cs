@@ -4,8 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 using AshMind.Extensions;
-
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     using BinaryConverter = Func<Expression, Expression, Expression>;

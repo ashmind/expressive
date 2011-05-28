@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 using Expressive.Abstraction;
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive {
     public static class ExpressiveExtensions {

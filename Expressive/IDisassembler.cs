@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Expressive.Abstraction;
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive {
     public interface IDisassembler {

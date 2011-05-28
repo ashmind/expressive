@@ -1,6 +1,6 @@
 using System.Reflection.Emit;
 
-namespace Expressive.Elements.Instructions {
+namespace Expressive.Disassembly.Instructions {
     public class VariableReferenceInstruction : Instruction {
         public ushort Ordinal { get; private set; }
 

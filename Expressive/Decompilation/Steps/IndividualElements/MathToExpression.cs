@@ -5,8 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection.Emit;
 
 using AshMind.Extensions;
-
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     using BinaryOperator = Func<Expression, Expression, Expression>;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Expressive.Abstraction;
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Tests.Methods {
     public class TestDisassembler : Disassembler {

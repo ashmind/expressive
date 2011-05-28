@@ -4,8 +4,8 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using Expressive.Abstraction;
+using Expressive.Disassembly.Instructions;
 using Expressive.Elements;
-using Expressive.Elements.Instructions;
 
 namespace Expressive.Decompilation.Steps.IndividualElements {
     public class StlocToAssignment : ElementInterpretation<InstructionElement, VariableAssignmentElement> {

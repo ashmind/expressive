@@ -1,7 +1,7 @@
 using System;
 using System.Reflection.Emit;
 
-namespace Expressive.Elements.Instructions {
+namespace Expressive.Disassembly.Instructions {
     public abstract class Instruction {
         public OpCode OpCode { get; private set; }
         public int Offset { get; private set; }

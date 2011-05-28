@@ -197,10 +197,16 @@ namespace Expressive.Tests.Helpers {
             if (c.Value is string)
                 builder.Append("\"");
 
+            if (c.Value is char)
+                builder.Append("'");
+
             builder.Append(c.Value ?? "null");
 
             if (c.Value is string)
                 builder.Append("\"");
+
+            if (c.Value is char)
+                builder.Append("'");
 
             return c;
         }

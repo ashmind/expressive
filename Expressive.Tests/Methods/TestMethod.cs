@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using Expressive.Abstraction;
-using Expressive.Elements.Instructions;
+using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Tests.Methods {
     public class TestMethod : IManagedMethod {

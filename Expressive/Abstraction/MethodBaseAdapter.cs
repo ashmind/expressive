@@ -12,6 +12,9 @@ namespace Expressive.Abstraction {
         public MethodBaseAdapter(MethodBase actual) {
             this.actual = actual;
             this.bodyOfActual = this.actual.GetMethodBody();
+            if (bodyOfActual == null)
+                throw new NotSupportedException("Method " + actual + " must have a body to adapted using this class.");
+
             this.Context = new MethodBaseModuleContext(actual);
         }
 
@@ -47,5 +50,9 @@ namespace Expressive.Abstraction {
         }
 
         #endregion
+
+        public override string ToString() {
+            return this.actual.ToString();
+        }
     }
 }
