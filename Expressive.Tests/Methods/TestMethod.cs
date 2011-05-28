@@ -42,7 +42,7 @@ namespace Expressive.Tests.Methods {
             return this.instructions;
         }
 
-        public IManagedMethodContext Context {
+        public IManagedContext Context {
             get { throw new NotImplementedException(); }
         }
 
@@ -54,7 +54,7 @@ namespace Expressive.Tests.Methods {
             get { return null; }
         }
         
-        public byte[] GetByteArray() {
+        public byte[] GetBodyByteArray() {
             throw new NotSupportedException();
         }
 

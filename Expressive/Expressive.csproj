@@ -36,9 +36,6 @@
     <Reference Include="AshMind.Extensions">
       <HintPath>..\$packages\AshMind.Extensions.1.0.4\lib\3.5\AshMind.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ClrTest.Reflection.ILReader">
-      <HintPath>..\$libraries\ClrTest.Reflection.ILReader.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstraction\IManagedMethodContext.cs" />
+    <Compile Include="Abstraction\IManagedContext.cs" />
     <Compile Include="Abstraction\IManagedMethod.cs" />
     <Compile Include="Abstraction\IManagedMethodParameter.cs" />
     <Compile Include="Abstraction\MethodBaseAdapter.cs" />

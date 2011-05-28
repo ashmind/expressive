@@ -8,7 +8,7 @@ using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Tests.Methods {
     public class TestDisassembler : Disassembler {
-        public TestDisassembler(Func<byte[], IManagedMethodContext, IInstructionReader> instructionReaderFactory) : base(instructionReaderFactory) {
+        public TestDisassembler(Func<byte[], IManagedContext, IInstructionReader> instructionReaderFactory) : base(instructionReaderFactory) {
         }
 
         public override IEnumerable<Instruction> Disassemble(IManagedMethod method) {

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ClrTest.Reflection;
-
 namespace Expressive.Abstraction {
-    public interface IManagedMethod : IILProvider {
-        IManagedMethodContext Context { get; }
+    public interface IManagedMethod {
+        IManagedContext Context { get; }
 
         bool IsStatic { get; }
         Type DeclaringType { get; }
@@ -14,5 +12,7 @@ namespace Expressive.Abstraction {
         Type ReturnType { get; }
         IEnumerable<IManagedMethodParameter> GetParameters();
         Type GetTypeOfLocal(int index);
+
+        byte[] GetBodyByteArray();
     }
 }

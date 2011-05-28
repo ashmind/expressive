@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ClrTest.Reflection;
 
 namespace Expressive.Abstraction {
     public class MethodBaseAdapter : IManagedMethod {
@@ -18,7 +17,7 @@ namespace Expressive.Abstraction {
             this.Context = new MethodBaseModuleContext(actual);
         }
 
-        public IManagedMethodContext Context { get; private set; }
+        public IManagedContext Context { get; private set; }
 
         public bool IsStatic {
             get { return this.actual.IsStatic; }
@@ -43,13 +42,9 @@ namespace Expressive.Abstraction {
             return this.bodyOfActual.LocalVariables[index].LocalType;
         }
 
-        #region IILProvider Members
-
-        byte[] IILProvider.GetByteArray() {
+        public byte[] GetBodyByteArray() {
             return this.bodyOfActual.GetILAsByteArray();
         }
-
-        #endregion
 
         public override string ToString() {
             return this.actual.ToString();

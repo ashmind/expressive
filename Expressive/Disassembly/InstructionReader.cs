@@ -4,8 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
-using ClrTest.Reflection;
-
+using Expressive.Abstraction;
 using Expressive.Disassembly.Instructions;
 
 namespace Expressive.Disassembly {
@@ -28,11 +27,11 @@ namespace Expressive.Disassembly {
 
         private int currentIndex;
         private readonly byte[] bytes;
-        private readonly ITokenResolver resolver;
+        private readonly IManagedContext context;
 
-        public InstructionReader(byte[] bytes, ITokenResolver resolver) {
+        public InstructionReader(byte[] bytes, IManagedContext context) {
             this.bytes = bytes;
-            this.resolver = resolver;
+            this.context = context;
         }
 
         public IEnumerable<Instruction> ReadAll() {
@@ -78,7 +77,7 @@ namespace Expressive.Disassembly {
                     return ReadValue<float>(offset, code);
 
                 case OperandType.InlineString:
-                    return new ValueInstruction<string>(offset, code, this.resolver.AsString(Read<int>()));
+                    return new ValueInstruction<string>(offset, code, this.context.ResolveString(Read<int>()));
 
                 case OperandType.InlineVar:
                     return new VariableReferenceInstruction(offset, code, Read<ushort>());
@@ -93,13 +92,13 @@ namespace Expressive.Disassembly {
                     return ReadBranch<sbyte>(offset, code);
 
                 case OperandType.InlineMethod:
-                    return new MethodReferenceInstruction(offset, code, this.resolver.AsMethod(Read<int>()));
+                    return new MethodReferenceInstruction(offset, code, this.context.ResolveMethod(Read<int>()));
 
                 case OperandType.InlineField:
-                    return new FieldReferenceInstruction(offset, code, this.resolver.AsField(Read<int>()));
+                    return new FieldReferenceInstruction(offset, code, this.context.ResolveField(Read<int>()));
 
                 case OperandType.InlineType:
-                    return new TypeReferenceInstruction(offset, code, this.resolver.AsType(Read<int>()));
+                    return new TypeReferenceInstruction(offset, code, this.context.ResolveType(Read<int>()));
 
                 default:
                     throw new NotSupportedException(code.Name + " has unsupported operand type " + code.OperandType);

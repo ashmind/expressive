@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 
-using ClrTest.Reflection;
 using Expressive.Disassembly.Instructions;
 using Expressive.Elements.Presentation;
 

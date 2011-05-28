@@ -8,15 +8,17 @@ using Expressive.Disassembly.Instructions;
 
 namespace Expressive {
     public class Disassembler : IDisassembler {
-        private readonly Func<byte[], IManagedMethodContext, IInstructionReader> instructionReaderFactory;
+        private readonly Func<byte[], IManagedContext, IInstructionReader> instructionReaderFactory;
 
-        public Disassembler(Func<byte[], IManagedMethodContext, IInstructionReader> instructionReaderFactory) {
+        public Disassembler(Func<byte[], IManagedContext, IInstructionReader> instructionReaderFactory) {
             this.instructionReaderFactory = instructionReaderFactory;
         }
 
         public virtual IEnumerable<Instruction> Disassemble(IManagedMethod method) {
-            var bytes = method.GetByteArray();
-            return this.instructionReaderFactory(bytes, method.Context).ReadAll();
+            return this.instructionReaderFactory(
+                method.GetBodyByteArray(),
+                method.Context
+            ).ReadAll();
         }
     }
 }

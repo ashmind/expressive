@@ -4,41 +4,37 @@ using System.Linq;
 using System.Reflection;
 
 namespace Expressive.Abstraction {
-    public class MethodBaseModuleContext : IManagedMethodContext {
+    public class MethodBaseModuleContext : IManagedContext {
         private readonly Module module;
-        private readonly Type[] genericMethodArguments;
-        private readonly Type[] genericTypeArguments;
+        private readonly Type[] methodGenericArguments;
+        private readonly Type[] typeGenericArguments;
 
         public MethodBaseModuleContext(MethodBase method) {
             this.module = method.Module;
-            this.genericMethodArguments = (method.IsGenericMethod || method.IsGenericMethodDefinition) ? method.GetGenericArguments() : new Type[0];
+            this.methodGenericArguments = (method.IsGenericMethod || method.IsGenericMethodDefinition) ? method.GetGenericArguments() : new Type[0];
 
             var type = method.DeclaringType;
-            this.genericTypeArguments = (type != null && (type.IsGenericType || type.IsGenericTypeDefinition)) ? type.GetGenericArguments() : new Type[0];
+            this.typeGenericArguments = (type != null && (type.IsGenericType || type.IsGenericTypeDefinition)) ? type.GetGenericArguments() : new Type[0];
         }
 
-        public FieldInfo AsField(int token) {
-            return this.module.ResolveField(token, this.genericTypeArguments, this.genericMethodArguments);
+        public FieldInfo ResolveField(int token) {
+            return this.module.ResolveField(token, this.typeGenericArguments, this.methodGenericArguments);
         }
 
-        public MemberInfo AsMember(int token) {
-            return this.module.ResolveMember(token, this.genericTypeArguments, this.genericMethodArguments);
+        public MemberInfo ResolveMember(int token) {
+            return this.module.ResolveMember(token, this.typeGenericArguments, this.methodGenericArguments);
         }
 
-        public MethodBase AsMethod(int token) {
-            return this.module.ResolveMethod(token, this.genericTypeArguments, this.genericMethodArguments);
+        public MethodBase ResolveMethod(int token) {
+            return this.module.ResolveMethod(token, this.typeGenericArguments, this.methodGenericArguments);
         }
 
-        public byte[] AsSignature(int token) {
-            return this.module.ResolveSignature(token);
-        }
-
-        public string AsString(int token) {
+        public string ResolveString(int token) {
             return this.module.ResolveString(token);
         }
 
-        public Type AsType(int token) {
-            return this.module.ResolveType(token, this.genericTypeArguments, this.genericMethodArguments);
+        public Type ResolveType(int token) {
+            return this.module.ResolveType(token, this.typeGenericArguments, this.methodGenericArguments);
         }
     }
 }
