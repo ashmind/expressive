@@ -14,6 +14,10 @@ is converted to
 
     x => string.Concat(x.FirstName, " ", x.LastName)
 
+API
+---
+https://github.com/ashmind/expressive/wiki/External-API
+
 Reason
 ------
 
@@ -47,8 +51,3 @@ What does not work:
 3. Statements
 
 Note: it is completely possible to allow .NET 4.0 "statement expressions" in the results by changing the default Pipeline and replacing a Decompiler.
-
-TODO
-----
-
-Write about API.
