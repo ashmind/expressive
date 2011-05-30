@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Expressive</id>
+    <version>$version$</version>
+    <authors>Andrey Shchekin</authors>
+    <owners>Andrey Shchekin</owners>
+    <projectUrl>http://github.com/ashmind/expressive</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Expressive is a library that converts compiled methods into expression trees.</description>
+    <tags>Expression-Trees</tags>
+    <dependencies>
+      <dependency id="AshMind.Extensions" version="1.0.4" />
+    </dependencies>
+  </metadata>
+</package>
