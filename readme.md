@@ -14,9 +14,10 @@ is converted to
 
     x => string.Concat(x.FirstName, " ", x.LastName)
 
-API
+Use
 ---
-https://github.com/ashmind/expressive/wiki/External-API
+NuGet Package: http://nuget.org/List/Packages/Expressive
+API Docs: https://github.com/ashmind/expressive/wiki/External-API
 
 Reason
 ------
